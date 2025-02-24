@@ -1,12 +1,15 @@
 #include "CPlayerCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/PlayerController.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "CStateComponent.h"
+#include "CMontagesComponent.h"
 #include "InputActionValue.h"
 
 // Sets default values
@@ -35,15 +38,43 @@ ACPlayerCharacter::ACPlayerCharacter()
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 
 	// Create a camera boom (pulls in towards the player if there is a collision)
-	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
-	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 400.0f; // The camera follows at this distance behind the character	
-	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
+	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	SpringArmComp->SetupAttachment(RootComponent);
+	SpringArmComp->TargetArmLength = 400.0f; // The camera follows at this distance behind the character	
+	SpringArmComp->bUsePawnControlRotation = true; // Rotate the arm based on the controller
 
 	// Create a follow camera
-	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
-	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
-	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+	CameraComp->SetupAttachment(SpringArmComp, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
+	CameraComp->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+
+	// Montage Comp
+	MontagesComp = CreateDefaultSubobject<UCMontagesComponent>("MontagesComp");
+
+	// State Comp
+	StateComp = CreateDefaultSubobject<UCStateComponent>("StateComp");
+}
+
+void ACPlayerCharacter::Begin_Evade()
+{
+	MontagesComp->PlayEvade();
+}
+
+void ACPlayerCharacter::End_Evade()
+{
+	StateComp->SetIdleMode();
+}
+
+void ACPlayerCharacter::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
+{
+	switch (InNewType)
+	{
+		case EStateType::Evade:
+		{
+ 			Begin_Evade();
+		}
+		break;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -58,6 +89,9 @@ void ACPlayerCharacter::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
+	
+	// On StateType Changed
+	StateComp->OnStateTypeChanged.AddDynamic(this, &ACPlayerCharacter::OnStateTypeChanged);
 }
 
 void ACPlayerCharacter::Move(const FInputActionValue& Value)
@@ -96,6 +130,14 @@ void ACPlayerCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
+void ACPlayerCharacter::Evade(const FInputActionValue& value)
+{
+	if (StateComp->IsIdleMode())
+	{
+		StateComp->SetEvadeMode();
+	}
+}
+
 // Called to bind functionality to input
 void ACPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -105,7 +147,7 @@ void ACPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
 
 		// Jumping
-		//EnhancedInputComponent->BindAction(EvadeAction, ETriggerEvent::Started, this,	&ACharacACPlayerCharacterter::Jump);
+		EnhancedInputComponent->BindAction(EvadeAction, ETriggerEvent::Triggered, this,	&ACPlayerCharacter::Evade);
 		//EnhancedInputComponent->BindAction(EvadeAction, ETriggerEvent::Completed, this, &ACPlayerCharacter::StopJumping);
 
 		// Moving
