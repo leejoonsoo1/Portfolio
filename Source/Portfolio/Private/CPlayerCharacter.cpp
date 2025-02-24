@@ -11,6 +11,7 @@
 #include "CStateComponent.h"
 #include "CMontagesComponent.h"
 #include "InputActionValue.h"
+#include "Engine/Engine.h"
 
 // Sets default values
 ACPlayerCharacter::ACPlayerCharacter()
@@ -53,11 +54,23 @@ ACPlayerCharacter::ACPlayerCharacter()
 
 	// State Comp
 	StateComp = CreateDefaultSubobject<UCStateComponent>("StateComp");
+
+	// Status
+	DesiredEvadeDistance = 5000.f;
+
+	SprintSpeed = GetCharacterMovement()->MaxWalkSpeed + 350.f;
+	RunningSpeed = GetCharacterMovement()->MaxWalkSpeed;
+
 }
 
 void ACPlayerCharacter::Begin_Evade()
 {
 	MontagesComp->PlayEvade();
+
+	FVector EvadeDirection = GetActorForwardVector(); // 회피 방향 설정
+	FVector EvadeDistance = EvadeDirection * DesiredEvadeDistance; // 회피 거리 계산
+	
+	GetCharacterMovement()->AddImpulse(EvadeDistance, true);
 }
 
 void ACPlayerCharacter::End_Evade()
@@ -138,6 +151,16 @@ void ACPlayerCharacter::Evade(const FInputActionValue& value)
 	}
 }
 
+void ACPlayerCharacter::Sprint(const FInputActionValue& value)
+{
+	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+}
+
+void ACPlayerCharacter::Running(const FInputActionValue& value)
+{
+	GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
+}
+
 // Called to bind functionality to input
 void ACPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -148,10 +171,14 @@ void ACPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 		// Jumping
 		EnhancedInputComponent->BindAction(EvadeAction, ETriggerEvent::Triggered, this,	&ACPlayerCharacter::Evade);
-		//EnhancedInputComponent->BindAction(EvadeAction, ETriggerEvent::Completed, this, &ACPlayerCharacter::StopJumping);
 
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this,	&ACPlayerCharacter::Move);
+
+		// Sprint
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ACPlayerCharacter::Sprint);
+		// Running 
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ACPlayerCharacter::Running);
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this,	&ACPlayerCharacter::Look);

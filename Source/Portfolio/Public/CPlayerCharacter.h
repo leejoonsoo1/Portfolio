@@ -52,6 +52,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* EvadeAction;
 
+	/** Sprint Inupt Action **/
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* SprintAction;
+
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
@@ -69,6 +73,8 @@ protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Evade(const FInputActionValue& value);
+	void Sprint(const FInputActionValue& value);
+	void Running(const FInputActionValue& value);
 
 protected:
 	//virtual void NotifyControllerChanged() override;
@@ -82,4 +88,8 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* EvadeMontage;
 
+private:
+	float DesiredEvadeDistance;
+	float SprintSpeed;
+	float RunningSpeed;
 };
