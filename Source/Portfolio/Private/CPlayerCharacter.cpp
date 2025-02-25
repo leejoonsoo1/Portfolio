@@ -56,8 +56,6 @@ ACPlayerCharacter::ACPlayerCharacter()
 	StateComp = CreateDefaultSubobject<UCStateComponent>("StateComp");
 
 	// Status
-	DesiredEvadeDistance = 5000.f;
-
 	SprintSpeed = GetCharacterMovement()->MaxWalkSpeed + 350.f;
 	RunningSpeed = GetCharacterMovement()->MaxWalkSpeed;
 
@@ -65,12 +63,10 @@ ACPlayerCharacter::ACPlayerCharacter()
 
 void ACPlayerCharacter::Begin_Evade()
 {
-	MontagesComp->PlayEvade();
-
-	FVector EvadeDirection = GetActorForwardVector(); // 회피 방향 설정
-	FVector EvadeDistance = EvadeDirection * DesiredEvadeDistance; // 회피 거리 계산
-	
-	GetCharacterMovement()->AddImpulse(EvadeDistance, true);
+	if (MontagesComp) 
+	{
+		MontagesComp->PlayEvade();
+	}
 }
 
 void ACPlayerCharacter::End_Evade()
@@ -104,7 +100,10 @@ void ACPlayerCharacter::BeginPlay()
 	}
 	
 	// On StateType Changed
-	StateComp->OnStateTypeChanged.AddDynamic(this, &ACPlayerCharacter::OnStateTypeChanged);
+	if (StateComp)
+	{
+		StateComp->OnStateTypeChanged.AddDynamic(this, &ACPlayerCharacter::OnStateTypeChanged);
+	}
 }
 
 void ACPlayerCharacter::Move(const FInputActionValue& Value)
