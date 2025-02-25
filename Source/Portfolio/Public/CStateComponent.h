@@ -2,13 +2,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Type.h"
 #include "CStateComponent.generated.h"
-
-UENUM(BlueprintType)
-enum class EStateType : uint8
-{
-	Idle, Evade, Equip, Action, Hitted, Dead, Max
-};
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FStateTypeChanged, EStateType, InPrevType, EStateType, InNewType);
 

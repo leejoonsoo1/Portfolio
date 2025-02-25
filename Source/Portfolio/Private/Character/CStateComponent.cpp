@@ -2,10 +2,8 @@
 
 UCStateComponent::UCStateComponent()
 {
-	PrimaryComponentTick.bCanEverTick = false;
 
 }
-
 
 void UCStateComponent::BeginPlay()
 {
