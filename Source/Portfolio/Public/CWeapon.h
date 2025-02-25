@@ -17,23 +17,14 @@ public:
 	FString WeaponName;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon")
-	UAnimMontage* Montage;
-
-	UPROPERTY(EditAnywhere, Category = "Weapon")
-	float PlayRate = 1.f;
-
-	UPROPERTY(EditAnywhere, Category = "Weapon")
-	FName StartSection;
-
-	UPROPERTY(EditAnywhere, Category = "Weapon")
-	bool bCanMove;
+	USkeletalMesh* SkeletalMesh;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon")
 	float Damage;
 };
 
 UCLASS()
-class PORTFOLIO_API ACWeapon : public AActor
+class PORTFOLIO_API ACWeapon : public UActorComponent
 {
 	GENERATED_BODY()
 	

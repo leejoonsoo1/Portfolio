@@ -11,5 +11,5 @@ enum class EStateType : uint8
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
 {
-	SwordNShield, GreatSword, LongSword, Hammer, LightBowgun, Bow, Lance, DualBlades, ChargeBlade, GunLance, HeavyBowgun, SwitchAxe, Max
+	Unarmed, SwordNShield, GreatSword, LongSword, Hammer, LightBowgun, Bow, Lance, DualBlades, ChargeBlade, GunLance, HeavyBowgun, SwitchAxe, Max
 };

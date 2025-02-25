@@ -12,8 +12,14 @@ struct FMontageData : public FTableRowBase
 
 public:
 	UPROPERTY(EditAnywhere)
-	EStateType Type;
+	FString Name;
+
+	UPROPERTY(EditAnywhere)
+	EStateType StateType;
 	 
+	UPROPERTY(EditAnywhere)
+	EWeaponType WeaponType;
+
 	UPROPERTY(EditAnywhere)
 	UAnimMontage* AnimMontage;
 
@@ -24,7 +30,7 @@ public:
 	FName StartSection;
 
 	UPROPERTY(EditAnywhere)
-	bool bCanMove;	
+	bool bCanMove;
 };
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -43,14 +49,28 @@ protected:
 public:
 	void PlayEvade();
 	void PlayHitted();
+	void PlayGimmicked();
 
 private:
-	void PlayAnimMontage(EStateType InType);
+	UFUNCTION()
+	void UpdateMontage();
+	UFUNCTION()
+	void PlayAnimMontage(EStateType InStateType);
+
+	UFUNCTION()
+	void StateChanged(EStateType InPrevType, EStateType InNewType);
+
+	UFUNCTION()
+	void WeaponChanged(EWeaponType InPrevType, EWeaponType InNewType);
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "DataTable")
 	UDataTable* DataTable;
 
+	FMontageData* CurrentMontage;
+	UCStateComponent* StateComponent;
+
 private:
 	FMontageData* Datas[(int32)EStateType::Max];
+	TArray<FMontageData*> ReadDatas;
 };

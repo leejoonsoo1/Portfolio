@@ -8,43 +8,110 @@ UCStateComponent::UCStateComponent()
 void UCStateComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void UCStateComponent::SetIdleMode()
 {
-	ChangeType(EStateType::Idle);
+	ChangeStateType(EStateType::Idle);
 }
 
 void UCStateComponent::SetEvadeMode()
 {
-	ChangeType(EStateType::Evade);
+	ChangeStateType(EStateType::Evade);
 }
 
 void UCStateComponent::SetEquipMode()
 {
-	ChangeType(EStateType::Equip);
+	ChangeStateType(EStateType::Equip);
 }
 
 void UCStateComponent::SetActionMode()
 {
-	ChangeType(EStateType::Action);
+	ChangeStateType(EStateType::Action);
 }
 
 void UCStateComponent::SetHittedMode()
 {
-	ChangeType(EStateType::Hitted);
+	ChangeStateType(EStateType::Hitted);
 }
 
 void UCStateComponent::setDeadMode()
 {
-	ChangeType(EStateType::Dead);
+	ChangeStateType(EStateType::Dead);
 }
 
-void UCStateComponent::ChangeType(EStateType InNewType)
+void UCStateComponent::SetUnarmedMode()
 {
-	EStateType PrevType = Type;
-	Type = InNewType;
+	ChangeWeaponType(EWeaponType::Unarmed);
+}
 
-	OnStateTypeChanged.Broadcast(PrevType, Type);
+void UCStateComponent::SetSwordNShieldMode()
+{
+	ChangeWeaponType(EWeaponType::SwordNShield);
+}
+
+void UCStateComponent::SetGreatSwordMode()
+{
+	ChangeWeaponType(EWeaponType::GreatSword);
+}
+
+void UCStateComponent::SetLongSwordMode()
+{
+	ChangeWeaponType(EWeaponType::LongSword);
+}
+
+void UCStateComponent::SetHammerMode()
+{
+	ChangeWeaponType(EWeaponType::Hammer);
+}
+
+void UCStateComponent::SetLightBowgunMode()
+{
+	ChangeWeaponType(EWeaponType::LightBowgun);
+}
+
+void UCStateComponent::SetBowMode()
+{
+	ChangeWeaponType(EWeaponType::Bow);
+}
+
+void UCStateComponent::SetLanceMode()
+{
+	ChangeWeaponType(EWeaponType::Lance);
+}
+
+void UCStateComponent::SetDualBladesMode()
+{
+	ChangeWeaponType(EWeaponType::DualBlades);
+}
+
+void UCStateComponent::SetGunLanceMode()
+{
+	ChangeWeaponType(EWeaponType::GunLance);
+}
+
+void UCStateComponent::SetHeavyBowgunMode()
+{
+	ChangeWeaponType(EWeaponType::HeavyBowgun);
+}
+
+void UCStateComponent::SetSwitchAxeMode()
+{
+	ChangeWeaponType(EWeaponType::SwitchAxe);
+}
+
+void UCStateComponent::ChangeStateType(EStateType InNewType)
+{
+	EStateType PrevType = StateType;
+	StateType = InNewType;
+
+	OnStateTypeChanged.Broadcast(PrevType, StateType);
+}
+
+void UCStateComponent::ChangeWeaponType(EWeaponType InNewType)
+{
+	EWeaponType PrevType = WeaponType;
+	WeaponType = InNewType;
+
+	OnWeaponTypeChanged.Broadcast(PrevType, WeaponType);
 }
