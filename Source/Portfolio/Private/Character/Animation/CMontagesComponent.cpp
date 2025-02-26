@@ -41,6 +41,11 @@ void UCMontagesComponent::PlayEquipping()
 	PlayAnimMontage(EStateType::Equip);
 }
 
+void UCMontagesComponent::PlayUnEquipping()
+{
+	PlayAnimMontage(EStateType::UnEquip);
+}
+
 void UCMontagesComponent::PlayEvade()
 {
 	PlayAnimMontage(EStateType::Evade);

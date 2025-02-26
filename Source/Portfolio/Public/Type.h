@@ -5,7 +5,7 @@
 UENUM(BlueprintType)
 enum class EStateType : uint8
 {
-	Idle, Evade, Equip, Action, Hitted, Dead, Max
+	Idle, Evade, Equip, UnEquip, Action, Hitted, Dead, Max
 };
 
 UENUM(BlueprintType)

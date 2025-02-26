@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
-#include "Type.h"
+#include "CStateComponent.h"
 #include "CAnimInstance.generated.h"
 
 UCLASS()
@@ -17,8 +17,8 @@ protected:
 	virtual void NativeBeginPlay() override;
 
 private:
-	// UFUNCTION()
-	// void OnActionTypeChanged(EActionType InPrevType, EActionType InNewType);
+	UFUNCTION()
+	void OnWeaponTypeChanged(EWeaponType InPrevType, EWeaponType InNewType);
 
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Player")

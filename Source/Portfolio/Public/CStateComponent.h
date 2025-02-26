@@ -32,6 +32,9 @@ public:
 	bool IsEquipMode() { return StateType == EStateType::Equip; }
 
 	UFUNCTION(BlueprintPure)
+	bool IsUnEquipMode() { return StateType == EStateType::UnEquip; }
+
+	UFUNCTION(BlueprintPure)
 	bool IsActionMode() { return StateType == EStateType::Action; }
 
 	UFUNCTION(BlueprintPure)
@@ -90,6 +93,7 @@ public:
 	void SetIdleMode();
 	void SetEvadeMode();
 	void SetEquipMode();
+	void SetUnEquipMode();
 	void SetActionMode();
 	void SetHittedMode();
 	void setDeadMode();

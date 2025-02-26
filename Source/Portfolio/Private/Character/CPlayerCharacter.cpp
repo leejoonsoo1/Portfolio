@@ -38,7 +38,7 @@ ACPlayerCharacter::ACPlayerCharacter()
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
-
+	
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	SpringArmComp->SetupAttachment(RootComponent);
@@ -126,16 +126,11 @@ void ACPlayerCharacter::Evade(const FInputActionValue& value)
 {
 	if (StateComp->IsIdleMode())
 	{
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ACPlayerCharacter::Evade"));
-		}
-
 		StateComp->SetEvadeMode();
 	}
 }
 
-void ACPlayerCharacter::Begin_Evade()
+void ACPlayerCharacter::BeginEvade()
 {
 	if (MontagesComp)
 	{
@@ -143,54 +138,50 @@ void ACPlayerCharacter::Begin_Evade()
 	}
 }
 
-void ACPlayerCharacter::End_Evade()
+void ACPlayerCharacter::EndEvade()
 {
 	StateComp->SetIdleMode();
 }
 
-void ACPlayerCharacter::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
+void ACPlayerCharacter::BeginEquipping()
 {
-	switch (InNewType)
+	if (MontagesComp && !StateComp->IsUnarmedMode())
 	{
-	case EStateType::Idle:
-	case EStateType::Evade:
-	{
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ACPlayerCharacter::OnStateTypeChanged"));
-		}
-		
-		Begin_Evade();
-	}
-	break;
-	default:
-	break;
+		MontagesComp->PlayEquipping();
 	}
 }
 
-void ACPlayerCharacter::OnWeaponTypeChanged(EWeaponType InPrevType, EWeaponType InNewType)
+void ACPlayerCharacter::EndEquipping()
 {
-	switch (InNewType)
-	{
-	case EWeaponType::Unarmed:
-		break;
-	case EWeaponType::GreatSword:
-	{
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ACPlayerCharacter::OnStateTypeChanged"));
-		}
+	StateComp->SetIdleMode();
+	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+}
 
-		MontagesComp->PlayEquipping();
+void ACPlayerCharacter::BeginUnEquipping()
+{
+	if (MontagesComp && !StateComp->IsUnarmedMode())
+	{
+		MontagesComp->PlayUnEquipping();
 	}
-	break;
-	default:
-	break;
-	}
+}
+
+void ACPlayerCharacter::EndUnEquipping()
+{
+	StateComp->SetUnarmedMode();
+	StateComp->SetIdleMode();
+	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 }
 
 void ACPlayerCharacter::Sprint(const FInputActionValue& value)
 {
+	if (!StateComp) return;
+
+	if (!StateComp->IsUnEquipMode() && !StateComp->IsUnarmedMode())
+	{
+		GetCharacterMovement()->SetMovementMode(MOVE_None);
+		StateComp->SetUnEquipMode();
+	}
+
 	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
 }
 
@@ -201,15 +192,50 @@ void ACPlayerCharacter::Running(const FInputActionValue& value)
 
 void ACPlayerCharacter::Attack(const FInputActionValue& value)
 {
-	if (GEngine)
+	if (!StateComp->IsEquipMode() && StateComp->IsUnarmedMode())
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ACPlayerCharacter::Attack"));
-	}
-
-	if (!StateComp->IsEquipMode())
-	{
+		GetCharacterMovement()->SetMovementMode(MOVE_None);
 		StateComp->SetGreatSwordMode();
 		StateComp->SetEquipMode();
+	}
+}
+
+void ACPlayerCharacter::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
+{
+	switch (InNewType)
+	{
+	case EStateType::Idle:
+		break;
+
+	case EStateType::Evade:
+		BeginEvade();
+		break;
+
+	case EStateType::Equip:
+		BeginEquipping();
+		break;
+
+	case EStateType::UnEquip:
+		BeginUnEquipping();
+		break;
+
+	default:
+		break;
+	}
+}
+
+void ACPlayerCharacter::OnWeaponTypeChanged(EWeaponType InPrevType, EWeaponType InNewType)
+{
+	switch (InNewType)
+	{
+	case EWeaponType::Unarmed:
+		break;
+
+	case EWeaponType::GreatSword:
+		break;
+
+	default:
+		break;
 	}
 }
 

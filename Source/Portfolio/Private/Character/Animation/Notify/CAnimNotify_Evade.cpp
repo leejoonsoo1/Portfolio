@@ -14,5 +14,5 @@ void UCAnimNotify_Evade::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceB
 	
 	if (!Player) return;
 
- 	Player->End_Evade();
+ 	Player->EndEvade();
 }

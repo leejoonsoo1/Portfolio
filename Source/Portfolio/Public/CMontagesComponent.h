@@ -48,6 +48,7 @@ protected:
 
 public:
 	void PlayEquipping();
+	void PlayUnEquipping();
 	void PlayEvade();
 	void PlayHitted();
 	void PlayGimmicked();

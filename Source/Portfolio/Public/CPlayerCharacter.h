@@ -24,10 +24,18 @@ public:
 	ACPlayerCharacter();
 
 private:
-	void Begin_Evade();
+	void BeginEvade();
+	void BeginEquipping();
+	void BeginUnEquipping();
 	//void RollingRotation();
+
 public:
-	void End_Evade();
+	void UnEquip();
+
+public:
+	void EndEvade();
+	void EndEquipping();
+	void EndUnEquipping();
 
 	UFUNCTION()
 	void OnStateTypeChanged(EStateType InPrevType, EStateType InNewType);
@@ -86,6 +94,7 @@ protected:
 	void Sprint(const FInputActionValue& value);
 	void Running(const FInputActionValue& value);
 	void Attack(const FInputActionValue& value);
+
 protected:
 	//virtual void NotifyControllerChanged() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -95,6 +104,7 @@ public:
 	FORCEINLINE class UCameraComponent*		GetFollowCamera()	const { return CameraComp; }
 
 private:
+	// 안 쓰는 중
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* EvadeMontage;
 
