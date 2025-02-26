@@ -12,6 +12,7 @@
 #include "CMontagesComponent.h"
 #include "InputActionValue.h"
 #include "Engine/Engine.h"
+//#include "CAttachment.h"
 
 // Sets default values
 ACPlayerCharacter::ACPlayerCharacter()
@@ -54,6 +55,9 @@ ACPlayerCharacter::ACPlayerCharacter()
 
 	// State Comp
 	StateComp = CreateDefaultSubobject<UCStateComponent>("StateComp");
+
+	//// Attachment Comp
+	//AttachmentComp = CreateDefaultSubobject<UCAttachment>("AttachComp");
 
 	// Status
 	SprintSpeed = GetCharacterMovement()->MaxWalkSpeed + 350.f;

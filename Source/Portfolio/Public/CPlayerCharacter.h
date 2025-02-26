@@ -11,6 +11,7 @@ class UInputMappingContext;
 class UInputAction;
 class UCStateComponent;
 class UCMontagesComponent;
+//class UCAttachment;
 struct FInputActionValue;
 
 UCLASS()
@@ -24,7 +25,7 @@ public:
 
 private:
 	void Begin_Evade();
-	void RollingRotation();
+	//void RollingRotation();
 public:
 	void End_Evade();
 
@@ -65,6 +66,9 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 	UCMontagesComponent* MontagesComp;
+
+	//UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	//UCAttachment* AttachmentComp;
 
 protected:
 	// Called when the game starts or when spawned

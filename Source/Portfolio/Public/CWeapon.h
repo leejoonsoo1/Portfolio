@@ -24,7 +24,7 @@ public:
 };
 
 UCLASS()
-class PORTFOLIO_API ACWeapon : public UActorComponent
+class PORTFOLIO_API ACWeapon : public AActor
 {
 	GENERATED_BODY()
 	
