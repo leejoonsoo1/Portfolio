@@ -36,6 +36,11 @@ void UCMontagesComponent::BeginPlay()
 	WeaponChanged(StateComponent->GetEWeaponType(), StateComponent->GetEWeaponType());
 }
 
+void UCMontagesComponent::PlayEquipping()
+{
+	PlayAnimMontage(EStateType::Equip);
+}
+
 void UCMontagesComponent::PlayEvade()
 {
 	PlayAnimMontage(EStateType::Evade);

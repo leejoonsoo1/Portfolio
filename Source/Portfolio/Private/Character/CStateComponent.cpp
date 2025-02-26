@@ -2,7 +2,8 @@
 
 UCStateComponent::UCStateComponent()
 {
-
+	StateType	= EStateType::Idle;
+	WeaponType	= EWeaponType::Unarmed;
 }
 
 void UCStateComponent::BeginPlay()

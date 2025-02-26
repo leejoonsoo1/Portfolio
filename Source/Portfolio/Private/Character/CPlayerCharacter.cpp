@@ -12,7 +12,7 @@
 #include "CMontagesComponent.h"
 #include "InputActionValue.h"
 #include "Engine/Engine.h"
-//#include "CAttachment.h"
+#include "CAttachment.h"
 
 // Sets default values
 ACPlayerCharacter::ACPlayerCharacter()
@@ -56,38 +56,13 @@ ACPlayerCharacter::ACPlayerCharacter()
 	// State Comp
 	StateComp = CreateDefaultSubobject<UCStateComponent>("StateComp");
 
-	//// Attachment Comp
-	//AttachmentComp = CreateDefaultSubobject<UCAttachment>("AttachComp");
+	// Attachment Comp
+	AttachmentComp = CreateDefaultSubobject<UCAttachment>("AttachComp");
 
 	// Status
 	SprintSpeed = GetCharacterMovement()->MaxWalkSpeed + 350.f;
 	RunningSpeed = GetCharacterMovement()->MaxWalkSpeed;
 
-}
-
-void ACPlayerCharacter::Begin_Evade()
-{
-	if (MontagesComp) 
-	{
-		MontagesComp->PlayEvade();
-	}
-}
-
-void ACPlayerCharacter::End_Evade()
-{
-	StateComp->SetIdleMode();
-}
-
-void ACPlayerCharacter::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
-{
-	switch (InNewType)
-	{
-		case EStateType::Evade:
-		{
- 			Begin_Evade();
-		}
-		break;
-	}
 }
 
 // Called when the game starts or when spawned
@@ -107,6 +82,7 @@ void ACPlayerCharacter::BeginPlay()
 	if (StateComp)
 	{
 		StateComp->OnStateTypeChanged.AddDynamic(this, &ACPlayerCharacter::OnStateTypeChanged);
+		StateComp->OnWeaponTypeChanged.AddDynamic(this, &ACPlayerCharacter::OnWeaponTypeChanged);
 	}
 }
 
@@ -150,7 +126,66 @@ void ACPlayerCharacter::Evade(const FInputActionValue& value)
 {
 	if (StateComp->IsIdleMode())
 	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ACPlayerCharacter::Evade"));
+		}
+
 		StateComp->SetEvadeMode();
+	}
+}
+
+void ACPlayerCharacter::Begin_Evade()
+{
+	if (MontagesComp)
+	{
+		MontagesComp->PlayEvade();
+	}
+}
+
+void ACPlayerCharacter::End_Evade()
+{
+	StateComp->SetIdleMode();
+}
+
+void ACPlayerCharacter::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
+{
+	switch (InNewType)
+	{
+	case EStateType::Idle:
+	case EStateType::Evade:
+	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ACPlayerCharacter::OnStateTypeChanged"));
+		}
+		
+		Begin_Evade();
+	}
+	break;
+	default:
+	break;
+	}
+}
+
+void ACPlayerCharacter::OnWeaponTypeChanged(EWeaponType InPrevType, EWeaponType InNewType)
+{
+	switch (InNewType)
+	{
+	case EWeaponType::Unarmed:
+		break;
+	case EWeaponType::GreatSword:
+	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ACPlayerCharacter::OnStateTypeChanged"));
+		}
+
+		MontagesComp->PlayEquipping();
+	}
+	break;
+	default:
+	break;
 	}
 }
 
@@ -164,13 +199,30 @@ void ACPlayerCharacter::Running(const FInputActionValue& value)
 	GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
 }
 
+void ACPlayerCharacter::Attack(const FInputActionValue& value)
+{
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ACPlayerCharacter::Attack"));
+	}
+
+	if (!StateComp->IsEquipMode())
+	{
+		StateComp->SetGreatSwordMode();
+		StateComp->SetEquipMode();
+	}
+}
+
 // Called to bind functionality to input
 void ACPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	// Set up action bindings
-	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
+	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) 
+	{
+		// Attack
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ACPlayerCharacter::Attack);
 
 		// Jumping
 		EnhancedInputComponent->BindAction(EvadeAction, ETriggerEvent::Triggered, this,	&ACPlayerCharacter::Evade);
@@ -180,6 +232,7 @@ void ACPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 		// Sprint
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ACPlayerCharacter::Sprint);
+		
 		// Running 
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ACPlayerCharacter::Running);
 

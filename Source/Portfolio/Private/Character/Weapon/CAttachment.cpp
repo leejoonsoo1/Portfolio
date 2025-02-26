@@ -42,5 +42,4 @@ void UCAttachment::ComponentAttachTo(FName SocketName)
 	}
 
 	Mesh->AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), SocketName);
-
 }

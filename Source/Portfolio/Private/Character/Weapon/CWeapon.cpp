@@ -11,6 +11,10 @@ void ACWeapon::Attack()
 {
 }
 
+void ACWeapon::GetWeaponType()
+{
+}
+
 // Called when the game starts or when spawned
 void ACWeapon::BeginPlay()
 {

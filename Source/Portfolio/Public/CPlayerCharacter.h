@@ -11,7 +11,7 @@ class UInputMappingContext;
 class UInputAction;
 class UCStateComponent;
 class UCMontagesComponent;
-//class UCAttachment;
+class UCAttachment;
 struct FInputActionValue;
 
 UCLASS()
@@ -31,6 +31,9 @@ public:
 
 	UFUNCTION()
 	void OnStateTypeChanged(EStateType InPrevType, EStateType InNewType);
+
+	UFUNCTION()
+	void OnWeaponTypeChanged(EWeaponType InPrevType, EWeaponType InNewType);
 
 protected:
 	/** Camera boom positioning the camera behind the character */
@@ -61,14 +64,17 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* AttackAction;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	UCStateComponent* StateComp;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	UCMontagesComponent* MontagesComp;
 
-	//UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Components")
-	//UCAttachment* AttachmentComp;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	UCAttachment* AttachmentComp;
 
 protected:
 	// Called when the game starts or when spawned
@@ -79,7 +85,7 @@ protected:
 	void Evade(const FInputActionValue& value);
 	void Sprint(const FInputActionValue& value);
 	void Running(const FInputActionValue& value);
-
+	void Attack(const FInputActionValue& value);
 protected:
 	//virtual void NotifyControllerChanged() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

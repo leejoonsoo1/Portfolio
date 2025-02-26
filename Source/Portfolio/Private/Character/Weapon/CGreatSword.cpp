@@ -3,3 +3,15 @@
 
 #include "CGreatSword.h"
 
+
+ACGreatSword::ACGreatSword()
+{
+}
+
+void ACGreatSword::Attack()
+{
+}
+
+void ACGreatSword::GetWeaponType()
+{
+}

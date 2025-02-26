@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Engine/DataTable.h"
+#include "Type.h"
 #include "CWeapon.generated.h"
 
 class UAnimMontage;
@@ -16,8 +17,8 @@ public:
 	UPROPERTY(EditAnywhere, Category="Weapon")
 	FString WeaponName;
 
-	UPROPERTY(EditAnywhere, Category = "Weapon")
-	USkeletalMesh* SkeletalMesh;
+	UPROPERTY(EditAnywhere, Category="Weapon")
+	EWeaponType WeaponType;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon")
 	float Damage;
@@ -32,9 +33,12 @@ public:
 	// Sets default values for this actor's properties
 	ACWeapon();
 
-protected:
+public:
 	virtual void Attack();
-	virtual void InitializeWeaponFromDataTable(FName RowName);
+	virtual void GetWeaponType();
+
+private:
+	void InitializeWeaponFromDataTable(FName RowName);
 
 protected:
 	// Called when the game starts or when spawned

@@ -47,6 +47,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	void PlayEquipping();
 	void PlayEvade();
 	void PlayHitted();
 	void PlayGimmicked();
