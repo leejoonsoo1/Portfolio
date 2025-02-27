@@ -20,9 +20,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-protected:
+public:
 	UFUNCTION(BlueprintCallable)
-	void ComponentAttachTo(FName SocketName = "Holster");
+	void ComponentAttachTo(USkeletalMeshComponent* OwnerMesh = nullptr, FName SocketName = "Holster");
 
 public:
 	USkeletalMeshComponent* GetMesh() { return Mesh; }
@@ -31,7 +31,7 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Comp")
 	USceneComponent* RootComp;
 
-public:
+private:
 	UPROPERTY(EditAnywhere, Category = "Comp")
 	USkeletalMeshComponent* Mesh;
 

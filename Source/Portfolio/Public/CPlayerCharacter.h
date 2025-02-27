@@ -81,6 +81,7 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	UCMontagesComponent* MontagesComp;
 
+public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	UCAttachment* AttachmentComp;
 

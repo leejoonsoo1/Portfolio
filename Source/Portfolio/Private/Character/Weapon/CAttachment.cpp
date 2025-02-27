@@ -25,13 +25,18 @@ void UCAttachment::BeginPlay()
 	Super::BeginPlay();
 }
 
-void UCAttachment::ComponentAttachTo(FName SocketName)
+void UCAttachment::ComponentAttachTo(USkeletalMeshComponent* OwnerMesh, FName SocketName)
 {
-	if (!OwnerCharacter || !OwnerCharacter->GetMesh())
+	if (!OwnerMesh)
 	{
-		UE_LOG(LogTemp, Error, TEXT("UCAttachment: Failed to attch - OwnerCharacter or Mesh is null!"));
+		if (!OwnerCharacter || !OwnerCharacter->GetMesh())
+		{
+			UE_LOG(LogTemp, Error, TEXT("UCAttachment: Failed to attch - OwnerCharacter or Mesh is null!"));
 
-		return;
+			return;
+		}
+
+		OwnerMesh = OwnerCharacter->GetMesh();
 	}
 
 	if (!Mesh)
@@ -41,5 +46,5 @@ void UCAttachment::ComponentAttachTo(FName SocketName)
 		return;
 	}
 
-	Mesh->AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), SocketName);
+	Mesh->AttachToComponent(OwnerMesh, FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), SocketName);
 }

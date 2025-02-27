@@ -147,6 +147,8 @@ void ACPlayerCharacter::BeginEquipping()
 {
 	if (MontagesComp && !StateComp->IsUnarmedMode())
 	{
+		UAnimInstance* AnimInst = GetMesh()->GetAnimInstance();
+
 		MontagesComp->PlayEquipping();
 	}
 }
