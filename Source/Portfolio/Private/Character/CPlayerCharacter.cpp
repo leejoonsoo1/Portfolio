@@ -38,7 +38,7 @@ ACPlayerCharacter::ACPlayerCharacter()
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
-	
+
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	SpringArmComp->SetupAttachment(RootComponent);
@@ -176,7 +176,7 @@ void ACPlayerCharacter::EndUnEquipping()
 
 void ACPlayerCharacter::Sprint(const FInputActionValue& value)
 {
-	if (!StateComp) return;
+	if (StateComp->IsEquipMode()) return;
 
 	if (!StateComp->IsUnEquipMode() && !StateComp->IsUnarmedMode())
 	{
@@ -194,6 +194,8 @@ void ACPlayerCharacter::Running(const FInputActionValue& value)
 
 void ACPlayerCharacter::Attack(const FInputActionValue& value)
 {
+	if (StateComp->IsUnEquipMode()) return;
+
 	if (!StateComp->IsEquipMode() && StateComp->IsUnarmedMode())
 	{
 		GetCharacterMovement()->SetMovementMode(MOVE_None);

@@ -15,8 +15,11 @@ public:
 	FString Name;
 
 	UPROPERTY(EditAnywhere)
+	FString Description;
+
+	UPROPERTY(EditAnywhere)
 	EStateType StateType;
-	 
+	
 	UPROPERTY(EditAnywhere)
 	EWeaponType WeaponType;
 
@@ -29,8 +32,8 @@ public:
 	UPROPERTY(EditAnywhere)
 	FName StartSection;
 
-	UPROPERTY(EditAnywhere)
-	bool bCanMove;
+	//UPROPERTY(EditAnywhere)
+	//bool bCanMove;
 };
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
