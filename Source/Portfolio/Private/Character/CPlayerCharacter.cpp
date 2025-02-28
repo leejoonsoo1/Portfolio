@@ -130,8 +130,6 @@ void ACPlayerCharacter::Evade(const FInputActionValue& value)
 	if (StateComp->IsIdleMode())
 	{
 		StateComp->SetEvadeMode();
-
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("ACPlayerCharacter::Evade"));
 	}
 }
 
@@ -143,7 +141,7 @@ void ACPlayerCharacter::BeginEvade()
 	}
 	else
 	{
-
+		MontagesComp->PlayEvade(TEXT("Evade"), StateComp->GetEWeaponType());
 	}
 }
 
@@ -154,45 +152,51 @@ void ACPlayerCharacter::EndEvade()
 
 void ACPlayerCharacter::BeginEquipping()
 {
-	if (MontagesComp && !StateComp->IsUnarmedMode())
+	if (MontagesComp)
 	{
 		UAnimInstance* AnimInst = GetMesh()->GetAnimInstance();
 
-		MontagesComp->PlayEquipping();
+		MontagesComp->PlayEquipping(TEXT("Equip"), StateComp->GetEWeaponType());
 	}
 }
 
 void ACPlayerCharacter::EndEquipping()
 {
 	StateComp->SetIdleMode();
+	StateComp->SetGreatSwordMode();
 	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 }
 
-void ACPlayerCharacter::BeginUnEquipping()
-{
-	if (MontagesComp && !StateComp->IsUnarmedMode())
-	{
-		MontagesComp->PlayUnEquipping();
-	}
-}
-
-void ACPlayerCharacter::EndUnEquipping()
-{
-	StateComp->SetUnarmedMode();
-	StateComp->SetIdleMode();
-	
-	GetCharacterMovement()->MaxWalkSpeed = OriginWalkSpeed;
-}
-
-void ACPlayerCharacter::Sprint(const FInputActionValue& value)
+void ACPlayerCharacter::UnEquip()
 {
 	if (StateComp->IsEquipMode()) return;
 
 	if (!StateComp->IsUnEquipMode() && !StateComp->IsUnarmedMode())
 	{
 		StateComp->SetUnEquipMode();
+		//GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
 	}
+}
 
+void ACPlayerCharacter::BeginUnEquipping()
+{
+	if (MontagesComp)
+	{
+		MontagesComp->PlayUnEquipping(TEXT("UnEquip"), StateComp->GetEWeaponType());
+		//GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+	}
+}
+
+void ACPlayerCharacter::EndUnEquipping()
+{
+	GetCharacterMovement()->MaxWalkSpeed = OriginWalkSpeed;
+
+	StateComp->SetIdleMode();
+	StateComp->SetUnarmedMode();
+}
+
+void ACPlayerCharacter::Sprint(const FInputActionValue& value)
+{
 	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
 }
 
@@ -204,13 +208,13 @@ void ACPlayerCharacter::Running(const FInputActionValue& value)
 void ACPlayerCharacter::Attack(const FInputActionValue& value)
 {
 	if (StateComp->IsUnEquipMode()) return;
-
+	
+	// EquipWalkSpeed
 	GetCharacterMovement()->MaxWalkSpeed = EqWalkSpeed;
 
-	if (!StateComp->IsEquipMode() && StateComp->IsUnarmedMode())
+	if (StateComp->IsUnarmedMode())
 	{
 		GetCharacterMovement()->SetMovementMode(MOVE_None);
-		StateComp->SetGreatSwordMode();
 		StateComp->SetEquipMode();
 	}
 }
@@ -278,7 +282,8 @@ void ACPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this,	&ACPlayerCharacter::Move);
 
 		// Sprint
-		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ACPlayerCharacter::Sprint);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ACPlayerCharacter::UnEquip);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Ongoing, this, &ACPlayerCharacter::Sprint);
 		
 		// Running 
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ACPlayerCharacter::Running);

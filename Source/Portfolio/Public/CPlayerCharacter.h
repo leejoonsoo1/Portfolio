@@ -23,20 +23,18 @@ public:
 	// Sets default values for this character's properties
 	ACPlayerCharacter();
 
-private:
+public:
 	void BeginEvade();
-	void BeginEquipping();
-	void BeginUnEquipping();
-	//void RollingRotation();
-
-public:
-	void UnEquip();
-
-public:
 	void EndEvade();
+
+	void BeginEquipping();
 	void EndEquipping();
+	
+	void UnEquip();
+	void BeginUnEquipping();
 	void EndUnEquipping();
 
+public:
 	UFUNCTION()
 	void OnStateTypeChanged(EStateType InPrevType, EStateType InNewType);
 
@@ -75,13 +73,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* AttackAction;
 
+public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	UCStateComponent* StateComp;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	UCMontagesComponent* MontagesComp;
 
-public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	UCAttachment* AttachmentComp;
 

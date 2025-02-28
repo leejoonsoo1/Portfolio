@@ -13,8 +13,6 @@ void UCAnimNotifyState_UnEquipping::NotifyBegin(USkeletalMeshComponent* MeshComp
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 
 	if (!Player) return;
-
-	Player->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
 }
 
 void UCAnimNotifyState_UnEquipping::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)

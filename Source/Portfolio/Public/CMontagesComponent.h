@@ -27,6 +27,9 @@ public:
 	FString Name;
 
 	UPROPERTY(EditAnywhere)
+	EWeaponType WeaponType;
+
+	UPROPERTY(EditAnywhere)
 	FString Description;
 
 	UPROPERTY(EditAnywhere)
@@ -43,7 +46,9 @@ public:
 * 2025 02 28 금요일
 * 공격 모션은 모든 공격의 첫 타격만 데이터 테이블에서 저장.
 * 나머지 콤보로 이어지는 동작은 AnimNotify_State에서 다룰 에정.
+* 삭제 예정
 */
+
 USTRUCT(BlueprintType)
 struct FBattleMontageData : public FTableRowBase
 {
@@ -54,10 +59,10 @@ public:
 	FString Name;
 
 	UPROPERTY(EditAnywhere)
-	FString Description;
+	UAnimMontage* AnimMontage;
 
 	UPROPERTY(EditAnywhere)
-	UAnimMontage* AnimMontage;
+	FString Description;
 
 	UPROPERTY(EditAnywhere)
 	float PlayRate = 1.f;
@@ -81,43 +86,35 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	UFUNCTION()
-	UAnimMontage* GetMontage(FName InRowName = TEXT(""), EStateType InType = EStateType::UnEquip);
-
-	UFUNCTION()
-	UAnimMontage* GetBasicMontage(FName InMontageName);
-
-	UFUNCTION()
-	UAnimMontage* GetBattleMontage(FName InMontageName);
-
-public:
 	// Evade는 무장한 상태와 무장 안한 상태 때문에 EStateType이 필요.
-	void PlayEvade(FName InRowName = "UnArmedEvade", EStateType Type = EStateType::UnEquip);
+	void PlayEvade(FName InRowName = TEXT("Evade"), EWeaponType InWeaponType = EWeaponType::Unarmed);
+	void PlayEquipping(FName InRowNmae = TEXT("Equip"), EWeaponType InWeaponType = EWeaponType::GreatSword);
+	void PlayUnEquipping(FName InRowNmae = TEXT("UnEquip"), EWeaponType InWeaponType = EWeaponType::GreatSword);
 
 public:
-	void PlayEquipping();
-	void PlayUnEquipping();
+	template <typename T>
+	void GetRow(TArray<T*> InRows, T &InRow, FName InRowName, EWeaponType InWeaponType);
+
+public:
+	
+
 	void PlayHitted();
 	void PlayGimmicked();
 
 private:
 	UFUNCTION()
-	void LoadBasicAnimMontages();
-
-	UFUNCTION()
-	void LoadBattleAnimMontages();
-
-	UFUNCTION()
 	void CustomPlayAnimMontage(UAnimMontage* AnimMontage, float InPlayRate = 1.0f, FName StartSectionName = NAME_None);
 
 private:
-	// 기본 모션 테이블, 맵.
+	// 기본 모션 테이블.
 	UPROPERTY(EditDefaultsOnly, Category = "DataTable")
 	UDataTable* BasicMontageTable;
-	TMap<FName, UAnimMontage*> BasicMontageMap;
 
-	// 배틀 관련 데이터 테이블, 맵.
+	// 배틀 관련 데이터 테이블.
 	UPROPERTY(EditDefaultsOnly, Category = "DataTable")
 	UDataTable* BattleMontageTable;
-	TMap<FName, UAnimMontage*> BattleMontageMap;
+
+private:
+	TArray<FBasicMontageData*> BasicRows;
+	TArray<FBattleMontageData*> BattleRows;
 };
