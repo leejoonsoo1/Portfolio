@@ -13,27 +13,7 @@ void UCMontagesComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (!DataTable)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("DataTable is not set"));
-		return;
-	}
-
-	StateComponent = Cast<UCStateComponent>(GetOwner()->FindComponentByClass<UCStateComponent>());
-
-	if (!StateComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("StateComponent not found"));
-		return;
-	}
-
-	// 델리게이트 구독
-	StateComponent->OnStateTypeChanged.AddDynamic(this, &UCMontagesComponent::StateChanged);
-	StateComponent->OnWeaponTypeChanged.AddDynamic(this, &UCMontagesComponent::WeaponChanged);
-	
-	// 델리게이트 초기값 설정.
-	StateChanged(StateComponent->GetEStateType(), StateComponent->GetEStateType());
-	WeaponChanged(StateComponent->GetEWeaponType(), StateComponent->GetEWeaponType());
+	LoadAnimMontages();
 }
 
 void UCMontagesComponent::PlayEquipping()
@@ -70,33 +50,42 @@ void UCMontagesComponent::WeaponChanged(EWeaponType InPrevType, EWeaponType InNe
 	UpdateMontage();
 }
 
+void UCMontagesComponent::LoadAnimMontages()
+{
+	if (!BasicMontageTable)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("BasicMontageTable is not set"));
+		return;
+	}
+
+	if (!BattleMontageTable)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("BasicMontageTable is not Set"));
+		return;
+	}
+
+	const FString
+
+	TArray<FBasicMontageData*> BasicMontageRows;
+	TArray<FBattleMontageData*> BattleMontageRows;
+
+	BasicMontageRows->GetAllRows<"Name",
+
+	for (FBasicMontageData* Row : BasicMontageRows)
+	{
+
+	}
+}
+
 void UCMontagesComponent::UpdateMontage()
 {
-	if (!StateComponent) return;
+	return;
 
-	EStateType CurrentState = StateComponent->GetEStateType();
-	EWeaponType CurrentWeapon = StateComponent->GetEWeaponType();
-
-	TArray<FMontageData*> AllMontages;
-	DataTable->GetAllRows<FMontageData>("", AllMontages);
-
-	for (FMontageData* Montage : AllMontages)
-	{
-		if (Montage->StateType == CurrentState && Montage->WeaponType == CurrentWeapon)
-		{
-			CurrentMontage = Montage;
-			UE_LOG(LogTemp, Log, TEXT("Montage Updated: %s"), *Montage->Name);
-		}
-	}
 }
 
 void UCMontagesComponent::PlayAnimMontage(EStateType InType)
 {
-	if (!CurrentMontage || !CurrentMontage->AnimMontage) return;
+	return;
 
-	ACharacter* OwnerCharacter = Cast<ACharacter>(GetOwner());
-	if (!OwnerCharacter) return;
-	
-	OwnerCharacter->PlayAnimMontage(CurrentMontage->AnimMontage, CurrentMontage->PlayRate, CurrentMontage->StartSection);
 
 }

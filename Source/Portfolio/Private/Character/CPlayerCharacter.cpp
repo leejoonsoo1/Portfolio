@@ -60,9 +60,12 @@ ACPlayerCharacter::ACPlayerCharacter()
 	AttachmentComp = CreateDefaultSubobject<UCAttachment>("AttachComp");
 
 	// Status
+	OriginWalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
 	SprintSpeed = GetCharacterMovement()->MaxWalkSpeed + 350.f;
 	RunningSpeed = GetCharacterMovement()->MaxWalkSpeed;
 
+	// Great Sword DataTable에서 받아올 예정.
+	EqWalkSpeed = OriginWalkSpeed - 200.f;
 }
 
 // Called when the game starts or when spawned
@@ -171,7 +174,8 @@ void ACPlayerCharacter::EndUnEquipping()
 {
 	StateComp->SetUnarmedMode();
 	StateComp->SetIdleMode();
-	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+	
+	GetCharacterMovement()->MaxWalkSpeed = OriginWalkSpeed;
 }
 
 void ACPlayerCharacter::Sprint(const FInputActionValue& value)
@@ -180,7 +184,6 @@ void ACPlayerCharacter::Sprint(const FInputActionValue& value)
 
 	if (!StateComp->IsUnEquipMode() && !StateComp->IsUnarmedMode())
 	{
-		GetCharacterMovement()->SetMovementMode(MOVE_None);
 		StateComp->SetUnEquipMode();
 	}
 
@@ -196,12 +199,19 @@ void ACPlayerCharacter::Attack(const FInputActionValue& value)
 {
 	if (StateComp->IsUnEquipMode()) return;
 
+	GetCharacterMovement()->MaxWalkSpeed = EqWalkSpeed;
+
 	if (!StateComp->IsEquipMode() && StateComp->IsUnarmedMode())
 	{
 		GetCharacterMovement()->SetMovementMode(MOVE_None);
 		StateComp->SetGreatSwordMode();
 		StateComp->SetEquipMode();
 	}
+}
+
+void ACPlayerCharacter::Attack2(const FInputActionValue& value)
+{
+
 }
 
 void ACPlayerCharacter::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
@@ -253,6 +263,7 @@ void ACPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	{
 		// Attack
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ACPlayerCharacter::Attack);
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Ongoing, this, &ACPlayerCharacter::Attack2);
 
 		// Jumping
 		EnhancedInputComponent->BindAction(EvadeAction, ETriggerEvent::Triggered, this,	&ACPlayerCharacter::Evade);

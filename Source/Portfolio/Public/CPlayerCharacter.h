@@ -95,6 +95,7 @@ protected:
 	void Sprint(const FInputActionValue& value);
 	void Running(const FInputActionValue& value);
 	void Attack(const FInputActionValue& value);
+	void Attack2(const FInputActionValue& value);
 
 protected:
 	//virtual void NotifyControllerChanged() override;
@@ -113,4 +114,9 @@ private:
 	float DesiredEvadeDistance;
 	float SprintSpeed;
 	float RunningSpeed;
+
+	float OriginWalkSpeed;
+	// 장비를 착용한 후에 반영되는 WalkSpeed.
+	// Great Sword DataTable에서 받아올 예정.
+	float EqWalkSpeed;
 };
