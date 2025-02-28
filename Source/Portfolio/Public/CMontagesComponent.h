@@ -37,7 +37,7 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	FName StartSection;
-};
+}; 
 
 /*
 * 2025 02 28 금요일
@@ -81,41 +81,43 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	UFUNCTION()
+	UAnimMontage* GetMontage(FName InRowName = TEXT(""), EStateType InType = EStateType::UnEquip);
+
+	UFUNCTION()
+	UAnimMontage* GetBasicMontage(FName InMontageName);
+
+	UFUNCTION()
+	UAnimMontage* GetBattleMontage(FName InMontageName);
+
+public:
+	// Evade는 무장한 상태와 무장 안한 상태 때문에 EStateType이 필요.
+	void PlayEvade(FName InRowName = "UnArmedEvade", EStateType Type = EStateType::UnEquip);
+
+public:
 	void PlayEquipping();
 	void PlayUnEquipping();
-	void PlayEvade();
 	void PlayHitted();
 	void PlayGimmicked();
 
 private:
 	UFUNCTION()
-	void LoadAnimMontages();
+	void LoadBasicAnimMontages();
 
 	UFUNCTION()
-	void UpdateMontage();
-
-	//UFUNCTION()
-	//void PlayAnimMontage(UAnimMontage* AnimMontage, float InPlayRate, FName StartSectionName)
+	void LoadBattleAnimMontages();
 
 	UFUNCTION()
-	void PlayAnimMontage(EStateType InStateType);
-
-	UFUNCTION()
-	void StateChanged(EStateType InPrevType, EStateType InNewType);
-
-	UFUNCTION()
-	void WeaponChanged(EWeaponType InPrevType, EWeaponType InNewType);
+	void CustomPlayAnimMontage(UAnimMontage* AnimMontage, float InPlayRate = 1.0f, FName StartSectionName = NAME_None);
 
 private:
+	// 기본 모션 테이블, 맵.
 	UPROPERTY(EditDefaultsOnly, Category = "DataTable")
 	UDataTable* BasicMontageTable;
 	TMap<FName, UAnimMontage*> BasicMontageMap;
 
+	// 배틀 관련 데이터 테이블, 맵.
 	UPROPERTY(EditDefaultsOnly, Category = "DataTable")
 	UDataTable* BattleMontageTable;
 	TMap<FName, UAnimMontage*> BattleMontageMap;
-
-private:
-	FBasicMontageData* Datas[(int32)EStateType::Max];
-	TArray<FBasicMontageData*> ReadDatas;
 };

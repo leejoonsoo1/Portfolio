@@ -13,44 +13,71 @@ void UCMontagesComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	LoadAnimMontages();
+	LoadBasicAnimMontages();
+	LoadBattleAnimMontages();
+}
+
+void UCMontagesComponent::PlayEvade(FName InRowName, EStateType InType)
+{
+	if (InRowName.IsEqual("")) return;
+
+	UAnimMontage* AnimMontage = GetMontage(InRowName, InType);
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("UCMontagesComponent::PlayEvade"));
+
+	CustomPlayAnimMontage(AnimMontage);
 }
 
 void UCMontagesComponent::PlayEquipping()
 {
-	PlayAnimMontage(EStateType::Equip);
+
 }
 
 void UCMontagesComponent::PlayUnEquipping()
 {
-	PlayAnimMontage(EStateType::UnEquip);
-}
 
-void UCMontagesComponent::PlayEvade()
-{
-	PlayAnimMontage(EStateType::Evade);
 }
 
 void UCMontagesComponent::PlayHitted()
 {
-	PlayAnimMontage(EStateType::Hitted);
+
 }
 
 void UCMontagesComponent::PlayGimmicked()
 {
 }
 
-void UCMontagesComponent::StateChanged(EStateType InPrevType, EStateType InNewType)
+ UAnimMontage* UCMontagesComponent::GetMontage(FName InRowName, EStateType Type)
 {
-	UpdateMontage();
+	if (Type == EStateType::UnEquip)
+	{
+		return GetBasicMontage(InRowName);
+	}
+	else if (Type == EStateType::Equip)
+	{
+		return GetBattleMontage(InRowName);
+	}
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("UCMontagesComponent::GetMontage ptrNull"));
+
+	return nullptr;
 }
 
-void UCMontagesComponent::WeaponChanged(EWeaponType InPrevType, EWeaponType InNewType)
+ UAnimMontage* UCMontagesComponent::GetBasicMontage(FName InMontageName)
 {
-	UpdateMontage();
+	UAnimMontage* FoundMontage = *BasicMontageMap.Find(InMontageName);
+
+	return FoundMontage;
 }
 
-void UCMontagesComponent::LoadAnimMontages()
+ UAnimMontage* UCMontagesComponent::GetBattleMontage(FName InMontageName)
+{
+	UAnimMontage* FoundMontage = *BasicMontageMap.Find(InMontageName);
+
+	return FoundMontage;
+}
+
+void UCMontagesComponent::LoadBasicAnimMontages()
 {
 	if (!BasicMontageTable)
 	{
@@ -58,34 +85,50 @@ void UCMontagesComponent::LoadAnimMontages()
 		return;
 	}
 
+	const FString ContextString(TEXT("Name"));
+	TArray<FBasicMontageData*> Rows;
+	BasicMontageTable->GetAllRows<FBasicMontageData>(ContextString, Rows);
+
+	for (FBasicMontageData* Row : Rows)
+	{
+		if (Row && Row->AnimMontage)
+		{
+			BasicMontageMap.Add(*Row->Name, Row->AnimMontage);
+			UE_LOG(LogTemp, Log, TEXT("[Basic] Loaded Montage : %s -> %s"), *Row->Name, *Row->AnimMontage->GetName());
+		}
+	}
+}
+
+void UCMontagesComponent::LoadBattleAnimMontages()
+{
 	if (!BattleMontageTable)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("BasicMontageTable is not Set"));
 		return;
 	}
 
-	const FString
-
-	TArray<FBasicMontageData*> BasicMontageRows;
+	const FString ContextString(TEXT("Name"));
 	TArray<FBattleMontageData*> BattleMontageRows;
+	BattleMontageTable->GetAllRows<FBattleMontageData>(ContextString, BattleMontageRows);
 
-	BasicMontageRows->GetAllRows<"Name",
-
-	for (FBasicMontageData* Row : BasicMontageRows)
+	for (FBattleMontageData* Row : BattleMontageRows)
 	{
+		if (Row && Row->AnimMontage)
+		{
+			BattleMontageMap.Add(*Row->Name, Row->AnimMontage);
+			UE_LOG(LogTemp, Log, TEXT("[Battle] Loaded Montage : %s -> %s"), *Row->Name, *Row->AnimMontage->GetName());
+		}
 
+		UAnimMontage* aa = *BattleMontageMap.Find("aa");
 	}
 }
 
-void UCMontagesComponent::UpdateMontage()
+void UCMontagesComponent::CustomPlayAnimMontage(UAnimMontage* AnimMontage, float InPlayRate, FName StartSectionName)
 {
+	ACharacter* OwnerCharacter = Cast<ACharacter>(GetOwner());
+	if (!OwnerCharacter) return;
+
+	OwnerCharacter->PlayAnimMontage(AnimMontage, InPlayRate, StartSectionName);
+
 	return;
-
-}
-
-void UCMontagesComponent::PlayAnimMontage(EStateType InType)
-{
-	return;
-
-
 }

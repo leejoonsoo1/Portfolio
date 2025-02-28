@@ -130,14 +130,20 @@ void ACPlayerCharacter::Evade(const FInputActionValue& value)
 	if (StateComp->IsIdleMode())
 	{
 		StateComp->SetEvadeMode();
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("ACPlayerCharacter::Evade"));
 	}
 }
 
 void ACPlayerCharacter::BeginEvade()
 {
-	if (MontagesComp)
+	if (MontagesComp && StateComp->IsUnarmedMode())
 	{
 		MontagesComp->PlayEvade();
+	}
+	else
+	{
+
 	}
 }
 
