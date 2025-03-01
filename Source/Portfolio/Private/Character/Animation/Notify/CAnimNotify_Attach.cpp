@@ -12,8 +12,8 @@ void UCAnimNotify_Attach::Notify(USkeletalMeshComponent* MeshComp, UAnimSequence
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 	if (!Player) return;
 
-	UCAttachment* StateComp = Player->FindComponentByClass<UCAttachment>();
-	if (!StateComp) return;
+	UCAttachment* Attachment = Player->FindComponentByClass<UCAttachment>();
+	if (!Attachment) return;
 
-	StateComp->ComponentAttachTo(Player->GetMesh(), "Holster");
+	Attachment->ComponentAttachTo(Player->GetMesh(), "Holster");
 }

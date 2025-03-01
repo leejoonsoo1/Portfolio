@@ -12,6 +12,7 @@ class UInputAction;
 class UCStateComponent;
 class UCMontagesComponent;
 class UCAttachment;
+class UEnhancedInputComponent;
 struct FInputActionValue;
 
 UCLASS()
@@ -104,6 +105,9 @@ public:
 	FORCEINLINE class UCameraComponent*		GetFollowCamera()	const { return CameraComp; }
 
 private:
+	//UEnhancedInputComponent* EnhancedInputComponent;
+	
+	
 	// 안 쓰는 중
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* EvadeMontage;

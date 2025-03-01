@@ -13,6 +13,8 @@ void UCAnimNotifyState_UnEquipping::NotifyBegin(USkeletalMeshComponent* MeshComp
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 
 	if (!Player) return;
+
+	
 }
 
 void UCAnimNotifyState_UnEquipping::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
@@ -22,6 +24,11 @@ void UCAnimNotifyState_UnEquipping::NotifyEnd(USkeletalMeshComponent* MeshComp, 
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 
 	if (!Player) return;
+
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("UCAnimNotifyState_UnEquipping::NotifyEnd() 2 "));
+	}
 
 	Player->EndUnEquipping();
 }

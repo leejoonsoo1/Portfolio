@@ -14,6 +14,13 @@
 #include "Engine/Engine.h"
 #include "CAttachment.h"
 
+/*
+*  2025. 03. 02 AM 04:03
+*  이동 중 UnEquip 함수 호출 시 원인 불명의 버그 발생.
+*  AnimNotify_UnEquip에서 EndUnEquipping 함수가 예상보다 비정상적으로 빠르게 호출됨.
+*  Move에서 UnEquipping을 호출하는 방식이 아니라, UnEquip 함수에서 이동 상태를 먼저 확인하는 것이 필요할 수도 있음.
+*/
+
 // Sets default values
 ACPlayerCharacter::ACPlayerCharacter()
 {
@@ -110,8 +117,22 @@ void ACPlayerCharacter::Move(const FInputActionValue& Value)
 		AddMovementInput(ForwardDirection, MovementVector.Y);
 		AddMovementInput(RightDirection, MovementVector.X);
 	}
+
+	/*
+		*	2025.03.02 AM 03:31
+		*	Move에 사용되는 W, S, A, D 키와 조합되는 애니메이션이 많아 이곳에서 처리함.
+		*	GetBoundAction을 사용해 Sprint의 Get<bool>() 값을 가져오는 것이 어려웠음.
+		*	대안으로 PlayerController의 IsInputKeyDown()을 활용하여 현재 눌린 키를 직접 반환받아 조합하여 사용.
+	 */
+	APlayerController* PC = Cast<APlayerController>(GetController());
+
+	if (PC->IsInputKeyDown(EKeys::LeftShift) && !StateComp->IsUnarmedMode() && !StateComp->IsUnEquipMode())
+	{
+		MontagesComp->PlayUnEquipping(TEXT("MovingUnEquip"), StateComp->GetEWeaponType());
+	}
 }
 
+// 어떤함수인지 모름
 void ACPlayerCharacter::Look(const FInputActionValue& Value)
 {
 	// input is a Vector2D
@@ -164,17 +185,17 @@ void ACPlayerCharacter::EndEquipping()
 {
 	StateComp->SetIdleMode();
 	StateComp->SetGreatSwordMode();
-	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 }
 
 void ACPlayerCharacter::UnEquip()
 {
 	if (StateComp->IsEquipMode()) return;
 
+
+
 	if (!StateComp->IsUnEquipMode() && !StateComp->IsUnarmedMode())
 	{
 		StateComp->SetUnEquipMode();
-		//GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
 	}
 }
 
@@ -183,13 +204,17 @@ void ACPlayerCharacter::BeginUnEquipping()
 	if (MontagesComp)
 	{
 		MontagesComp->PlayUnEquipping(TEXT("UnEquip"), StateComp->GetEWeaponType());
-		//GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 	}
 }
 
 void ACPlayerCharacter::EndUnEquipping()
 {
-	GetCharacterMovement()->MaxWalkSpeed = OriginWalkSpeed;
+	//GetCharacterMovement()->MaxWalkSpeed = OriginWalkSpeed;
+
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("ACPlayerCharacter::EndEquipping() 1"));
+	}
 
 	StateComp->SetIdleMode();
 	StateComp->SetUnarmedMode();
@@ -197,12 +222,28 @@ void ACPlayerCharacter::EndUnEquipping()
 
 void ACPlayerCharacter::Sprint(const FInputActionValue& value)
 {
-	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	if (StateComp->IsIdleMode() && StateComp->IsUnarmedMode() && !StateComp->IsUnEquipMode())
+	{
+		
+		if (GEngine)
+		{
+			EWeaponType WeaponType = StateComp->GetEWeaponType();
+
+			FString EnumString = StaticEnum<EWeaponType>()->GetNameByValue((int64)WeaponType).ToString();
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, EnumString);
+		}
+
+		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	}
 }
 
 void ACPlayerCharacter::Running(const FInputActionValue& value)
 {
-	GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
+	if (StateComp->IsIdleMode() && StateComp->IsUnarmedMode() && !StateComp->IsUnEquipMode())
+	{
+		GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
+	}
 }
 
 void ACPlayerCharacter::Attack(const FInputActionValue& value)
@@ -214,7 +255,6 @@ void ACPlayerCharacter::Attack(const FInputActionValue& value)
 
 	if (StateComp->IsUnarmedMode())
 	{
-		GetCharacterMovement()->SetMovementMode(MOVE_None);
 		StateComp->SetEquipMode();
 	}
 }
@@ -267,9 +307,11 @@ void ACPlayerCharacter::OnWeaponTypeChanged(EWeaponType InPrevType, EWeaponType 
 void ACPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	
+	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 
 	// Set up action bindings
-	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) 
+	if (EnhancedInputComponent)
 	{
 		// Attack
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ACPlayerCharacter::Attack);
@@ -286,7 +328,7 @@ void ACPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Ongoing, this, &ACPlayerCharacter::Sprint);
 		
 		// Running 
-		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ACPlayerCharacter::Running);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Canceled, this, &ACPlayerCharacter::Running);
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this,	&ACPlayerCharacter::Look);
