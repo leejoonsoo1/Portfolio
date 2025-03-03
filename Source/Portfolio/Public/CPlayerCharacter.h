@@ -71,8 +71,17 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
+	/** Attack Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* AttackAction;
+
+	/** Attack2 Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* AttackTwoAction;
+
+	/** UnEquipAction **/
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* UnEquipAction;
 
 public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Components")
@@ -94,7 +103,12 @@ protected:
 	void Sprint(const FInputActionValue& value);
 	void Running(const FInputActionValue& value);
 	void Attack(const FInputActionValue& value);
-	void Attack2(const FInputActionValue& value);
+	void AttackTwo(const FInputActionValue& value);
+
+	// bCanCombo를 False로 만드는 함수.
+	// 접근지정자는 바뀔 수 있음.
+	void ReleaseAttack(const FInputActionValue& value);
+	void ReleaseAttackTwo(const FInputActionValue& value);
 
 protected:
 	//virtual void NotifyControllerChanged() override;
@@ -105,9 +119,11 @@ public:
 	FORCEINLINE class UCameraComponent*		GetFollowCamera()	const { return CameraComp; }
 
 private:
+	APlayerController* PC;
+
 	//UEnhancedInputComponent* EnhancedInputComponent;
 	
-	
+
 	// 안 쓰는 중
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* EvadeMontage;
@@ -116,9 +132,10 @@ private:
 	float DesiredEvadeDistance;
 	float SprintSpeed;
 	float RunningSpeed;
-
 	float OriginWalkSpeed;
+
+private:
 	// 장비를 착용한 후에 반영되는 WalkSpeed.
-	// Great Sword DataTable에서 받아올 예정.
+	// Great Sword Class에서 받아올 예정.
 	float EqWalkSpeed;
 };

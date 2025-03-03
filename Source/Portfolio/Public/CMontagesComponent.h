@@ -92,12 +92,14 @@ public:
 	void PlayUnEquipping(FName InRowNmae = TEXT("UnEquip"), EWeaponType InWeaponType = EWeaponType::GreatSword);
 
 public:
+	void PlayAttack(FName InRowName, EWeaponType InWeaponType);
+
+protected:
+	// Row 가져오는 함수
 	template <typename T>
 	void GetRow(TArray<T*> InRows, T &InRow, FName InRowName, EWeaponType InWeaponType);
 
 public:
-	
-
 	void PlayHitted();
 	void PlayGimmicked();
 

@@ -25,10 +25,5 @@ void UCAnimNotifyState_UnEquipping::NotifyEnd(USkeletalMeshComponent* MeshComp, 
 
 	if (!Player) return;
 
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("UCAnimNotifyState_UnEquipping::NotifyEnd() 2 "));
-	}
-
 	Player->EndUnEquipping();
 }

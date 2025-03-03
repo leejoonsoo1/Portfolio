@@ -25,18 +25,26 @@ void UCMontagesComponent::PlayEvade(FName InRowName, EWeaponType InWeaponType)
 	CustomPlayAnimMontage(Row.AnimMontage, Row.PlayRate, Row.StartSection);
 }
 
-void UCMontagesComponent::PlayEquipping(FName InRowNmae, EWeaponType InWeaponType)
+void UCMontagesComponent::PlayEquipping(FName InRowName, EWeaponType InWeaponType)
 {
 	FBasicMontageData Row;
-	GetRow(BasicRows, Row, InRowNmae, InWeaponType);
+	GetRow(BasicRows, Row, InRowName, InWeaponType);
 
 	CustomPlayAnimMontage(Row.AnimMontage, Row.PlayRate, Row.StartSection);
 }
 
-void UCMontagesComponent::PlayUnEquipping(FName InRowNmae, EWeaponType InWeaponType)
+void UCMontagesComponent::PlayUnEquipping(FName InRowName, EWeaponType InWeaponType)
 {
 	FBasicMontageData Row;
-	GetRow(BasicRows, Row, InRowNmae, InWeaponType);
+	GetRow(BasicRows, Row, InRowName, InWeaponType);
+
+	CustomPlayAnimMontage(Row.AnimMontage, Row.PlayRate, Row.StartSection);
+}
+
+void UCMontagesComponent::PlayAttack(FName InRowName, EWeaponType InWeaponType)
+{
+	FBasicMontageData Row;
+	GetRow(BasicRows, Row, InRowName, InWeaponType);
 
 	CustomPlayAnimMontage(Row.AnimMontage, Row.PlayRate, Row.StartSection);
 }
