@@ -97,7 +97,7 @@ public:
 protected:
 	// Row 가져오는 함수
 	template <typename T>
-	void GetRow(TArray<T*> InRows, T &InRow, FName InRowName, EWeaponType InWeaponType);
+	bool GetRow(TArray<T*> InRows, T &InRow, FName InRowName, EWeaponType InWeaponType);
 
 public:
 	void PlayHitted();

@@ -106,6 +106,7 @@ protected:
 	void Sprint(const FInputActionValue& value);
 	void Running(const FInputActionValue& value);
 	void Attack(const FInputActionValue& value);
+	void Charge(const FInputActionValue& value);
 	void AttackTwo(const FInputActionValue& value);
 
 	// bCanCombo를 False로 만드는 함수.

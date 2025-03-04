@@ -13,10 +13,8 @@ void UCAnimNotifyState_NXTAOne::NotifyBegin(USkeletalMeshComponent* MeshComp, UA
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 	
 	if (!Player) return;
-	//if (!Player->StateComp->IsActionMode())
-	//{
-	//	Player->StateComp->SetActionMode();
-	//}
+
+
 }
 
 // Tick으로 bCharge가 false 이면 바로 공격 동작.

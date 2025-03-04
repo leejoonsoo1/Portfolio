@@ -187,7 +187,14 @@ void ACPlayerCharacter::BeginEquipping()
 {
 	if (MontagesComp)
 	{
-		MontagesComp->PlayEquipping(TEXT("Equip"), StateComp->GetEWeaponType());
+		if (GetVelocity().Size() > RunningSpeed)
+		{
+			MontagesComp->PlayEquipping(TEXT("MovingEquip"), StateComp->GetEWeaponType());
+		}
+		else
+		{
+			MontagesComp->PlayEquipping(TEXT("Equip"), StateComp->GetEWeaponType());
+		}
 	}
 }
 
@@ -201,6 +208,8 @@ void ACPlayerCharacter::EndEquipping()
 	*	OnEWeaponChanged에서 실행됐어야할 함수.
 	*/
 	StateComp->SetGreatSwordMode();
+
+	FString bIdle = StateComp->IsIdleMode() ? TEXT("True") : TEXT("False");
 }
 
 void ACPlayerCharacter::UnEquip()
@@ -234,22 +243,12 @@ void ACPlayerCharacter::BeginAction()
 {
 	if (MontagesComp)
 	{	
-		//if (GetCharacterMovement()->GetCurrentAcceleration().Get; && PC->IsInputKeyDown(EKeys::RightMouseButton))
-		//{
-		//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("ACPlayerCharacter::BeginAction : MouseLeft_SAttack"));
-
-		//	MontagesComp->PlayAttack(TEXT("MouseLeft_SAttack"), StateComp->GetEWeaponType());
-		//}
 		if (PC->IsInputKeyDown(EKeys::LeftMouseButton))
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("ACPlayerCharacter::BeginAction : MouseLeft_Attack"));
-
-			MontagesComp->PlayAttack(TEXT("MouseLeft_Attack"), StateComp->GetEWeaponType());
+			MontagesComp->PlayAttack(TEXT("MouseLeft_SAttack"), StateComp->GetEWeaponType());
 		}
 		else if (PC->IsInputKeyDown(EKeys::RightMouseButton))
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("ACPlayerCharacter::BeginAction : MouseRight_Attack"));
-
 			MontagesComp->PlayAttack(TEXT("MouseRight_Attack"), StateComp->GetEWeaponType());
 		}
 	}
@@ -282,33 +281,28 @@ void ACPlayerCharacter::Attack(const FInputActionValue& value)
 	if (StateComp->IsEvadeMode()) return;
 	if (StateComp->IsUnEquipMode()) return;
 
-	if (StateComp->IsUnarmedMode() && !StateComp->IsActionMode())
-	{
-		StateComp->SetEquipMode();
-
-		return;
-	}
-
-	if (!StateComp->IsEquipMode() && !StateComp->IsActionMode() && !bCharge)
+	if (StateComp->IsIdleMode() && !StateComp->IsActionMode() && !StateComp->IsUnarmedMode())
 	{
 		StateComp->SetActionMode();
 	}
 
-	bCharge = true;
-
-	FString BoolString = bCharge ? TEXT("true") : TEXT("false");
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Bool value: %s"), *BoolString));
+	if (StateComp->IsUnarmedMode() && !StateComp->IsActionMode())
+	{
+		StateComp->SetEquipMode();
+		return;
+	}
 }
 
-// 아직 사용안함
+void ACPlayerCharacter::Charge(const FInputActionValue& value)
+{
+	bCharge = true;
+}
+
+
 void ACPlayerCharacter::ReleaseAttack(const FInputActionValue& value)
 {
 	bCharge = false;
-
-	FString BoolString = bCharge ? TEXT("true") : TEXT("false");
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Bool value: %s"), *BoolString));
 }
-
 
 void ACPlayerCharacter::AttackTwo(const FInputActionValue& value)
 {
@@ -385,7 +379,8 @@ void ACPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	if (EnhancedInputComponent)
 	{
 		// Attack
-		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ACPlayerCharacter::Attack);
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &ACPlayerCharacter::Attack);
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ACPlayerCharacter::Charge);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Completed, this, &ACPlayerCharacter::ReleaseAttack);
 
 		EnhancedInputComponent->BindAction(AttackTwoAction, ETriggerEvent::Triggered, this, &ACPlayerCharacter::AttackTwo);

@@ -1,5 +1,6 @@
 #include "CAnimNotifyState_Equipping.h"
 #include "CPlayerCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 /*
 *	2025. 03. 02
@@ -12,7 +13,17 @@ FString UCAnimNotifyState_Equipping::GetNotifyName_Implementation() const
 
 void UCAnimNotifyState_Equipping::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {
+	Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);
+	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 
+	if (!Player) return;
+
+    APlayerController* PlayerController = UGameplayStatics::GetPlayerController(MeshComp->GetWorld(), 0);
+
+    if (PlayerController)
+    {
+        PlayerController->DisableInput(PlayerController);
+    }
 }
 
 void UCAnimNotifyState_Equipping::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
@@ -20,8 +31,14 @@ void UCAnimNotifyState_Equipping::NotifyEnd(USkeletalMeshComponent* MeshComp, UA
 	Super::NotifyEnd(MeshComp, Animation);
 
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
+	
+    if (!Player) return;
+    
+    APlayerController* PlayerController = UGameplayStatics::GetPlayerController(MeshComp->GetWorld(), 0);
 
-	if (!Player) return;
-
-	Player->EndEquipping();
+    if (PlayerController)
+    {
+        PlayerController->EnableInput(PlayerController);
+	    Player->EndEquipping();
+    }
 }

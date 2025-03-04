@@ -20,7 +20,7 @@ void UCMontagesComponent::BeginPlay()
 void UCMontagesComponent::PlayEvade(FName InRowName, EWeaponType InWeaponType)
 {
 	FBasicMontageData Row;
-	GetRow(BasicRows, Row, InRowName, InWeaponType);
+	if (!GetRow(BasicRows, Row, InRowName, InWeaponType)) return;
 
 	CustomPlayAnimMontage(Row.AnimMontage, Row.PlayRate, Row.StartSection);
 }
@@ -28,15 +28,15 @@ void UCMontagesComponent::PlayEvade(FName InRowName, EWeaponType InWeaponType)
 void UCMontagesComponent::PlayEquipping(FName InRowName, EWeaponType InWeaponType)
 {
 	FBasicMontageData Row;
-	GetRow(BasicRows, Row, InRowName, InWeaponType);
-
+	if (!GetRow(BasicRows, Row, InRowName, InWeaponType)) return;
+	
 	CustomPlayAnimMontage(Row.AnimMontage, Row.PlayRate, Row.StartSection);
 }
 
 void UCMontagesComponent::PlayUnEquipping(FName InRowName, EWeaponType InWeaponType)
 {
 	FBasicMontageData Row;
-	GetRow(BasicRows, Row, InRowName, InWeaponType);
+	if (!GetRow(BasicRows, Row, InRowName, InWeaponType)) return;
 
 	CustomPlayAnimMontage(Row.AnimMontage, Row.PlayRate, Row.StartSection);
 }
@@ -44,8 +44,9 @@ void UCMontagesComponent::PlayUnEquipping(FName InRowName, EWeaponType InWeaponT
 void UCMontagesComponent::PlayAttack(FName InRowName, EWeaponType InWeaponType)
 {
 	FBasicMontageData Row;
-	GetRow(BasicRows, Row, InRowName, InWeaponType);
-
+	
+	if (!GetRow(BasicRows, Row, InRowName, InWeaponType)) return;
+	
 	CustomPlayAnimMontage(Row.AnimMontage, Row.PlayRate, Row.StartSection);
 }
 
@@ -59,15 +60,19 @@ void UCMontagesComponent::PlayGimmicked()
 }
 
 template <typename T>
-void UCMontagesComponent::GetRow(TArray<T*> InRows, T& InRow, FName InRowName, EWeaponType InWeaponType)
+bool UCMontagesComponent::GetRow(TArray<T*> InRows, T& InRow, FName InRowName, EWeaponType InWeaponType)
 {
 	for (T* Row : InRows)
 	{
 		if (Row->Name == InRowName && Row->WeaponType == InWeaponType)
 		{
 			InRow = *Row;
+
+			return true;
 		}
 	}
+
+	return false;
 }
 
 void UCMontagesComponent::CustomPlayAnimMontage(UAnimMontage* AnimMontage, float InPlayRate, FName StartSectionName)
