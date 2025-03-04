@@ -137,7 +137,7 @@ void ACPlayerCharacter::Move(const FInputActionValue& Value)
 	 */
 	if (!PC) return;
 
-	if (PC->IsInputKeyDown(EKeys::Tab) && !StateComp->IsUnarmedMode() && !StateComp->IsUnEquipMode())
+	if (PC->IsInputKeyDown(EKeys::Tab) && !StateComp->IsUnarmedMode() && !StateComp->IsUnEquipMode() && !StateComp->IsActionMode())
 	{
 		StateComp->SetUnEquipMode();
 		MontagesComp->PlayUnEquipping(TEXT("MovingUnEquip"), StateComp->GetEWeaponType());
@@ -230,6 +230,36 @@ void ACPlayerCharacter::EndUnEquipping()
 	StateComp->SetUnarmedMode();
 }
 
+void ACPlayerCharacter::BeginAction()
+{
+	if (MontagesComp)
+	{	
+		//if (GetCharacterMovement()->GetCurrentAcceleration().Get; && PC->IsInputKeyDown(EKeys::RightMouseButton))
+		//{
+		//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("ACPlayerCharacter::BeginAction : MouseLeft_SAttack"));
+
+		//	MontagesComp->PlayAttack(TEXT("MouseLeft_SAttack"), StateComp->GetEWeaponType());
+		//}
+		if (PC->IsInputKeyDown(EKeys::LeftMouseButton))
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("ACPlayerCharacter::BeginAction : MouseLeft_Attack"));
+
+			MontagesComp->PlayAttack(TEXT("MouseLeft_Attack"), StateComp->GetEWeaponType());
+		}
+		else if (PC->IsInputKeyDown(EKeys::RightMouseButton))
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("ACPlayerCharacter::BeginAction : MouseRight_Attack"));
+
+			MontagesComp->PlayAttack(TEXT("MouseRight_Attack"), StateComp->GetEWeaponType());
+		}
+	}
+}
+
+void ACPlayerCharacter::EndAction()
+{
+	StateComp->SetIdleMode();
+}
+
 void ACPlayerCharacter::Sprint(const FInputActionValue& value)
 {
 	if (StateComp->IsIdleMode() && StateComp->IsUnarmedMode() && !StateComp->IsUnEquipMode())
@@ -249,31 +279,34 @@ void ACPlayerCharacter::Running(const FInputActionValue& value)
 void ACPlayerCharacter::Attack(const FInputActionValue& value)
 {
 	if (StateComp->IsEquipMode()) return;
+	if (StateComp->IsEvadeMode()) return;
 	if (StateComp->IsUnEquipMode()) return;
-	if (StateComp->IsActionMode()) return;
 
-	if (!PC) return;
-
-	if (PC->IsInputKeyDown(EKeys::LeftShift))
-	{
-		if (MontagesComp)
-		{
-			StateComp->SetEquipMode();
-			MontagesComp->PlayEquipping(TEXT("MovingEquip"), StateComp->GetEWeaponType());
-			return;
-		}
-	}
-
-	if (StateComp->IsUnarmedMode())
+	if (StateComp->IsUnarmedMode() && !StateComp->IsActionMode())
 	{
 		StateComp->SetEquipMode();
-	}
-}
 
+		return;
+	}
+
+	if (!StateComp->IsEquipMode() && !StateComp->IsActionMode() && !bCharge)
+	{
+		StateComp->SetActionMode();
+	}
+
+	bCharge = true;
+
+	FString BoolString = bCharge ? TEXT("true") : TEXT("false");
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Bool value: %s"), *BoolString));
+}
 
 // 아직 사용안함
 void ACPlayerCharacter::ReleaseAttack(const FInputActionValue& value)
 {
+	bCharge = false;
+
+	FString BoolString = bCharge ? TEXT("true") : TEXT("false");
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Bool value: %s"), *BoolString));
 }
 
 
@@ -284,7 +317,6 @@ void ACPlayerCharacter::AttackTwo(const FInputActionValue& value)
 		if (MontagesComp) 
 		{
 			StateComp->SetActionMode();
-			MontagesComp->PlayAttack(TEXT("CleavingArc"), StateComp->GetEWeaponType());
 		}
 	}
 }
@@ -312,6 +344,10 @@ void ACPlayerCharacter::OnStateTypeChanged(EStateType InPrevType, EStateType InN
 
 	case EStateType::UnEquip:
 		BeginUnEquipping();
+		break;
+
+	case EStateType::Action:
+		BeginAction();
 		break;
 
 	default:
@@ -350,11 +386,9 @@ void ACPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	{
 		// Attack
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ACPlayerCharacter::Attack);
-		//EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Completed, this, &);
-		//EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Ongoiong, this, &);
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Completed, this, &ACPlayerCharacter::ReleaseAttack);
 
 		EnhancedInputComponent->BindAction(AttackTwoAction, ETriggerEvent::Triggered, this, &ACPlayerCharacter::AttackTwo);
-		//EnhancedInputComponent->BindAction(AttackTwoAction, ETriggerEvent::Completed, this, &);
 
 		// Jumping
 		EnhancedInputComponent->BindAction(EvadeAction, ETriggerEvent::Triggered, this,	&ACPlayerCharacter::Evade);
@@ -366,7 +400,7 @@ void ACPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(UnEquipAction, ETriggerEvent::Triggered, this, &ACPlayerCharacter::UnEquip);
 		
 		// Sprint, Running
-		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Ongoing, this, &ACPlayerCharacter::Sprint);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ACPlayerCharacter::Sprint);
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ACPlayerCharacter::Running);
 
 		// Looking

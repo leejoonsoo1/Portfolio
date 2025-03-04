@@ -35,6 +35,9 @@ public:
 	void BeginUnEquipping();
 	void EndUnEquipping();
 
+	void BeginAction();
+	void EndAction();
+
 public:
 	UFUNCTION()
 	void OnStateTypeChanged(EStateType InPrevType, EStateType InNewType);
@@ -118,11 +121,12 @@ public:
 	FORCEINLINE class USpringArmComponent*	GetCameraBoom()		const { return SpringArmComp; }
 	FORCEINLINE class UCameraComponent*		GetFollowCamera()	const { return CameraComp; }
 
+	bool GetCharge() const { return bCharge; }
+
 private:
 	APlayerController* PC;
 
 	//UEnhancedInputComponent* EnhancedInputComponent;
-	
 
 	// 안 쓰는 중
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
@@ -138,4 +142,5 @@ private:
 	// 장비를 착용한 후에 반영되는 WalkSpeed.
 	// Great Sword Class에서 받아올 예정.
 	float EqWalkSpeed;
+	bool bCharge;
 };
