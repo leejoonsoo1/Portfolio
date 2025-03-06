@@ -2,13 +2,13 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "CAnimNotifyState_NXTAOne.generated.h"
+#include "CAnimNotifyState_CanEvadeTiming.generated.h"
 
 UCLASS()
-class PORTFOLIO_API UCAnimNotifyState_NXTAOne : public UAnimNotifyState
+class PORTFOLIO_API UCAnimNotifyState_CanEvadeTiming : public UAnimNotifyState
 {
 	GENERATED_BODY()
-
+	
 public:
 	virtual FString GetNotifyName_Implementation() const override;
 	virtual void NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference) override;
@@ -16,20 +16,19 @@ public:
 	virtual void NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference) override;
 
 private:
-
-	UPROPERTY(EditAnywhere, Category = "True")
-	UAnimMontage* AnimMontage_NextCharge;
+	UPROPERTY(EditAnywhere, Category = "False")
+	UAnimMontage* AnimMontage_LeftEvade;
 
 	UPROPERTY(EditAnywhere, Category = "False")
-	UAnimMontage* AnimMontage_NextAttack;
+	UAnimMontage* AnimMontage_RightEvade;
+
+	// Back Evade가 나가지 않아 추가함.
+	UPROPERTY(EditAnywhere, Category = "False")
+	UAnimMontage* AnimMontage_BackEvade;
 
 	UPROPERTY(EditAnywhere)
 	float PlayRate = 1.f;
 
 	UPROPERTY(EditAnywhere)
 	FName StartSectionName = NAME_None;
-
-	// 동시 입력이 안됨. 삭제 예정.
-	UPROPERTY(EditAnywhere)
-	FKey ConditionKey = EKeys::Invalid;
 };

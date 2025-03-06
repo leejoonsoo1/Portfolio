@@ -160,6 +160,11 @@ void ACPlayerCharacter::Look(const FInputActionValue& Value)
 
 void ACPlayerCharacter::Evade(const FInputActionValue& value)
 {
+	if (StateComp->IsActionMode()) return;
+	if (StateComp->IsEquipMode()) return;
+	if (StateComp->IsUnEquipMode()) return;
+	if (StateComp->IsEvadeMode()) return;
+
 	if (StateComp->IsIdleMode())
 	{
 		StateComp->SetEvadeMode();
@@ -204,16 +209,18 @@ void ACPlayerCharacter::EndEquipping()
 
 	/*
 	*	2025 03 04
-	*	여기서 실행되면 안 됨. 
+	*	여기서 실행되면 안 됨.
 	*	OnEWeaponChanged에서 실행됐어야할 함수.
 	*/
 	StateComp->SetGreatSwordMode();
 
 	FString bIdle = StateComp->IsIdleMode() ? TEXT("True") : TEXT("False");
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("ACPlayerCharacter::EndEquipping()"));
 }
 
 void ACPlayerCharacter::UnEquip()
 {
+	if (StateComp->IsEvadeMode()) return;
 	if (StateComp->IsEquipMode()) return;
 	if (StateComp->IsActionMode()) return;
 
@@ -241,11 +248,21 @@ void ACPlayerCharacter::EndUnEquipping()
 
 void ACPlayerCharacter::BeginAction()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("ACPlayerCharacter::BeginAction()"));
+
 	if (MontagesComp)
 	{	
-		if (PC->IsInputKeyDown(EKeys::LeftMouseButton))
+		if (PC->IsInputKeyDown(EKeys::LeftShift) && PC->IsInputKeyDown(EKeys::LeftMouseButton))
 		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("ACPlayerCharacter::BeginAction() : 1"));
+
 			MontagesComp->PlayAttack(TEXT("MouseLeft_SAttack"), StateComp->GetEWeaponType());
+		}
+		else if (PC->IsInputKeyDown(EKeys::LeftMouseButton))
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("ACPlayerCharacter::BeginAction() : 2"));
+
+			MontagesComp->PlayAttack(TEXT("MouseLeft_Attack"), StateComp->GetEWeaponType());
 		}
 		else if (PC->IsInputKeyDown(EKeys::RightMouseButton))
 		{
@@ -277,18 +294,21 @@ void ACPlayerCharacter::Running(const FInputActionValue& value)
 
 void ACPlayerCharacter::Attack(const FInputActionValue& value)
 {
-	if (StateComp->IsEquipMode()) return;
 	if (StateComp->IsEvadeMode()) return;
+	if (StateComp->IsEquipMode()) return;
 	if (StateComp->IsUnEquipMode()) return;
 
-	if (StateComp->IsIdleMode() && !StateComp->IsActionMode() && !StateComp->IsUnarmedMode())
+	if (!StateComp->IsUnarmedMode() && !StateComp->IsActionMode())
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("ACPlayerCharacter::Attack"));
+
 		StateComp->SetActionMode();
 	}
-
+	
 	if (StateComp->IsUnarmedMode() && !StateComp->IsActionMode())
 	{
 		StateComp->SetEquipMode();
+
 		return;
 	}
 }
@@ -341,6 +361,9 @@ void ACPlayerCharacter::OnStateTypeChanged(EStateType InPrevType, EStateType InN
 		break;
 
 	case EStateType::Action:
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("ACPlayerCharacter::OnStateTypeChanged"));
+
 		BeginAction();
 		break;
 

@@ -19,6 +19,11 @@ void UCAnimNotifyState_Attach::NotifyBegin(USkeletalMeshComponent* MeshComp, UAn
 
 	StateComp->ComponentAttachTo(Player->GetMesh(), "R_Weapon_01");
 
+	if (!Player->StateComp->IsGreatSwordMode())
+	{
+		Player->StateComp->SetGreatSwordMode();
+	}
+
 }
 
 void UCAnimNotifyState_Attach::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)

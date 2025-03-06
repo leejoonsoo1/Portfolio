@@ -4,9 +4,6 @@
 #include "Animation/AnimNotifies/AnimNotifyState.h"
 #include "CAnimNotifyState_DisableMovement.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class PORTFOLIO_API UCAnimNotifyState_DisableMovement : public UAnimNotifyState
 {

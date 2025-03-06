@@ -11,16 +11,15 @@ void UCAnimNotifyState_NXTAOne::NotifyBegin(USkeletalMeshComponent* MeshComp, UA
 	Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);
 
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
-	
+
 	if (!Player) return;
-
-
 }
 
 // Tick으로 bCharge가 false 이면 바로 공격 동작.
 void UCAnimNotifyState_NXTAOne::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime, const FAnimNotifyEventReference& EventReference)
 {
 	Super::NotifyTick(MeshComp, Animation, FrameDeltaTime, EventReference);
+
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 
 	if (!Player) return;
@@ -31,7 +30,7 @@ void UCAnimNotifyState_NXTAOne::NotifyTick(USkeletalMeshComponent* MeshComp, UAn
 	{
 		if (!PC) return;
 
-		if (PC->IsInputKeyDown(ConditionKey) && PC->IsInputKeyDown(EKeys::LeftMouseButton))
+		if (PC->WasInputKeyJustPressed(EKeys::W) && PC->WasInputKeyJustPressed(EKeys::LeftMouseButton))
 		{
 			Player->PlayAnimMontage(AnimMontage_NextAttack, PlayRate, StartSectionName);
 

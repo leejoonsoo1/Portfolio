@@ -45,7 +45,12 @@ void UCMontagesComponent::PlayAttack(FName InRowName, EWeaponType InWeaponType)
 {
 	FBasicMontageData Row;
 	
-	if (!GetRow(BasicRows, Row, InRowName, InWeaponType)) return;
+	if (!GetRow(BasicRows, Row, InRowName, InWeaponType))
+	{
+		FString DebugMessage = FString::Printf(TEXT("%s 를 가져오지 못하였습니다!"), &InRowName.ToString());
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, DebugMessage);
+	}
 	
 	CustomPlayAnimMontage(Row.AnimMontage, Row.PlayRate, Row.StartSection);
 }
