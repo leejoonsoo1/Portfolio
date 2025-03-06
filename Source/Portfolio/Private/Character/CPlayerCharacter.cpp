@@ -105,6 +105,10 @@ void ACPlayerCharacter::BeginPlay()
 
 	// 키 입력을 확인하고 여러 키 조합을 판단하기 위해 추가된 코드
 	PC = Cast<APlayerController>(GetController());
+
+	// 입력이 다른 입력을 방해하는 경우를 방지하는데 도움.
+	AttackAction->bConsumeInput = false;
+	MoveAction->bConsumeInput = false;
 }
 
 void ACPlayerCharacter::Move(const FInputActionValue& Value)

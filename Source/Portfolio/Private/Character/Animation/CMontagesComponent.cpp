@@ -14,7 +14,7 @@ void UCMontagesComponent::BeginPlay()
 	Super::BeginPlay();
 
 	BasicMontageTable->GetAllRows<FBasicMontageData>("", BasicRows);
-	BattleMontageTable->GetAllRows<FBattleMontageData>("", BattleRows);
+	//BattleMontageTable->GetAllRows<FBattleMontageData>("", BattleRows);
 }
 
 void UCMontagesComponent::PlayEvade(FName InRowName, EWeaponType InWeaponType)

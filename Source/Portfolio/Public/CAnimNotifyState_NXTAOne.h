@@ -23,6 +23,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = "False")
 	UAnimMontage* AnimMontage_NextAttack;
 
+	UPROPERTY(EditAnywhere, Category = "NextMotion")
+	UAnimMontage* AnimMontage_NextAttackStance;
+
 	UPROPERTY(EditAnywhere)
 	float PlayRate = 1.f;
 
@@ -32,4 +35,6 @@ private:
 	// 동시 입력이 안됨. 삭제 예정.
 	UPROPERTY(EditAnywhere)
 	FKey ConditionKey = EKeys::Invalid;
+
+
 };

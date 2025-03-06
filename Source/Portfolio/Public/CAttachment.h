@@ -7,7 +7,8 @@
 class USkeletalMeshComponent;
 class ACharacter;
 
-UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+//UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+UCLASS(DefaultToInstanced, BlueprintType, config = Engine)
 class PORTFOLIO_API UCAttachment : public UActorComponent
 {
 	GENERATED_BODY()

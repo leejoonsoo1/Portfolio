@@ -29,10 +29,24 @@ void UCAnimNotifyState_NXTAOne::NotifyTick(USkeletalMeshComponent* MeshComp, UAn
 	if (ConditionKey != EKeys::Invalid)
 	{
 		if (!PC) return;
+		if (!AnimMontage_NextAttackStance) return;
 
-		if (PC->WasInputKeyJustPressed(EKeys::W) && PC->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+		bool bKeyW = PC->IsInputKeyDown(EKeys::W);
+		bool bKeyLeftMouseButton = PC->IsInputKeyDown(EKeys::LeftMouseButton);
+
+		FString KeyText = bKeyW ? TEXT("True") : TEXT("False");
+		FString MouseButtonText = bKeyLeftMouseButton ? TEXT("True") : TEXT("False");
+
+		if (bKeyW && bKeyLeftMouseButton)
 		{
-			Player->PlayAnimMontage(AnimMontage_NextAttack, PlayRate, StartSectionName);
+			GEngine->AddOnScreenDebugMessage(
+				-1,  // ID (-1이면 여러 메시지가 겹쳐서 출력됨)
+				1.0f, // 메시지 지속 시간 (초)
+				FColor::Yellow, // 글자 색상
+				FString::Printf(TEXT("W Key: %s | Mouse: %s"), *KeyText, *MouseButtonText) // 출력할 텍스트
+			);
+
+			Player->PlayAnimMontage(AnimMontage_NextAttackStance, PlayRate, StartSectionName);
 
 			return;
 		}
@@ -42,9 +56,19 @@ void UCAnimNotifyState_NXTAOne::NotifyTick(USkeletalMeshComponent* MeshComp, UAn
 	{
 		if (!AnimMontage_NextAttack) return;
 
-		Player->PlayAnimMontage(AnimMontage_NextAttack, PlayRate, StartSectionName);
-	}
+		FString bCharge = Player->GetCharge() ? TEXT("True") : TEXT("False");
 
+		GEngine->AddOnScreenDebugMessage(
+			-1,  // ID (-1이면 여러 메시지가 겹쳐서 출력됨)
+			1.0f, // 메시지 지속 시간 (초)
+			FColor::Yellow, // 글자 색상
+			FString::Printf(TEXT("Charge in Tick : %s"), *bCharge) // 출력할 텍스트
+		);
+
+		Player->PlayAnimMontage(AnimMontage_NextAttack, PlayRate, StartSectionName);
+
+		return;
+	}
 }
 
 // Notify가 끝날 때 까지 bCharge가 True이면 다음 차징 동작 출력.
@@ -59,6 +83,15 @@ void UCAnimNotifyState_NXTAOne::NotifyEnd(USkeletalMeshComponent* MeshComp, UAni
 
 	if (Player->GetCharge())
 	{
+		FString bCharge = Player->GetCharge() ? TEXT("True") : TEXT("False");
+
+		GEngine->AddOnScreenDebugMessage(
+			-1,  // ID (-1이면 여러 메시지가 겹쳐서 출력됨)
+			1.0f, // 메시지 지속 시간 (초)
+			FColor::Yellow, // 글자 색상
+			FString::Printf(TEXT("Charge in End : %s"), *bCharge) // 출력할 텍스트
+		);
+
 		Player->PlayAnimMontage(AnimMontage_NextCharge, PlayRate, StartSectionName);
 	}
 }

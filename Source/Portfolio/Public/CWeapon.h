@@ -22,6 +22,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Weapon")
 	float Damage;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon")
+	USkeletalMesh* Mesh;
 };
 
 UCLASS()

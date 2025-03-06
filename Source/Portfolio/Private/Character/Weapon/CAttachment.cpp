@@ -10,19 +10,36 @@ UCAttachment::UCAttachment()
 
 void UCAttachment::BeginPlay()
 {
+	Super::BeginPlay();
+
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
 
 	if (!OwnerCharacter)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("UCAttachment : OwnerCharacter is null!"));
+
+		return;
 	}
 
 	if (!OwnerCharacter->GetMesh())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("UCAttachment : OwnerCharacter has no mesh"));
-	}
 
-	Super::BeginPlay();
+		return;
+	}
+	
+	/*
+	*	2025 03 06
+	*	무기 충돌 감지를 위한 Collision 셋.
+	*/
+	if (!Mesh)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UCAttachment : Mesh is null!"));
+
+		return;
+	}
+	
+	Mesh->SetCollisionProfileName(TEXT("Weapon"));
 }
 
 void UCAttachment::ComponentAttachTo(USkeletalMeshComponent* OwnerMesh, FName SocketName)
