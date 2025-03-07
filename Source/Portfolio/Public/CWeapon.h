@@ -40,9 +40,6 @@ public:
 	virtual void Attack();
 	virtual void GetWeaponType();
 
-private:
-	void InitializeWeaponFromDataTable(FName RowName);
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -50,6 +47,4 @@ protected:
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 	UDataTable* WeaponDataTable;
-
-	FWeaponData WeaponData;
 };

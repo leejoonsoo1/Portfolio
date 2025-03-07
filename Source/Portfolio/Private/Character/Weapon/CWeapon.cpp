@@ -20,20 +20,10 @@ void ACWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 
-	InitializeWeaponFromDataTable("");
-}
+	ConstructorHelpers::FObjectFinder<UDataTable> DT(TEXT("/Game/DataTable/Weapon"));
 
-void ACWeapon::InitializeWeaponFromDataTable(FName RowName)
-{
-	if (!WeaponDataTable)
+	if (DT.Succeeded())
 	{
-		return;
-	}
-
-	FWeaponData* Data = WeaponDataTable->FindRow<FWeaponData>(RowName, TEXT("Lookup FWeaponData"));
-
-	if (Data)
-	{
-		WeaponData = *Data;
+		WeaponDataTable = DT.Object;
 	}
 }

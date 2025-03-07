@@ -12,6 +12,9 @@ class PORTFOLIO_API ACGreatSword : public ACWeapon
 public:
 	ACGreatSword();
 
+protected:
+	virtual void BeginPlay() override;
+
 public:
 	virtual void Attack() override;
 	virtual void GetWeaponType();

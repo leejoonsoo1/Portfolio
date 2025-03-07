@@ -258,14 +258,10 @@ void ACPlayerCharacter::BeginAction()
 	{	
 		if (PC->IsInputKeyDown(EKeys::LeftShift) && PC->IsInputKeyDown(EKeys::LeftMouseButton))
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("ACPlayerCharacter::BeginAction() : 1"));
-
 			MontagesComp->PlayAttack(TEXT("MouseLeft_SAttack"), StateComp->GetEWeaponType());
 		}
 		else if (PC->IsInputKeyDown(EKeys::LeftMouseButton))
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("ACPlayerCharacter::BeginAction() : 2"));
-
 			MontagesComp->PlayAttack(TEXT("MouseLeft_Attack"), StateComp->GetEWeaponType());
 		}
 		else if (PC->IsInputKeyDown(EKeys::RightMouseButton))
@@ -304,8 +300,6 @@ void ACPlayerCharacter::Attack(const FInputActionValue& value)
 
 	if (!StateComp->IsUnarmedMode() && !StateComp->IsActionMode())
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("ACPlayerCharacter::Attack"));
-
 		StateComp->SetActionMode();
 	}
 	
