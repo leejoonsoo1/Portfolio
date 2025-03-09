@@ -217,9 +217,6 @@ void ACPlayerCharacter::EndEquipping()
 	*	OnEWeaponChanged에서 실행됐어야할 함수.
 	*/
 	StateComp->SetGreatSwordMode();
-
-	FString bIdle = StateComp->IsIdleMode() ? TEXT("True") : TEXT("False");
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("ACPlayerCharacter::EndEquipping()"));
 }
 
 void ACPlayerCharacter::UnEquip()
@@ -252,8 +249,12 @@ void ACPlayerCharacter::EndUnEquipping()
 
 void ACPlayerCharacter::BeginAction()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("ACPlayerCharacter::BeginAction()"));
-
+	AttachmentComp->Attack();
+	
+	/*
+	*	2025 03 09
+	*	GreatSword 쪽으로 옮김.
+	
 	if (MontagesComp)
 	{	
 		if (PC->IsInputKeyDown(EKeys::LeftShift) && PC->IsInputKeyDown(EKeys::LeftMouseButton))
@@ -269,6 +270,7 @@ void ACPlayerCharacter::BeginAction()
 			MontagesComp->PlayAttack(TEXT("MouseRight_Attack"), StateComp->GetEWeaponType());
 		}
 	}
+	*/
 }
 
 void ACPlayerCharacter::EndAction()
@@ -359,9 +361,6 @@ void ACPlayerCharacter::OnStateTypeChanged(EStateType InPrevType, EStateType InN
 		break;
 
 	case EStateType::Action:
-
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("ACPlayerCharacter::OnStateTypeChanged"));
-
 		BeginAction();
 		break;
 

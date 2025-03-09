@@ -23,73 +23,78 @@ protected:
 
 public:
 	UFUNCTION(BlueprintPure)
-	bool IsIdleMode() { return StateType == EStateType::Idle; }
+	FORCEINLINE bool IsIdleMode() const { return StateType == EStateType::Idle; }
 
 	UFUNCTION(BlueprintPure)
-	bool IsEvadeMode() { return StateType == EStateType::Evade; }
+	FORCEINLINE bool IsEvadeMode() const { return StateType == EStateType::Evade; }
 
 	UFUNCTION(BlueprintPure)
-	bool IsEquipMode() { return StateType == EStateType::Equip; }
+	FORCEINLINE bool IsEquipMode() const { return StateType == EStateType::Equip; }
 
 	UFUNCTION(BlueprintPure)
-	bool IsUnEquipMode() { return StateType == EStateType::UnEquip; }
+	FORCEINLINE bool IsUnEquipMode() const { return StateType == EStateType::UnEquip; }
 
 	UFUNCTION(BlueprintPure)
-	bool IsActionMode() { return StateType == EStateType::Action; }
+	FORCEINLINE bool IsActionMode() const { return StateType == EStateType::Action; }
 
 	UFUNCTION(BlueprintPure)
-	bool IsHittedMode() { return StateType == EStateType::Hitted; }
+	FORCEINLINE bool IsHittedMode() const { return StateType == EStateType::Hitted; }
 
 	UFUNCTION(BlueprintPure)
-	bool IsDeadMode() { return StateType == EStateType::Dead; }
+	FORCEINLINE bool IsDeadMode() const { return StateType == EStateType::Dead; }
 
 	UFUNCTION(BlueprintPure)
-	EStateType GetEStateType() { return StateType; }
+	FORCEINLINE EStateType GetEStateType() const { return StateType; }
+
+public:
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsUnarmedMode() const { return WeaponType == EWeaponType::Unarmed; }
+	
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsSwordNShieldMode() const { return WeaponType == EWeaponType::SwordNShield; }
+	
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsGreatSwordMode() const { return WeaponType == EWeaponType::GreatSword; }
+	
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsLongSwordMode() const { return WeaponType == EWeaponType::LongSword; }
+	
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsHammerMode() const { return WeaponType == EWeaponType::Hammer; }
+	
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsLightBowgunMode() const { return WeaponType == EWeaponType::LightBowgun; }
+	
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsBowMode() const { return WeaponType == EWeaponType::Bow; }
+	
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsLanceMode() const { return WeaponType == EWeaponType::Lance; }
+	
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsDualBladesMode() const { return WeaponType == EWeaponType::DualBlades; }
+	
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsChargeBladeMode() const { return WeaponType == EWeaponType::ChargeBlade; }
+	
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsGunLanceMode() const { return WeaponType == EWeaponType::GunLance; }
+	
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsHeavyBowgunMode() const { return WeaponType == EWeaponType::HeavyBowgun; }
+	
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsSwitchAxeMode() const { return WeaponType == EWeaponType::SwitchAxe; }
+	
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE EWeaponType GetEWeaponType() const { return WeaponType; }
 
 public:
 	UFUNCTION(BlueprintPure)
-	bool IsUnarmedMode() { return WeaponType == EWeaponType::Unarmed; }
+	FORCEINLINE EWeaponType GetArmedWeaponType() { return ArmedWeaponType; }
 	
-	UFUNCTION(BlueprintPure)
-	bool IsSwordNShieldMode() { return WeaponType == EWeaponType::SwordNShield; }
-	
-	UFUNCTION(BlueprintPure)
-	bool IsGreatSwordMode() { return WeaponType == EWeaponType::GreatSword; }
-	
-	UFUNCTION(BlueprintPure)
-	bool IsLongSwordMode() { return WeaponType == EWeaponType::LongSword; }
-	
-	UFUNCTION(BlueprintPure)
-	bool IsHammerMode() { return WeaponType == EWeaponType::Hammer; }
-	
-	UFUNCTION(BlueprintPure)
-	bool IsLightBowgunMode() { return WeaponType == EWeaponType::LightBowgun; }
-	
-	UFUNCTION(BlueprintPure)
-	bool IsBowMode() { return WeaponType == EWeaponType::Bow; }
-	
-	UFUNCTION(BlueprintPure)
-	bool IsLanceMode() { return WeaponType == EWeaponType::Lance; }
-	
-	UFUNCTION(BlueprintPure)
-	bool IsDualBladesMode() { return WeaponType == EWeaponType::DualBlades; }
-	
-	UFUNCTION(BlueprintPure)
-	bool IsChargeBladeMode() { return WeaponType == EWeaponType::ChargeBlade; }
-	
-	UFUNCTION(BlueprintPure)
-	bool IsGunLanceMode() { return WeaponType == EWeaponType::GunLance; }
-	
-	UFUNCTION(BlueprintPure)
-	bool IsHeavyBowgunMode() { return WeaponType == EWeaponType::HeavyBowgun; }
-	
-	UFUNCTION(BlueprintPure)
-	bool IsSwitchAxeMode() { return WeaponType == EWeaponType::SwitchAxe; }
-	
-	UFUNCTION(BlueprintPure)
-	EWeaponType GetEWeaponType() { return WeaponType; }
-
 public:
+	// StateType
 	void SetIdleMode();
 	void SetEvadeMode();
 	void SetEquipMode();
@@ -99,6 +104,7 @@ public:
 	void setDeadMode();
 	
 public:
+	// WeaponType
 	void SetUnarmedMode();
 	void SetSwordNShieldMode();
 	void SetGreatSwordMode();
@@ -111,6 +117,10 @@ public:
 	void SetGunLanceMode();
 	void SetHeavyBowgunMode();
 	void SetSwitchAxeMode();
+
+public:
+	// ArmedWeaponType
+	void SetArmedWeaponType(EWeaponType InNewArmedWeaponType);
 
 private:
 	void ChangeStateType(EStateType InNewType);
@@ -126,4 +136,5 @@ public:
 private:
 	EStateType StateType;
 	EWeaponType WeaponType;
+	EWeaponType ArmedWeaponType;
 };

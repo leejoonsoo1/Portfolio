@@ -106,6 +106,11 @@ void UCStateComponent::SetSwitchAxeMode()
 	ChangeWeaponType(EWeaponType::SwitchAxe);
 }
 
+void UCStateComponent::SetArmedWeaponType(EWeaponType InNewArmedWeaponType)
+{
+	ArmedWeaponType = InNewArmedWeaponType;
+}
+
 void UCStateComponent::ChangeStateType(EStateType InNewType)
 {
 	EStateType PrevType = StateType;

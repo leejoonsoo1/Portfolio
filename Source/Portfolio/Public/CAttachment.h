@@ -2,10 +2,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Type.h"
 #include "CAttachment.generated.h"
 
 class USkeletalMeshComponent;
 class ACharacter;
+class ACWeapon;
 
 //UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 UCLASS(DefaultToInstanced, BlueprintType, config = Engine)
@@ -25,16 +27,28 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ComponentAttachTo(USkeletalMeshComponent* OwnerMesh = nullptr, FName SocketName = "Holster");
 
-public:
-	USkeletalMeshComponent* GetMesh() { return Mesh; }
+	void SpawnWeapon();
+	void Attack();
+	void SwitchWeaponType(EWeaponType NewType);
 
-protected:
-	UPROPERTY(VisibleDefaultsOnly, Category = "Comp")
-	USceneComponent* RootComp;
+public:
+	USkeletalMeshComponent* GetMesh() const { return Mesh; }
+	ACWeapon* GetCurrentWeapon() const { return CurrentWeapon; }
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Comp")
 	USkeletalMeshComponent* Mesh;
 
 	ACharacter* OwnerCharacter;
+
+private:
+	UPROPERTY()
+	ACWeapon* CurrentWeapon;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	TSubclassOf<ACWeapon> WeaponClass;
+
+private:
+	float Damage;
+	EWeaponType WeaponType;
 };

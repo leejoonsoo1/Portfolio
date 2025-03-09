@@ -36,15 +36,22 @@ public:
 	// Sets default values for this actor's properties
 	ACWeapon();
 
-public:
-	virtual void Attack();
-	virtual void GetWeaponType();
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+public:
+	virtual void Attack();
+	virtual EWeaponType GetWeaponType();
+	virtual float GetDamage();
+	virtual USkeletalMesh* GetMesh();
+
+	void SetWeaponOwner(ACharacter* InOwnerCharacter);
+	ACharacter* GetWeaponOwner();
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 	UDataTable* WeaponDataTable;
+
+	ACharacter* OwnerWeaponCharacter;
 };
