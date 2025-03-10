@@ -12,7 +12,7 @@ void ACGreatSword::BeginPlay()
 {
 	Super::BeginPlay();
 
-	LoadWeaponData();
+	LoadData();
 
 	if (!OwnerWeaponCharacter)
 	{
@@ -40,8 +40,13 @@ void ACGreatSword::BeginPlay()
 	}
 }
 
-void ACGreatSword::LoadWeaponData()
+void ACGreatSword::LoadData()
 {
+	Super::LoadData();
+
+	LoadWeaponData(TEXT("Greatsword of the Royal"), EWeaponType::GreatSword);
+
+	/*
     if (WeaponDataTable)
     {
 		// 데이터 테이블의 모든 행을 가져옴
@@ -62,6 +67,7 @@ void ACGreatSword::LoadWeaponData()
 			}
 		}
     }
+	*/
 }
 
 void ACGreatSword::Attack()
@@ -82,20 +88,31 @@ void ACGreatSword::Attack()
 	}
 }
 
+FName ACGreatSword::GetName()
+{
+	Super::GetName();
 
-// 
+	return WeaponName;
+}
+ 
 EWeaponType ACGreatSword::GetWeaponType()
 {
+	Super::GetWeaponType();
+
 	return WeaponType;
 }
 
 float ACGreatSword::GetDamage()
 {
-	return Damage;
+	Super::GetDamage();
+
+	return WeaponDamage;
 }
 
 USkeletalMesh* ACGreatSword::GetMesh()
 {
-	return Mesh;
+	Super::GetMesh();
+
+	return WeaponMesh;
 }
 

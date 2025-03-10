@@ -7,6 +7,7 @@
 #include "CWeapon.generated.h"
 
 class UAnimMontage;
+class ACPlayerCharacter;
 
 USTRUCT(BlueprintType)
 struct FWeaponData : public FTableRowBase
@@ -15,7 +16,7 @@ struct FWeaponData : public FTableRowBase
 
 public:
 	UPROPERTY(EditAnywhere, Category="Weapon")
-	FString WeaponName;
+	FName WeaponName;
 
 	UPROPERTY(EditAnywhere, Category="Weapon")
 	EWeaponType WeaponType;
@@ -39,19 +40,35 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void LoadData();
 
 public:
 	virtual void Attack();
-	virtual EWeaponType GetWeaponType();
+	virtual FName GetName();
 	virtual float GetDamage();
+	virtual EWeaponType GetWeaponType();
 	virtual USkeletalMesh* GetMesh();
 
 	void SetWeaponOwner(ACharacter* InOwnerCharacter);
 	ACharacter* GetWeaponOwner();
+
+	void LoadWeaponData(FName InWeaponName, EWeaponType InType);
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 	UDataTable* WeaponDataTable;
 
 	ACharacter* OwnerWeaponCharacter;
+
+protected:
+	// 자식들의 고유 속성을 저장할 변수.
+	FName WeaponName;
+	EWeaponType WeaponType;
+	float WeaponDamage;
+	USkeletalMesh* WeaponMesh;
+
+protected:
+	// Owner 캐릭터의 속성
+	ACPlayerCharacter* Player;
+	APlayerController* PC;
 };
