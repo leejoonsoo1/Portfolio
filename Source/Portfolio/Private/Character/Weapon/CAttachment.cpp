@@ -40,7 +40,10 @@ void UCAttachment::BeginPlay()
 		return;
 	}
 	
+	Mesh->SetGenerateOverlapEvents(true);
 	Mesh->SetCollisionProfileName(TEXT("Weapon"));
+	Mesh->OnComponentBeginOverlap.AddDynamic(this, &UCAttachment::OnMeshOverlap);
+
 
 	SpawnWeapon();
 }
@@ -165,5 +168,13 @@ void UCAttachment::SwitchWeaponType(EWeaponType NewType)
 	{
 		WeaponClass = NewWeaponClass;
 		SpawnWeapon();
+	}
+}
+
+void UCAttachment::OnMeshOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("UCAttachment::OnMeshOverlap"));
 	}
 }

@@ -30,9 +30,6 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Monster")
 	float Damage;
-
-	UPROPERTY(EditAnywhere, Category = "Monster")
-	USkeletalMesh* Mesh;
 };
 
 UCLASS()
@@ -50,7 +47,6 @@ public:
 	virtual FName GetName();
 	virtual float GetHealth();
 	virtual float GetDamage();
-	virtual USkeletalMesh* GetMesh();
 	
 	UDataTable* GetMonsterTable() const { return MonsterDataTable; }
 
@@ -67,6 +63,5 @@ protected:
 	FName MonsterDescription;
 	float MonsterHealth;
 	float MonsterDamage;
-	USkeletalMesh* MonsterMesh;
 };
   

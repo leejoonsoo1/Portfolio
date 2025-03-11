@@ -39,7 +39,6 @@ void ACMonster::LoadMonsterData(FName InMonsterName)
 				MonsterDescription = MonsterData->Description;
 				MonsterHealth = MonsterData->Health;
 				MonsterDamage = MonsterData->Damage;
-				MonsterMesh = DuplicateObject<USkeletalMesh>(MonsterData->Mesh, this);
 			}
 		}
 	}
@@ -62,9 +61,4 @@ float ACMonster::GetHealth()
 float ACMonster::GetDamage()
 {
 	return 0.0f;
-}
-
-USkeletalMesh* ACMonster::GetMesh()
-{
-	return nullptr;
 }

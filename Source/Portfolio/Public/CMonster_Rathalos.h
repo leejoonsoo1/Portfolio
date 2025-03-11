@@ -2,7 +2,9 @@
 
 #include "CoreMinimal.h"
 #include "CMonster.h"
-#include "BehaviorTree\BehaviorTree.h"
+#include "CAIController_Monster.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardData.h"
 #include "CMonster_Rathalos.generated.h"
 
 /*
@@ -26,18 +28,14 @@ public:
 	virtual FName GetName() override;
 	virtual float GetHealth() override;
 	virtual float GetDamage() override;
-	virtual USkeletalMesh* GetMesh() override;
 
 	// virtual function으로 beginOverlap 넣을 예정.
 
-public:
-	// A.I
-	UBehaviorTree* GetBehaviorTree() const { return MonsterBehavior; }
-
-private:
-	UPROPERTY(EditAnywhere, Category = "Monster")
-	UBehaviorTree* MonsterBehavior;
+	// AI 관련
 
 private:
 	FName MonsterNameToLoad;
+
+	UPROPERTY(EditDefaultsOnly, Category = "AI", meta = (AllowPrivateAccess = "true"))
+	UBehaviorTree* BehaviorTreeAsset;
 };
