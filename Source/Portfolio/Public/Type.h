@@ -13,3 +13,15 @@ enum class EWeaponType : uint8
 {
 	Unarmed, SwordNShield, GreatSword, LongSword, Hammer, LightBowgun, Bow, Lance, DualBlades, ChargeBlade, GunLance, HeavyBowgun, SwitchAxe, Max
 };
+
+UENUM(BlueprintType)
+enum class EMonsterState : uint8
+{
+	Idle, Fly, Max
+};
+
+UENUM(BlueprintType)
+enum class EBehaviorType : uint8
+{
+	Wait, Approach, Action, Patrol, Stun, RunAway,
+};

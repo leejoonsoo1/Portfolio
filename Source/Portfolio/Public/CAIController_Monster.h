@@ -4,7 +4,7 @@
 #include "AIController.h"
 #include "CAIController_Monster.generated.h"
 
-class ACMonster_Rathalos;
+class ACMonster;
 class UCBehaviorComponent;
 class UAIPerceptionComponent;
 class UAISenseConfig_Sight;
@@ -18,11 +18,14 @@ public:
 	ACAIController_Monster();
 
 protected:
-	virtual void BeginPlay() override;
-
-protected:
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;
+
+protected:
+	virtual void BeginPlay() override;
+
+public:
+	virtual void Tick(float DeltaTime) override;
 
 private:
 	UFUNCTION()
@@ -32,11 +35,11 @@ private:
 	void RemovePlayerKey();
 
 protected:
-	//UPROPERTY(VisibleDefaultsOnly, Category = "Components", meta=(AllowPrivateAccess = "true"))
-	//UCBehaviorComponent* BehaviorComp;
+	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+	UCBehaviorComponent* BehaviorComp;
 
-	//UPROPERTY(VisibleDefaultsOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-	//UAIPerceptionComponent* PerceptionComp;
+	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+	UAIPerceptionComponent* PerceptionComp;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
@@ -48,7 +51,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
 	float BehaviorRange;
 
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Team")
+	uint8 TeamID;
+
 private:
-	ACMonster_Rathalos* PossessedMonster;
+	ACMonster* PossessedMonster;
 	UAISenseConfig_Sight* Sight;
+
+	UPROPERTY(EditDefaultsOnly, Category = "AI", meta = (AllowPrivateAccess = "true"))
+	UBlackboardComponent* BlackboardComp;
 };

@@ -36,6 +36,5 @@ public:
 private:
 	FName MonsterNameToLoad;
 
-	UPROPERTY(EditDefaultsOnly, Category = "AI", meta = (AllowPrivateAccess = "true"))
-	UBehaviorTree* BehaviorTreeAsset;
+
 };

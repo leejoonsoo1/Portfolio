@@ -43,20 +43,27 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void LoadData();
+
 public:
 	virtual FName GetName();
 	virtual float GetHealth();
 	virtual float GetDamage();
 	
-	UDataTable* GetMonsterTable() const { return MonsterDataTable; }
+public:
+	FORCEINLINE UDataTable* GetMonsterTable() const { return MonsterDataTable; }
+	FORCEINLINE UBehaviorTree* GetBehaviorTree() { return BehaviorTreeAsset; }
 
+public:
 	void LoadMonsterData(FName InMonsterName);
 
 	// virtual function으로 beginOverlap 넣을 예정.
 
 private:	
-	UPROPERTY(EditAnywhere, Category = "Monster")
+	UPROPERTY(EditDefaultsOnly, Category = "AI", meta = (AllowPrivateAccess = "true"))
 	UDataTable* MonsterDataTable;
+
+	UPROPERTY(EditDefaultsOnly, Category = "AI", meta = (AllowPrivateAccess = "true"))
+	UBehaviorTree* BehaviorTreeAsset;
 
 protected:
 	FName MonsterName;

@@ -81,6 +81,10 @@ ACPlayerCharacter::ACPlayerCharacter()
 
 	// Great Sword DataTable에서 받아올 예정.
 	EqWalkSpeed = OriginWalkSpeed - 200.f;
+
+	// TeamID
+	TeamID = 0;
+	SetGenericTeamId(TeamID);
 }
 
 // Called when the game starts or when spawned
@@ -425,4 +429,9 @@ void ACPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	{
 		//UE_LOG(LogTemplate, Error, TEXT("'%s' Failed to find an Enhanced Input component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
 	}
+}
+
+FGenericTeamId ACPlayerCharacter::GetGenericTeamId() const
+{
+	return FGenericTeamId(TeamID);
 }

@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GenericTeamAgentInterface.h"
 #include "CStateComponent.h"
 #include "CPlayerCharacter.generated.h"
 
@@ -16,7 +17,7 @@ class UEnhancedInputComponent;
 struct FInputActionValue;
 
 UCLASS()
-class PORTFOLIO_API ACPlayerCharacter : public ACharacter
+class PORTFOLIO_API ACPlayerCharacter : public ACharacter, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
@@ -118,6 +119,9 @@ protected:
 	//virtual void NotifyControllerChanged() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	// Get Team ID
+	virtual FGenericTeamId GetGenericTeamId() const override;
+
 public:
 	FORCEINLINE class USpringArmComponent*	GetCameraBoom()		const { return SpringArmComp; }
 	FORCEINLINE class UCameraComponent*		GetFollowCamera()	const { return CameraComp; }
@@ -138,6 +142,9 @@ private:
 	float SprintSpeed;
 	float RunningSpeed;
 	float OriginWalkSpeed;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Team", meta = (AllowPrivateAccess = "true"))
+	uint8 TeamID;
 
 private:
 	// 장비를 착용한 후에 반영되는 WalkSpeed.
