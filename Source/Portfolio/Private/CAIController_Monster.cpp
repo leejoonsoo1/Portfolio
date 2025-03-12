@@ -15,8 +15,8 @@ ACAIController_Monster::ACAIController_Monster()
 	PerceptionComp = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("PerceptionComp"));
 	
 	Sight = CreateDefaultSubobject<UAISenseConfig_Sight>("Sight");
-	Sight->SightRadius = 800.f;
-	Sight->LoseSightRadius = 1200.f;
+	Sight->SightRadius = 1500.f;
+	Sight->LoseSightRadius = 1800.f;
 	Sight->PeripheralVisionAngleDegrees = 90.f;
 	Sight->SetMaxAge(1.f);
 
@@ -24,7 +24,15 @@ ACAIController_Monster::ACAIController_Monster()
 	Sight->DetectionByAffiliation.bDetectNeutrals = false;
 	Sight->DetectionByAffiliation.bDetectFriendlies = false;
 
+	// Perception Config
+	PerceptionComp->ConfigureSense(*Sight);
+	PerceptionComp->SetDominantSense(UAISense_Sight::StaticClass());
+	PerceptionComp->OnPerceptionUpdated.AddDynamic(this, &ACAIController_Monster::OnPerceptionUpdated);
+
 	TeamID = 1;
+	bDrawRange = true;
+	AdjustHeight = 64;
+	BehaviorRange = 150;
 }
 
 void ACAIController_Monster::OnPossess(APawn* InPawn)
@@ -68,6 +76,27 @@ void ACAIController_Monster::BeginPlay()
 
 void ACAIController_Monster::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 {
+	if (!BlackboardComp) return;
+
+	AActor* TargetActor = nullptr;
+
+	for (AActor* Actor : UpdatedActors)
+	{
+		if (Actor && Actor->ActorHasTag("Player"))
+		{
+			TargetActor = Actor;
+			break;
+		}
+
+		if (TargetActor)
+		{
+			BlackboardComp->SetValueAsObject("TargetActor", TargetActor);
+		}
+		else
+		{
+			BlackboardComp->ClearValue("TargetActor");
+		}
+	}
 }
 
 void ACAIController_Monster::RemovePlayerKey()
@@ -77,4 +106,10 @@ void ACAIController_Monster::RemovePlayerKey()
 void ACAIController_Monster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	FVector Center = PossessedMonster->GetActorLocation();
+	Center.Z += AdjustHeight;
+
+	DrawDebugCircle(GetWorld(), Center, Sight->SightRadius, 64, FColor::Green, false, -1.f, (uint8)0U, 0.f, FVector::RightVector, FVector::ForwardVector);
+	DrawDebugCircle(GetWorld(), Center, BehaviorRange, 64, FColor::Red, false, -1.f, (uint8)0U, 0.f, FVector::RightVector, FVector::ForwardVector);
 }
