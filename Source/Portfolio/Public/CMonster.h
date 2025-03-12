@@ -30,6 +30,12 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Monster")
 	float Damage;
+
+	UPROPERTY(EditAnywhere, Category = "Monster")
+	float WalkSpeed;
+
+	UPROPERTY(EditAnywhere, Category = "Monster")
+	float FyingSpeed;
 };
 
 UCLASS()
@@ -70,5 +76,7 @@ protected:
 	FName MonsterDescription;
 	float MonsterHealth;
 	float MonsterDamage;
+	float WalkSpeed;
+	float FyingSpeed;
 };
   

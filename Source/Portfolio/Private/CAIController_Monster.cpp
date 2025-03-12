@@ -60,7 +60,6 @@ void ACAIController_Monster::OnPossess(APawn* InPawn)
 
 	SetGenericTeamId(FGenericTeamId(TeamID));
 	BehaviorComp->SetBlackboardComponent(Blackboard);
-
 }
 
 void ACAIController_Monster::OnUnPossess()
@@ -72,6 +71,15 @@ void ACAIController_Monster::BeginPlay()
 {
 	Super::BeginPlay();
 
+	APawn* ControlledPawn = GetPawn();
+	if (ControlledPawn)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("AI Possessing Pawn!"));
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("AI Pawn is NULL!"));
+	}
 }
 
 void ACAIController_Monster::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
@@ -84,19 +92,21 @@ void ACAIController_Monster::OnPerceptionUpdated(const TArray<AActor*>& UpdatedA
 	{
 		if (Actor && Actor->ActorHasTag("Player"))
 		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Hello, Unreal!"));
+
 			TargetActor = Actor;
 			break;
 		}
-
+	}
 		if (TargetActor)
 		{
-			BlackboardComp->SetValueAsObject("TargetActor", TargetActor);
+			BlackboardComp->SetValueAsObject("OtherActorKey", TargetActor);
 		}
 		else
 		{
-			BlackboardComp->ClearValue("TargetActor");
+			BlackboardComp->ClearValue("OtherActorKey");
 		}
-	}
+	
 }
 
 void ACAIController_Monster::RemovePlayerKey()
@@ -110,6 +120,6 @@ void ACAIController_Monster::Tick(float DeltaTime)
 	FVector Center = PossessedMonster->GetActorLocation();
 	Center.Z += AdjustHeight;
 
-	DrawDebugCircle(GetWorld(), Center, Sight->SightRadius, 64, FColor::Green, false, -1.f, (uint8)0U, 0.f, FVector::RightVector, FVector::ForwardVector);
-	DrawDebugCircle(GetWorld(), Center, BehaviorRange, 64, FColor::Red, false, -1.f, (uint8)0U, 0.f, FVector::RightVector, FVector::ForwardVector);
+	//DrawDebugCircle(GetWorld(), Center, Sight->SightRadius, 64, FColor::Green, false, -1.f, (uint8)0U, 0.f, FVector::RightVector, FVector::ForwardVector);
+	//DrawDebugCircle(GetWorld(), Center, BehaviorRange, 64, FColor::Red, false, -1.f, (uint8)0U, 0.f, FVector::RightVector, FVector::ForwardVector);
 }

@@ -1,4 +1,6 @@
 #include "CMonster_Rathalos.h"
+#include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 ACMonster_Rathalos::ACMonster_Rathalos()
 {
@@ -9,6 +11,23 @@ ACMonster_Rathalos::ACMonster_Rathalos()
 
 	// 로드할 몬스터 이름.
 	MonsterNameToLoad = TEXT("Rathalos");
+
+	GetCapsuleComponent()->SetCanEverAffectNavigation(false);
+
+	// AIController가 방향을 제어하도록 설정
+	bUseControllerRotationYaw = false;
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+
+	/*
+	*	2025 03 13
+	*	여유가 있으면 구현 예정.
+	*	FlyingSpeed와 WalkSppe는 일단 Default값으로.
+	*/
+	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+	GetCharacterMovement()->MaxFlySpeed = 1200.f;
+	GetCharacterMovement()->BrakingDecelerationFlying = 500.f;
+	GetCharacterMovement()->MaxWalkSpeed = 500.f;
+	
 }
 
 void ACMonster_Rathalos::BeginPlay()
@@ -31,8 +50,6 @@ void ACMonster_Rathalos::BeginPlay()
 
 		return;
 	}
-
-
 }
 
 
