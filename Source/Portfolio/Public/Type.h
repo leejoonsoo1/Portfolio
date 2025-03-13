@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CoreMinimal.h"
+#include "UObject/ObjectMacros.h"
 #include "Type.generated.h"
 
 UENUM(BlueprintType)
@@ -17,11 +19,11 @@ enum class EWeaponType : uint8
 UENUM(BlueprintType)
 enum class EMonsterState : uint8
 {
-	Idle, Fly, Max
+	Ground, Fly, Max
 };
 
 UENUM(BlueprintType)
 enum class EBehaviorType : uint8
 {
-	Wait, Approach, Action, Patrol, Stun, RunAway,
+	Idle, Wait, Approach, Action, Patrol, Stun, RunAway, Max
 };

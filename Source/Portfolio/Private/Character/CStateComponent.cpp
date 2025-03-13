@@ -41,7 +41,7 @@ void UCStateComponent::SetHittedMode()
 	ChangeStateType(EStateType::Hitted);
 }
 
-void UCStateComponent::setDeadMode()
+void UCStateComponent::SetDeadMode()
 {
 	ChangeStateType(EStateType::Dead);
 }

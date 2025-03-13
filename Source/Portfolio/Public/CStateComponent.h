@@ -22,6 +22,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	// Character StateType
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE bool IsIdleMode() const { return StateType == EStateType::Idle; }
 
@@ -47,6 +48,7 @@ public:
 	FORCEINLINE EStateType GetEStateType() const { return StateType; }
 
 public:
+	// WeaponType
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE bool IsUnarmedMode() const { return WeaponType == EWeaponType::Unarmed; }
 	
@@ -90,6 +92,10 @@ public:
 	FORCEINLINE EWeaponType GetEWeaponType() const { return WeaponType; }
 
 public:
+	// Monster's AI Behavior Type
+
+public:
+	// ¾È ¾¸.
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE EWeaponType GetArmedWeaponType() { return ArmedWeaponType; }
 	
@@ -101,7 +107,7 @@ public:
 	void SetUnEquipMode();
 	void SetActionMode();
 	void SetHittedMode();
-	void setDeadMode();
+	void SetDeadMode();
 	
 public:
 	// WeaponType

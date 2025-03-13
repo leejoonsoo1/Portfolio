@@ -8,7 +8,7 @@
 
 ACAIController_Monster::ACAIController_Monster()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	BlackboardComp = CreateDefaultSubobject<UBlackboardComponent>(TEXT("Blackboard"));
 	BehaviorComp = CreateDefaultSubobject<UCBehaviorComponent>(TEXT("BehaviorComp"));
@@ -18,7 +18,7 @@ ACAIController_Monster::ACAIController_Monster()
 	Sight->SightRadius = 1500.f;
 	Sight->LoseSightRadius = 1800.f;
 	Sight->PeripheralVisionAngleDegrees = 90.f;
-	Sight->SetMaxAge(1.f);
+	Sight->SetMaxAge(0.5f);
 
 	Sight->DetectionByAffiliation.bDetectEnemies = true;
 	Sight->DetectionByAffiliation.bDetectNeutrals = false;
@@ -72,6 +72,7 @@ void ACAIController_Monster::BeginPlay()
 	Super::BeginPlay();
 
 	APawn* ControlledPawn = GetPawn();
+
 	if (ControlledPawn)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("AI Possessing Pawn!"));
@@ -92,21 +93,22 @@ void ACAIController_Monster::OnPerceptionUpdated(const TArray<AActor*>& UpdatedA
 	{
 		if (Actor && Actor->ActorHasTag("Player"))
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Hello, Unreal!"));
-
 			TargetActor = Actor;
 			break;
 		}
 	}
-		if (TargetActor)
-		{
-			BlackboardComp->SetValueAsObject("OtherActorKey", TargetActor);
-		}
-		else
-		{
-			BlackboardComp->ClearValue("OtherActorKey");
-		}
-	
+
+	if (TargetActor)
+	{
+		BlackboardComp->SetValueAsObject("OtherActorKey", TargetActor);
+
+		//FRotator LookAtRotation = (TargetActor->GetActorLocation() - GetPawn()->GetActorLocation()).Rotation();
+		//GetPawn()->SetActorRotation(FRotator(0, LookAtRotation.Yaw, 0));
+	}
+	else
+	{
+		BlackboardComp->ClearValue("OtherActorKey");
+	}
 }
 
 void ACAIController_Monster::RemovePlayerKey()

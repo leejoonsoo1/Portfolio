@@ -15,7 +15,7 @@ ACMonster_Rathalos::ACMonster_Rathalos()
 	GetCapsuleComponent()->SetCanEverAffectNavigation(false);
 
 	// AIController가 방향을 제어하도록 설정
-	bUseControllerRotationYaw = false;
+	bUseControllerRotationYaw = true;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 
 	/*
