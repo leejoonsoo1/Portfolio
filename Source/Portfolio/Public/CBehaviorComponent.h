@@ -24,29 +24,51 @@ private:
 
 public:
 	UFUNCTION(Blueprintpure)
+	bool IsIdleMode();
+
+	UFUNCTION(Blueprintpure)
 	bool IsWaitMode();
 
 	UFUNCTION(Blueprintpure)
 	bool IsApproachMode();
 
 	UFUNCTION(Blueprintpure)
-	bool IsActionMode();
+	bool IsAttackMode();
 	
 	UFUNCTION(Blueprintpure)
 	bool IsPatrolMode();
 
 	UFUNCTION(Blueprintpure)
-	bool IsStucnMode();
+	bool IsFlinchMode();
 
 	UFUNCTION(Blueprintpure)
 	bool IsRunAwayMode();
 
+	UFUNCTION(Blueprintpure)
+	bool IsSearchMode();
+
+	UFUNCTION(Blueprintpure)
+	bool IsRoarMode();
+
+	UFUNCTION(Blueprintpure)
+	bool IsLandMode();
+
+	UFUNCTION(Blueprintpure)
+	bool IsTakeoffMode();
+
+public:
+	void SetIdleMode();
 	void SetWaitMode();
 	void SetApproachMode();
-	void SetActionMode();
+	void SetAttackMode();
+	void SetSpecialMode();
 	void SetPatrolMode();
-	void SetStunMode();
+	void SetFlinchMode();
 	void SetRunAwayMode();
+	void SetSearchMode();
+	void SetRoarMode();
+	void SetLandMode();
+	void SetTakeoffMode();
 
 	AActor* GetTargetValue();
 	FVector GetLocationValue();

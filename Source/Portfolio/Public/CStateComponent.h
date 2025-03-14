@@ -1,8 +1,8 @@
 #pragma once
 
+#include "Type.h"
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Type.h"
 #include "CStateComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FStateTypeChanged, EStateType, InPrevType, EStateType, InNewType);

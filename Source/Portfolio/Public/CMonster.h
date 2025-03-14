@@ -1,6 +1,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CMonsterStateComponent.h"
+#include "Components/ActorComponent.h"
 #include "GameFramework/Character.h"
 #include "CMonster.generated.h"
 
@@ -38,6 +40,8 @@ public:
 	float FyingSpeed;
 };
 
+class UCMonsterStateComponent;
+
 UCLASS()
 class PORTFOLIO_API ACMonster : public ACharacter
 {
@@ -61,7 +65,7 @@ public:
 
 public:
 	void LoadMonsterData(FName InMonsterName);
-
+	void HandleStateChanged(EMonsterStateType PrevState, EMonsterStateType NewState);
 	// virtual function으로 beginOverlap 넣을 예정.
 
 private:	
@@ -70,6 +74,10 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "AI", meta = (AllowPrivateAccess = "true"))
 	UBehaviorTree* BehaviorTreeAsset;
+
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
+	UCMonsterStateComponent* StateComp;
 
 protected:
 	FName MonsterName;
