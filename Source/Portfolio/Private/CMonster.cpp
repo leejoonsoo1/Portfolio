@@ -98,3 +98,8 @@ float ACMonster::GetDamage()
 {
 	return 0.0f;
 }
+
+void ACMonster::Attack(UAnimMontage* InAnimMontage, float InRate, FName InSectionName)
+{
+	PlayAnimMontage(InAnimMontage, InRate, InSectionName);
+}

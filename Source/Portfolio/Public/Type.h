@@ -41,6 +41,9 @@ enum class EMonsterStateType : uint8
 {
 	Ground		UMETA(DisplayName = "Ground"),
 	Fly			UMETA(DisplayName = "Fly"),
+
+	Calm		UMETA(DispalayName = "Calm"),
+	Alert		UMETA(DisplayName = "Alert"),
 	Tired		UMETA(DisplayName = "Tired"),
 	Enraged		UMETA(DisplayName = "Enraged"),
 	Stunned		UMETA(DisplayName = "Stunned"),

@@ -32,7 +32,12 @@ ACAIController_Monster::ACAIController_Monster()
 	TeamID = 1;
 	bDrawRange = true;
 	AdjustHeight = 64;
-	BehaviorRange = 150;
+	BehaviorRange = 1500;
+}
+
+float ACAIController_Monster::GetSightRadius()
+{
+	return Sight->SightRadius;
 }
 
 void ACAIController_Monster::OnPossess(APawn* InPawn)
@@ -101,7 +106,6 @@ void ACAIController_Monster::OnPerceptionUpdated(const TArray<AActor*>& UpdatedA
 	if (TargetActor)
 	{
 		BlackboardComp->SetValueAsObject("OtherActorKey", TargetActor);
-
 		//FRotator LookAtRotation = (TargetActor->GetActorLocation() - GetPawn()->GetActorLocation()).Rotation();
 		//GetPawn()->SetActorRotation(FRotator(0, LookAtRotation.Yaw, 0));
 	}

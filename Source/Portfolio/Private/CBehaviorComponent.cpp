@@ -3,7 +3,6 @@
 
 UCBehaviorComponent::UCBehaviorComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
 
 }
 

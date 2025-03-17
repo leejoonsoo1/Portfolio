@@ -75,9 +75,20 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 		return;
 	}
 
-	// Set AttackMode()
-	//if (Distance < AIC->GetBehaviorRange())
+	// Set AttackMode
+	if (Distance < AIC->GetBehaviorRange())
+	{
+		MonsterStateComp->SetAlertMode();
+		BehaviorComp->SetAttackMode();
 
-	// Set ApproachMode()
-	//if (Distance < AIC->GetSightR)
+		return;
+	}
+
+	// Set ApproachMode
+	if (Distance < AIC->GetSightRadius())
+	{
+		BehaviorComp->SetApproachMode();
+
+		return;
+	}
 }

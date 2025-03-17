@@ -27,7 +27,6 @@ ACMonster_Rathalos::ACMonster_Rathalos()
 	GetCharacterMovement()->MaxFlySpeed = 1200.f;
 	GetCharacterMovement()->BrakingDecelerationFlying = 500.f;
 	GetCharacterMovement()->MaxWalkSpeed = 500.f;
-	
 }
 
 void ACMonster_Rathalos::BeginPlay()
@@ -51,7 +50,6 @@ void ACMonster_Rathalos::BeginPlay()
 		return;
 	}
 }
-
 
 void ACMonster_Rathalos::LoadData()
 {
@@ -84,4 +82,9 @@ float ACMonster_Rathalos::GetDamage()
 	Super::GetDamage();
 
 	return MonsterDamage;
+}
+
+void ACMonster_Rathalos::Attack(UAnimMontage* InAnimMontage, float InRate, FName InStartSectionName)
+{
+	Super::Attack(InAnimMontage, InRate, InStartSectionName);
 }

@@ -85,5 +85,4 @@ private:
 
 private:
 	UBlackboardComponent* BlackboardComp;
-		
 };

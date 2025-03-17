@@ -18,10 +18,15 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	UFUNCTION(BlueprintPure)
 	FORCEINLINE EMonsterStateType GetMonsterState() const { return MonsterState; }
+
 public:
 	void SetGroundMode();
 	void SetFlyMode();
+
+	void SetCalmMode();
+	void SetAlertMode();
 	void SetTiredMode();
 	void EnragedMode();
 	void StunnedMode();

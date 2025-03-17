@@ -58,15 +58,22 @@ public:
 	virtual FName GetName();
 	virtual float GetHealth();
 	virtual float GetDamage();
-	
+	virtual void Attack(UAnimMontage* InAnimMontage, float InRate, FName INSectionName);
+
 public:
 	FORCEINLINE UDataTable* GetMonsterTable() const { return MonsterDataTable; }
 	FORCEINLINE UBehaviorTree* GetBehaviorTree() { return BehaviorTreeAsset; }
 
 public:
 	void LoadMonsterData(FName InMonsterName);
+
+	UFUNCTION()
 	void HandleStateChanged(EMonsterStateType PrevState, EMonsterStateType NewState);
 	// virtual function으로 beginOverlap 넣을 예정.
+
+public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Component")
+	UCMonsterStateComponent* StateComp;
 
 private:	
 	UPROPERTY(EditDefaultsOnly, Category = "AI", meta = (AllowPrivateAccess = "true"))
@@ -74,10 +81,6 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "AI", meta = (AllowPrivateAccess = "true"))
 	UBehaviorTree* BehaviorTreeAsset;
-
-private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
-	UCMonsterStateComponent* StateComp;
 
 protected:
 	FName MonsterName;
@@ -87,4 +90,3 @@ protected:
 	float WalkSpeed;
 	float FyingSpeed;
 };
-  

@@ -17,6 +17,9 @@ class PORTFOLIO_API ACAIController_Monster : public AAIController
 public:
 	ACAIController_Monster();
 
+	float GetSightRadius();
+	FORCEINLINE float GetBehaviorRange() { return BehaviorRange; }
+
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;
