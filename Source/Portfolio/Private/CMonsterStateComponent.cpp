@@ -10,27 +10,25 @@ void UCMonsterStateComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
-void UCMonsterStateComponent::SetGroundMode()
-{
-	ChangeStateType(EMonsterStateType::Ground);
-}
-
-void UCMonsterStateComponent::SetFlyMode()
-{
-	ChangeStateType(EMonsterStateType::Fly);
-}
-
-void UCMonsterStateComponent::SetCalmMode()
-{
-	ChangeStateType(EMonsterStateType::Calm);
-}
-
-void UCMonsterStateComponent::SetAlertMode()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("UCMonsterStateComponent::SetAlertMode()"));
-
-	ChangeStateType(EMonsterStateType::Alert);
-}
+//void UCMonsterStateComponent::SetGroundMode()
+//{
+//	ChangeStateType(EMonsterStateType::Ground);
+//}
+//
+//void UCMonsterStateComponent::SetFlyMode()
+//{
+//	ChangeStateType(EMonsterStateType::Fly);
+//}
+//
+//void UCMonsterStateComponent::SetCalmMode()
+//{
+//	ChangeStateType(EMonsterStateType::Calm);
+//}
+//
+//void UCMonsterStateComponent::SetAlertMode()
+//{
+//	ChangeStateType(EMonsterStateType::Alert);
+//}
 
 void UCMonsterStateComponent::SetTiredMode()
 {

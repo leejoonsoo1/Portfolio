@@ -36,7 +36,7 @@ public:
 	UAnimMontage* AnimMontage;
 
 	UPROPERTY(EditAnywhere)
-	float PlayRate = 1.f;
+	float PlayRate;
 
 	UPROPERTY(EditAnywhere)
 	FName StartSection;
@@ -49,28 +49,29 @@ public:
 * 삭제 예정
 */
 
-USTRUCT(BlueprintType)
-struct FBattleMontageData : public FTableRowBase
-{
-	GENERATED_BODY()
-
-public:
-	UPROPERTY(EditAnywhere)
-	FString Name;
-
-	UPROPERTY(EditAnywhere)
-	UAnimMontage* AnimMontage;
-
-	UPROPERTY(EditAnywhere)
-	FString Description;
-
-	UPROPERTY(EditAnywhere)
-	float PlayRate = 1.f;
-
-	UPROPERTY(EditAnywhere)
-	FName StartSection;
-};
-
+//USTRUCT(BlueprintType)
+//struct FBattleMontageData : public FTableRowBase
+//{
+//	GENERATED_BODY()
+//
+//public:
+//	UPROPERTY(EditAnywhere)
+//	FString Name;
+//
+//	UPROPERTY(EditAnywhere)
+//	UAnimMontage* AnimMontage;
+//
+//	UPROPERTY(EditAnywhere)
+//	FString Description;
+//
+//	UPROPERTY(EditAnywhere)
+//	float PlayRate = 1.f;
+//
+//	UPROPERTY(EditAnywhere)
+//	FName StartSection;
+//
+//	FBattleMontageData()
+//};
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PORTFOLIO_API UCMontagesComponent : public UActorComponent
@@ -118,5 +119,4 @@ private:
 
 private:
 	TArray<FBasicMontageData*> BasicRows;
-	TArray<FBattleMontageData*> BattleRows;
 };

@@ -22,11 +22,11 @@ public:
 	FORCEINLINE EMonsterStateType GetMonsterState() const { return MonsterState; }
 
 public:
-	void SetGroundMode();
-	void SetFlyMode();
+	//void SetGroundMode();
+	//void SetFlyMode();
 
-	void SetCalmMode();
-	void SetAlertMode();
+	//void SetCalmMode();
+	//void SetAlertMode();
 	void SetTiredMode();
 	void EnragedMode();
 	void StunnedMode();

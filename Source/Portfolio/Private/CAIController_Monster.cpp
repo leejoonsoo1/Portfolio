@@ -10,18 +10,18 @@ ACAIController_Monster::ACAIController_Monster()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	BlackboardComp = CreateDefaultSubobject<UBlackboardComponent>(TEXT("Blackboard"));
-	BehaviorComp = CreateDefaultSubobject<UCBehaviorComponent>(TEXT("BehaviorComp"));
-	PerceptionComp = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("PerceptionComp"));
+	BlackboardComp	= CreateDefaultSubobject<UBlackboardComponent>(TEXT("Blackboard"));
+	BehaviorComp	= CreateDefaultSubobject<UCBehaviorComponent>(TEXT("BehaviorComp"));
+	PerceptionComp	= CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("PerceptionComp"));
 	
-	Sight = CreateDefaultSubobject<UAISenseConfig_Sight>("Sight");
-	Sight->SightRadius = 1500.f;
-	Sight->LoseSightRadius = 1800.f;
+	Sight								= CreateDefaultSubobject<UAISenseConfig_Sight>("Sight");
+	Sight->SightRadius					= 2500.f;
+	Sight->LoseSightRadius				= 3000.f;
 	Sight->PeripheralVisionAngleDegrees = 90.f;
 	Sight->SetMaxAge(0.5f);
 
-	Sight->DetectionByAffiliation.bDetectEnemies = true;
-	Sight->DetectionByAffiliation.bDetectNeutrals = false;
+	Sight->DetectionByAffiliation.bDetectEnemies	= true;
+	Sight->DetectionByAffiliation.bDetectNeutrals	= false;
 	Sight->DetectionByAffiliation.bDetectFriendlies = false;
 
 	// Perception Config
@@ -29,10 +29,10 @@ ACAIController_Monster::ACAIController_Monster()
 	PerceptionComp->SetDominantSense(UAISense_Sight::StaticClass());
 	PerceptionComp->OnPerceptionUpdated.AddDynamic(this, &ACAIController_Monster::OnPerceptionUpdated);
 
-	TeamID = 1;
-	bDrawRange = true;
-	AdjustHeight = 64;
-	BehaviorRange = 1500;
+	TeamID			= 1;
+	bDrawRange		= true;
+	AdjustHeight	= 64;
+	BehaviorRange	= 2000;
 }
 
 float ACAIController_Monster::GetSightRadius()
@@ -80,11 +80,11 @@ void ACAIController_Monster::BeginPlay()
 
 	if (ControlledPawn)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("AI Possessing Pawn!"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("ACAIController_Monster::BeginPlay() : AI Possessing Pawn!"));
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("AI Pawn is NULL!"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("ACAIController_Monster::BeginPlay() : AI Pawn is NULL!"));
 	}
 }
 
@@ -93,7 +93,7 @@ void ACAIController_Monster::OnPerceptionUpdated(const TArray<AActor*>& UpdatedA
 	if (!BlackboardComp) return;
 
 	AActor* TargetActor = nullptr;
-
+	
 	for (AActor* Actor : UpdatedActors)
 	{
 		if (Actor && Actor->ActorHasTag("Player"))
@@ -105,9 +105,49 @@ void ACAIController_Monster::OnPerceptionUpdated(const TArray<AActor*>& UpdatedA
 
 	if (TargetActor)
 	{
+		APawn* ControlledPawn = GetPawn();
+		if (!ControlledPawn || !TargetActor) return;
+
+		// 타겟까지의 벡터 (방향 벡터)
+		FVector ToTargetVector = TargetActor->GetActorLocation() - ControlledPawn->GetActorLocation();
+
+		// 거리 계산 (벡터 길이)
+		float Distance = ToTargetVector.Size();
+
+		// 방향 벡터 (단위 벡터)
+		FVector ToTarget	= ToTargetVector.GetSafeNormal();
+		FRotator LookAtRot	= ToTarget.Rotation();
+
+		// 몬스터의 방향과 타겟 방향의 Yaw 차이.
+		float YawDiff = FMath::FindDeltaAngleDegrees(ControlledPawn->GetActorRotation().Yaw, LookAtRot.Yaw);
+
+		// 디버그 출력
+		//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("YawDiff: %.2f"), YawDiff));
+
+		// 방향 판별
+		ETargetDirectionType Direction;
+
+		if (FMath::Abs(YawDiff) <= 45.f)
+		{
+			Direction = ETargetDirectionType::Front;
+		}
+		else if (YawDiff > 45.f && YawDiff <= 135.f)
+		{
+			Direction = ETargetDirectionType::Right;
+		}
+		else if (YawDiff < -45.f && YawDiff >= -135.f)
+		{
+			Direction = ETargetDirectionType::Left;
+		}
+		else
+		{
+			Direction = ETargetDirectionType::Back;
+		}
+
+		// 블랙 보드에 값 저장.
 		BlackboardComp->SetValueAsObject("OtherActorKey", TargetActor);
-		//FRotator LookAtRotation = (TargetActor->GetActorLocation() - GetPawn()->GetActorLocation()).Rotation();
-		//GetPawn()->SetActorRotation(FRotator(0, LookAtRotation.Yaw, 0));
+		BlackboardComp->SetValueAsEnum("TargetDirectionKey", (uint8)Direction);
+		BlackboardComp->SetValueAsFloat("TargetDistanceKey", Distance);
 	}
 	else
 	{

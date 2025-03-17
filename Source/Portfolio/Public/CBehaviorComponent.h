@@ -75,13 +75,16 @@ public:
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "BlackboardKeyName", meta = (AllowPrivateAccess = "true"))
-	FName OtherActorKeyName = "OtherActorKey";
+	FName OtherActorKeyName;
 
 	UPROPERTY(EditDefaultsOnly, Category = "BlackboardKeyName", meta = (AllowPrivateAccess = "true"))
-	FName LocationKeyName = "LocationKey";
+	FName LocationKeyName;
 
 	UPROPERTY(EditDefaultsOnly, Category = "BlackboardKeyName", meta = (AllowPrivateAccess = "true"))
-	FName BehaviorKeyName = "BehaviorKey";
+	FName BehaviorKeyName;
+
+	UPROPERTY(EditDefaultsOnly, Category = "BlackboardKeyName", meta = (AllowPrivateAccess = "true"))
+	FName AngleKeyName;
 
 private:
 	UBlackboardComponent* BlackboardComp;

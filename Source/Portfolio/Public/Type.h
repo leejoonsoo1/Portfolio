@@ -37,12 +37,22 @@ enum class EWeaponType : uint8
 };
 
 UENUM(BlueprintType)
+enum class EMonsterEmotionStateType : uint8
+{
+	Calm		UMETA(DispalyName = "Calm"),
+	Alert		UMETA(DisplayName = "Alert"),
+	Tired		UMETA(DisplayName = "Tired"),
+	Enraged		UMETA(DisplayName = "Enraged"),
+	Max         UMETA(Hidden)
+};
+
+UENUM(BlueprintType)
 enum class EMonsterStateType : uint8
 {
 	Ground		UMETA(DisplayName = "Ground"),
 	Fly			UMETA(DisplayName = "Fly"),
 
-	Calm		UMETA(DispalayName = "Calm"),
+	Calm		UMETA(DisplayName = "Calm"),
 	Alert		UMETA(DisplayName = "Alert"),
 	Tired		UMETA(DisplayName = "Tired"),
 	Enraged		UMETA(DisplayName = "Enraged"),
@@ -59,7 +69,7 @@ enum class EBehaviorType : uint8
 	Wait		UMETA(DisplayName = "Wait"),	
 	Approach 	UMETA(DisplayName = "Approach"),
 	Attack		UMETA(DisplayName = "Attack"),
-	Special		UMETA(DisplayName = "Specail"),
+	Special		UMETA(DisplayName = "Special"),
 	Patrol 		UMETA(DisplayName = "Patrol"),
 	Flinch		UMETA(DisplayName = "Flinch"),
 	RunAway		UMETA(DisplayName = "RunAway"),
@@ -68,4 +78,13 @@ enum class EBehaviorType : uint8
 	Land		UMETA(DisplayName = "Land"),
 	Takeoff		UMETA(DisplayName = "Takeoff"),
 	Max			UMETA(Hidden)
+};
+
+UENUM(BlueprintType)
+enum class ETargetDirectionType : uint8
+{
+	Front	UMETA(DisplayName = "Front"),
+	Left	UMETA(DisplayName = "Left"),
+	Right	UMETA(DisplayName = "Right"),
+	Back	UMETA(DisplayName = "Back")
 };

@@ -1,6 +1,6 @@
 #include "CBTTaskNode_Attack.h"
-#include "CMonster.h"
 #include "CAIController_Monster.h"
+#include "CMonster.h"
 #include "CMonsterStateComponent.h"
 #include "CBehaviorComponent.h"
 
@@ -89,6 +89,4 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 	}
 
 	UCMonsterStateComponent* StateComp = Cast<UCMonsterStateComponent>(Monster);
-	
-	if ()
 }

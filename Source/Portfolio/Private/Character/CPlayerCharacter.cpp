@@ -38,8 +38,8 @@ ACPlayerCharacter::ACPlayerCharacter()
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = false;
-	bUseControllerRotationRoll = false;
+	bUseControllerRotationYaw	= false;
+	bUseControllerRotationRoll	= false;
 
 	// Configure character movement
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
@@ -47,12 +47,12 @@ ACPlayerCharacter::ACPlayerCharacter()
 
 	// Note: For faster iteration times these variables, and many more, can be tweaked in the Character Blueprint
 	// instead of recompiling to adjust them
-	GetCharacterMovement()->JumpZVelocity = 700.f;
-	GetCharacterMovement()->AirControl = 0.35f;
-	GetCharacterMovement()->MaxWalkSpeed = 500.f;
-	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
-	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
-	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
+	GetCharacterMovement()->JumpZVelocity				= 700.f;
+	GetCharacterMovement()->AirControl					= 0.35f;
+	GetCharacterMovement()->MaxWalkSpeed				= 500.f;
+	GetCharacterMovement()->MinAnalogWalkSpeed			= 20.f;
+	GetCharacterMovement()->BrakingDecelerationWalking	= 2000.f;
+	GetCharacterMovement()->BrakingDecelerationFalling	= 1500.0f;
 
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
@@ -66,18 +66,18 @@ ACPlayerCharacter::ACPlayerCharacter()
 	CameraComp->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 	// Montage Comp
-	MontagesComp = CreateDefaultSubobject<UCMontagesComponent>("MontagesComp");
+	MontagesComp	= CreateDefaultSubobject<UCMontagesComponent>("MontagesComp");
 
 	// State Comp
-	StateComp = CreateDefaultSubobject<UCStateComponent>("StateComp");
+	StateComp		= CreateDefaultSubobject<UCStateComponent>("StateComp");
 
 	// Attachment Comp
-	AttachmentComp = CreateDefaultSubobject<UCAttachment>("AttachComp");
+	AttachmentComp	= CreateDefaultSubobject<UCAttachment>("AttachComp");
 
 	// Status
 	OriginWalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
-	SprintSpeed = GetCharacterMovement()->MaxWalkSpeed + 350.f;
-	RunningSpeed = GetCharacterMovement()->MaxWalkSpeed;
+	SprintSpeed		= GetCharacterMovement()->MaxWalkSpeed + 350.f;
+	RunningSpeed	= GetCharacterMovement()->MaxWalkSpeed;
 
 	// Great Sword DataTable에서 받아올 예정.
 	EqWalkSpeed = OriginWalkSpeed - 200.f;
@@ -112,7 +112,7 @@ void ACPlayerCharacter::BeginPlay()
 
 	// 입력이 다른 입력을 방해하는 경우를 방지하는데 도움.
 	AttackAction->bConsumeInput = false;
-	MoveAction->bConsumeInput = false;
+	MoveAction->bConsumeInput	= false;
 }
 
 void ACPlayerCharacter::Move(const FInputActionValue& Value)
@@ -127,10 +127,10 @@ void ACPlayerCharacter::Move(const FInputActionValue& Value)
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
 		// get forward vector
-		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+		const FVector ForwardDirection	= FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 
 		// get right vector 
-		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		const FVector RightDirection	= FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
 		// add movement 
 		AddMovementInput(ForwardDirection, MovementVector.Y);

@@ -25,7 +25,7 @@ public:
 	FName Name;
 
 	UPROPERTY(EditAnywhere, Category = "Monster")
-	FName Description;
+	FString Description;
 
 	UPROPERTY(EditAnywhere, Category = "Monster")
 	float Health;
@@ -84,7 +84,7 @@ private:
 
 protected:
 	FName MonsterName;
-	FName MonsterDescription;
+	FString MonsterDescription;
 	float MonsterHealth;
 	float MonsterDamage;
 	float WalkSpeed;

@@ -4,7 +4,10 @@
 // Sets default values
 ACWeapon::ACWeapon()
 {
-
+	WeaponName		= NAME_None;
+	WeaponType		= EWeaponType::Unarmed;
+	WeaponDamage	= 100.f;
+	WeaponMesh		= nullptr;
 }
 
 void ACWeapon::Attack()

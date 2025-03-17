@@ -3,7 +3,9 @@
 
 UCBehaviorComponent::UCBehaviorComponent()
 {
-
+	OtherActorKeyName	= "OtherActorKey";
+	LocationKeyName		= "LocationKey";
+	BehaviorKeyName		= "BehaviorKey";
 }
 
 void UCBehaviorComponent::SetBlackboardComponent(UBlackboardComponent* InBlackboardComp)

@@ -1,9 +1,15 @@
 #include "CMonster.h"
 
-
 ACMonster::ACMonster()
 {
 	StateComp = CreateDefaultSubobject<UCMonsterStateComponent>(TEXT("MonsterStateComp"));
+
+	MonsterName			= NAME_None;
+	MonsterDescription	= TEXT("");
+	MonsterHealth		= 100.f;
+	MonsterDamage		= 10.f;
+	WalkSpeed			= 10.f;
+	FyingSpeed			= 10.f;
 }
 
 void ACMonster::BeginPlay()
