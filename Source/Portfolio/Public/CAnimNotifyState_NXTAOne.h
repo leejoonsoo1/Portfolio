@@ -16,20 +16,19 @@ public:
 	virtual void NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference) override;
 
 private:
-
-	UPROPERTY(EditAnywhere, Category = "True")
+	UPROPERTY(EditAnywhere, Category = "True", meta = (AllowPrivateAccess = "true"))
 	UAnimMontage* AnimMontage_NextCharge;
 
-	UPROPERTY(EditAnywhere, Category = "False")
+	UPROPERTY(EditAnywhere, Category = "False", meta = (AllowPrivateAccess = "true"))
 	UAnimMontage* AnimMontage_NextAttack;
 
-	UPROPERTY(EditAnywhere, Category = "NextMotion")
+	UPROPERTY(EditAnywhere, Category = "NextMotion", meta = (AllowPrivateAccess = "true"))
 	UAnimMontage* AnimMontage_NextAttackStance;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Animation", meta = (AllowPrivateAccess = "true"))
 	float PlayRate = 1.f;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Animation", meta = (AllowPrivateAccess = "true"))
 	FName StartSectionName = NAME_None;
 
 	// 동시 입력이 안됨. 삭제 예정.

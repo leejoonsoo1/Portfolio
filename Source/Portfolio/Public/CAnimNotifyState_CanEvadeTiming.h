@@ -16,19 +16,19 @@ public:
 	virtual void NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference) override;
 
 private:
-	UPROPERTY(EditAnywhere, Category = "False")
+	UPROPERTY(EditAnywhere, Category = "Animation", meta = (AllowPrivateAccess = "true"))
 	UAnimMontage* AnimMontage_LeftEvade;
 
-	UPROPERTY(EditAnywhere, Category = "False")
+	UPROPERTY(EditAnywhere, Category = "Animation", meta = (AllowPrivateAccess = "true"))
 	UAnimMontage* AnimMontage_RightEvade;
 
 	// Back Evade가 나가지 않아 추가함.
-	UPROPERTY(EditAnywhere, Category = "False")
+	UPROPERTY(EditAnywhere, Category = "Animation", meta = (AllowPrivateAccess = "true"))
 	UAnimMontage* AnimMontage_BackEvade;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Animation", meta = (AllowPrivateAccess = "true"))
 	float PlayRate = 1.f;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Animation", meta = (AllowPrivateAccess = "true"))
 	FName StartSectionName = NAME_None;
 };

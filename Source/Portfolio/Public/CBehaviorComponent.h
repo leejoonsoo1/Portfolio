@@ -24,9 +24,6 @@ private:
 
 public:
 	UFUNCTION(Blueprintpure)
-	bool IsIdleMode();
-
-	UFUNCTION(Blueprintpure)
 	bool IsWaitMode();
 
 	UFUNCTION(Blueprintpure)
@@ -57,7 +54,6 @@ public:
 	bool IsTakeoffMode();
 
 public:
-	void SetIdleMode();
 	void SetWaitMode();
 	void SetApproachMode();
 	void SetAttackMode();

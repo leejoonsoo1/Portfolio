@@ -5,6 +5,8 @@
 #include "CMonsterStateComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FMonsterStateChanged, EMonsterStateType, PrevState, EMonsterStateType, NewState);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FMonsterEmotionStateChanged, EMonsterEmotionStateType, PrevState, EMonsterEmotionStateType, NewState);
+
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PORTFOLIO_API UCMonsterStateComponent : public UActorComponent
@@ -21,25 +23,38 @@ public:
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE EMonsterStateType GetMonsterState() const { return MonsterState; }
 
-public:
-	//void SetGroundMode();
-	//void SetFlyMode();
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE EMonsterEmotionStateType GetEmotionState() const { return MonsterEmotion; }
 
-	//void SetCalmMode();
-	//void SetAlertMode();
+public:
+
+
+	// EMonsterEmotionStateType
+	void SetCalmMode();
+	void SetAlertMode();
 	void SetTiredMode();
 	void EnragedMode();
-	void StunnedMode();
+
+	// EMonsterStateType
+	//void SetGroundMode();
+	//void SetFlyMode();
+	void SetIdleMode();
+	void SetActionMode();
+	void SetStunnedMode();
 	void SetKnockdownMode();
 	void SetDeadMode();
 
 private:
 	void ChangeStateType(EMonsterStateType InNewType);
+	void ChangeEmotionType(EMonsterEmotionStateType InNewType);
 
 public:
 	UPROPERTY(BlueprintAssignable)
 	FMonsterStateChanged OnStateChanged;
 
+	UPROPERTY(BlueprintAssignable)
+	FMonsterEmotionStateChanged OnEmotionStateChanged;
 private:
 	EMonsterStateType MonsterState;
+	EMonsterEmotionStateType MonsterEmotion;
 };

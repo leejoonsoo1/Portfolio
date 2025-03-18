@@ -72,11 +72,11 @@ void ACMonster::HandleStateChanged(EMonsterStateType PrevState, EMonsterStateTyp
 		case EMonsterStateType::Fly:
 			UE_LOG(LogTemp, Warning, TEXT("Monster Mode: Fly."));
 			break;
-		case EMonsterStateType::Tired:
-			UE_LOG(LogTemp, Warning, TEXT("Monster Mode: Tired."));
+		case EMonsterStateType::Idle:
+			UE_LOG(LogTemp, Warning, TEXT("Monster Mode: Idle."));
 			break;
-		case EMonsterStateType::Enraged:
-			UE_LOG(LogTemp, Warning, TEXT("Monster Mode: Enraged."));
+		case EMonsterStateType::Action:
+			UE_LOG(LogTemp, Warning, TEXT("Monster Mode: Action."));
 			break;
 		case EMonsterStateType::Stunned:
 			UE_LOG(LogTemp, Warning, TEXT("Monster Mode: Stunned."));
@@ -107,5 +107,6 @@ float ACMonster::GetDamage()
 
 void ACMonster::Attack(UAnimMontage* InAnimMontage, float InRate, FName InSectionName)
 {
+	OnAttackCollisionStart();
 	PlayAnimMontage(InAnimMontage, InRate, InSectionName);
 }

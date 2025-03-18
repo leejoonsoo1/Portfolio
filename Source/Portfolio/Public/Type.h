@@ -52,10 +52,8 @@ enum class EMonsterStateType : uint8
 	Ground		UMETA(DisplayName = "Ground"),
 	Fly			UMETA(DisplayName = "Fly"),
 
-	Calm		UMETA(DisplayName = "Calm"),
-	Alert		UMETA(DisplayName = "Alert"),
-	Tired		UMETA(DisplayName = "Tired"),
-	Enraged		UMETA(DisplayName = "Enraged"),
+	Idle		UMETA(DisplayName = "Idle"),
+	Action		UMETA(DisplayName = "Action"),
 	Stunned		UMETA(DisplayName = "Stunned"),
 	Knockdown	UMETA(DisplayName = "Knockdown"),
 	Dead		UMETA(DisplayName = "Dead"),
@@ -65,7 +63,6 @@ enum class EMonsterStateType : uint8
 UENUM(BlueprintType)
 enum class EBehaviorType : uint8
 {
-	Idle		UMETA(DisplayName = "Idle"), 
 	Wait		UMETA(DisplayName = "Wait"),	
 	Approach 	UMETA(DisplayName = "Approach"),
 	Attack		UMETA(DisplayName = "Attack"),

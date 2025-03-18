@@ -24,11 +24,6 @@ void UCBehaviorComponent::ChangeType(EBehaviorType InNewType)
 	BlackboardComp->SetValueAsEnum(BehaviorKeyName, (uint8)InNewType);
 }
 
-bool UCBehaviorComponent::IsIdleMode()
-{
-	return GetType() == EBehaviorType::Idle;
-}
-
 bool UCBehaviorComponent::IsWaitMode()
 {
 	return GetType() == EBehaviorType::Wait;
@@ -77,11 +72,6 @@ bool UCBehaviorComponent::IsLandMode()
 bool UCBehaviorComponent::IsTakeoffMode()
 {
 	return GetType() == EBehaviorType::Takeoff;
-}
-
-void UCBehaviorComponent::SetIdleMode()
-{
-	ChangeType(EBehaviorType::Idle);
 }
 
 void UCBehaviorComponent::SetWaitMode()

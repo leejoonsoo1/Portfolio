@@ -10,51 +10,70 @@ void UCMonsterStateComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
-//void UCMonsterStateComponent::SetGroundMode()
-//{
-//	ChangeStateType(EMonsterStateType::Ground);
-//}
-//
-//void UCMonsterStateComponent::SetFlyMode()
-//{
-//	ChangeStateType(EMonsterStateType::Fly);
-//}
-//
-//void UCMonsterStateComponent::SetCalmMode()
-//{
-//	ChangeStateType(EMonsterStateType::Calm);
-//}
-//
-//void UCMonsterStateComponent::SetAlertMode()
-//{
-//	ChangeStateType(EMonsterStateType::Alert);
-//}
+// EMonsterEmotionStateType
+void UCMonsterStateComponent::SetCalmMode()
+{
+	ChangeEmotionType(EMonsterEmotionStateType::Calm);
+}
 
+// EMonsterEmotionStateType
+void UCMonsterStateComponent::SetAlertMode()
+{
+	ChangeEmotionType(EMonsterEmotionStateType::Alert);
+}
+
+// EMonsterEmotionStateType
 void UCMonsterStateComponent::SetTiredMode()
 {
-	ChangeStateType(EMonsterStateType::Tired);
+	ChangeEmotionType(EMonsterEmotionStateType::Tired);
 }
 
+// EMonsterEmotionStateType
 void UCMonsterStateComponent::EnragedMode()
 {
-	ChangeStateType(EMonsterStateType::Enraged);
+	ChangeEmotionType(EMonsterEmotionStateType::Enraged);
 }
 
-void UCMonsterStateComponent::StunnedMode()
+// EMonsterEmotionStateType
+void UCMonsterStateComponent::ChangeEmotionType(EMonsterEmotionStateType InNewType)
+{
+	EMonsterEmotionStateType PrevType = MonsterEmotion;
+	MonsterEmotion = InNewType;
+
+	OnEmotionStateChanged.Broadcast(PrevType, MonsterEmotion);
+}
+
+// EMonsterStateType
+void UCMonsterStateComponent::SetIdleMode()
+{
+	ChangeStateType(EMonsterStateType::Idle);
+}
+
+// EMonsterStateType
+void UCMonsterStateComponent::SetActionMode()
+{
+	ChangeStateType(EMonsterStateType::Action);
+}
+
+// EMonsterStateType
+void UCMonsterStateComponent::SetStunnedMode()
 {
 	ChangeStateType(EMonsterStateType::Stunned);
 }
 
+// EMonsterStateType
 void UCMonsterStateComponent::SetKnockdownMode()
 {
 	ChangeStateType(EMonsterStateType::Knockdown);
 }
 
+// EMonsterStateType
 void UCMonsterStateComponent::SetDeadMode()
 {
 	ChangeStateType(EMonsterStateType::Dead);
 }
 
+// EMonsterStateType
 void UCMonsterStateComponent::ChangeStateType(EMonsterStateType InNewType)
 {
 	EMonsterStateType PrevType = MonsterState;

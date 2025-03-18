@@ -55,11 +55,15 @@ protected:
 	virtual void LoadData();
 
 public:
+	virtual void Attack(UAnimMontage* InAnimMontage, float InRate, FName INSectionName);
 	virtual FName GetName();
 	virtual float GetHealth();
 	virtual float GetDamage();
-	virtual void Attack(UAnimMontage* InAnimMontage, float InRate, FName INSectionName);
 
+public:
+	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
+	void OnAttackCollisionStart();
+		
 public:
 	FORCEINLINE UDataTable* GetMonsterTable() const { return MonsterDataTable; }
 	FORCEINLINE UBehaviorTree* GetBehaviorTree() { return BehaviorTreeAsset; }
