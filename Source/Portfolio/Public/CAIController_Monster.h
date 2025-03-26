@@ -64,4 +64,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "AI", meta = (AllowPrivateAccess = "true"))
 	UBlackboardComponent* BlackboardComp;
+
+private:
+	float LastRoarTime = 0.f;
+	const float RoarInterval = 120.f;
 };

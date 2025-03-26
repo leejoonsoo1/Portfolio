@@ -10,6 +10,14 @@ void UCAnimInstance::NativeBeginPlay()
 	Super::NativeBeginPlay();
 
 	UCStateComponent* StateComp = Cast<UCStateComponent>(TryGetPawnOwner()->GetComponentByClass(UCStateComponent::StaticClass()));
+
+	if (!StateComp)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UCAnimInstance::NativeBeginPlay : StateComp is nullptr"));
+
+		return;
+	}
+
 	StateComp->OnWeaponTypeChanged.AddDynamic(this, &UCAnimInstance::OnWeaponTypeChanged);
 }
 

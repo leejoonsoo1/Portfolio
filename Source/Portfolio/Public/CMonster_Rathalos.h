@@ -28,7 +28,8 @@ public:
 	virtual FName GetName() override;
 	virtual float GetHealth() override;
 	virtual float GetDamage() override;
-	virtual void Attack(UAnimMontage* InAnimMontage, float InRate = 1.f, FName InStartSectionName = NAME_None) override;
+	virtual void PlayAttackMontage(UAnimMontage* InAnimMontage, float InRate = 1.f, FName InStartSectionName = NAME_None) override;
+	virtual void PlayRoarMontage(UAnimMontage* InAnimMontage, float InRate = 1.f, FName InStartSecitonName = NAME_None) override;
 
 	// virtual function으로 beginOverlap 넣을 예정.
 

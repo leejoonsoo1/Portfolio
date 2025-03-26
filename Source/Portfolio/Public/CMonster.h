@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "CMonsterStateComponent.h"
+#include "CMonsterEmotionComponent.h"
 #include "Components/ActorComponent.h"
 #include "GameFramework/Character.h"
 #include "CMonster.generated.h"
@@ -40,8 +41,6 @@ public:
 	float FyingSpeed;
 };
 
-class UCMonsterStateComponent;
-
 UCLASS()
 class PORTFOLIO_API ACMonster : public ACharacter
 {
@@ -55,15 +54,27 @@ protected:
 	virtual void LoadData();
 
 public:
-	virtual void Attack(UAnimMontage* InAnimMontage, float InRate, FName INSectionName);
+	virtual void PlayAttackMontage(UAnimMontage* InAnimMontage, float InRate, FName InSectionName);
+	virtual void PlayRoarMontage(UAnimMontage* InAnimMontage, float InRate, FName InSectionName);
 	virtual FName GetName();
 	virtual float GetHealth();
 	virtual float GetDamage();
 
 public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
-	void OnAttackCollisionStart();
-		
+	void OnAttackCollisionHead();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
+	void OnAttackCollisionTail();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
+	void OnAttackCollisionFeet();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
+	void OffAttackCollisionHead();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
+	void OffAttackCollisionTail();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
+	void OffAttackCollisionFeet();
+
 public:
 	FORCEINLINE UDataTable* GetMonsterTable() const { return MonsterDataTable; }
 	FORCEINLINE UBehaviorTree* GetBehaviorTree() { return BehaviorTreeAsset; }
@@ -73,11 +84,16 @@ public:
 
 	UFUNCTION()
 	void HandleStateChanged(EMonsterStateType PrevState, EMonsterStateType NewState);
-	// virtual function으로 beginOverlap 넣을 예정.
+
+	UFUNCTION()
+	void HandleEmotionChanged(EMonsterEmotionStateType PrevState, EMonsterEmotionStateType NewState);
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Component")
 	UCMonsterStateComponent* StateComp;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Component")
+	UCMonsterEmotionComponent* EmotionComp;
 
 private:	
 	UPROPERTY(EditDefaultsOnly, Category = "AI", meta = (AllowPrivateAccess = "true"))
@@ -85,6 +101,10 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "AI", meta = (AllowPrivateAccess = "true"))
 	UBehaviorTree* BehaviorTreeAsset;
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "AI")
+	UAnimMontage* RoarMontage;
 
 protected:
 	FName MonsterName;

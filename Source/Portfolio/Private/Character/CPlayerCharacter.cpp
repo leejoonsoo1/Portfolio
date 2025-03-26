@@ -168,10 +168,10 @@ void ACPlayerCharacter::Look(const FInputActionValue& Value)
 
 void ACPlayerCharacter::Evade(const FInputActionValue& value)
 {
-	if (StateComp->IsActionMode()) return;
-	if (StateComp->IsEquipMode()) return;
+	if (StateComp->IsActionMode())	return;
+	if (StateComp->IsEquipMode())	return;
 	if (StateComp->IsUnEquipMode()) return;
-	if (StateComp->IsEvadeMode()) return;
+	if (StateComp->IsEvadeMode())	return;
 
 	if (StateComp->IsIdleMode())
 	{
@@ -225,9 +225,9 @@ void ACPlayerCharacter::EndEquipping()
 
 void ACPlayerCharacter::UnEquip()
 {
-	if (StateComp->IsEvadeMode()) return;
-	if (StateComp->IsEquipMode()) return;
-	if (StateComp->IsActionMode()) return;
+	if (StateComp->IsEvadeMode())	return;
+	if (StateComp->IsEquipMode())	return;
+	if (StateComp->IsActionMode())	return;
 
 	if (!StateComp->IsUnEquipMode() && !StateComp->IsUnarmedMode())
 	{
@@ -300,8 +300,8 @@ void ACPlayerCharacter::Running(const FInputActionValue& value)
 
 void ACPlayerCharacter::Attack(const FInputActionValue& value)
 {
-	if (StateComp->IsEvadeMode()) return;
-	if (StateComp->IsEquipMode()) return;
+	if (StateComp->IsEvadeMode())	return;
+	if (StateComp->IsEquipMode())	return;
 	if (StateComp->IsUnEquipMode()) return;
 
 	if (!StateComp->IsUnarmedMode() && !StateComp->IsActionMode())
@@ -345,6 +345,24 @@ void ACPlayerCharacter::ReleaseAttackTwo(const FInputActionValue& value)
 	
 }
 
+void ACPlayerCharacter::Hitted()
+{
+	if (!StateComp)		return;
+	if (!MontagesComp)	return;
+
+	StateComp->SetHittedMode();
+	MontagesComp->PlayHitted(TEXT("Hitted"), StateComp->GetEWeaponType());
+}
+
+void ACPlayerCharacter::Groggy()
+{
+	if (!StateComp)		return;
+	if (!MontagesComp)	return;
+
+	StateComp->SetGroggyMode();
+	MontagesComp->PlayGroggy(TEXT("Groggy"), StateComp->GetEWeaponType());
+}
+
 void ACPlayerCharacter::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
 {
 	switch (InNewType)
@@ -367,7 +385,12 @@ void ACPlayerCharacter::OnStateTypeChanged(EStateType InPrevType, EStateType InN
 	case EStateType::Action:
 		BeginAction();
 		break;
-
+	case EStateType::Hitted:
+		Hitted();
+		break;
+	case EStateType::Groggy:
+		Groggy();
+		break;
 	default:
 		break;
 	}
@@ -386,7 +409,6 @@ void ACPlayerCharacter::OnWeaponTypeChanged(EWeaponType InPrevType, EWeaponType 
 		GetCharacterMovement()->MaxWalkSpeed = EqWalkSpeed;
 
 		break;
-
 	default:
 		break;
 	}

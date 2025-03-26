@@ -73,7 +73,6 @@ void ACWeapon::LoadWeaponData(FName InWeaponName, EWeaponType InType)
 	}
 }
 
-
 // Called when the game starts or when spawned
 void ACWeapon::BeginPlay()
 {
@@ -83,7 +82,7 @@ void ACWeapon::BeginPlay()
 
 	if (!DT)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Weapon Table can not found! (/Game/DataTable/Weapon)"));
+		UE_LOG(LogTemp, Error, TEXT("ACWeapon::BeginPlay : Weapon Table can not found! (/Game/DataTable/Weapon)"));
 
 		return;
 	}

@@ -16,16 +16,16 @@ void ACGreatSword::BeginPlay()
 
 	if (!OwnerWeaponCharacter)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("ACGreatSword::BeginPlay() : Has no Owner!"));
+		UE_LOG(LogTemp, Warning, TEXT("ACGreatSword::BeginPlay : OwnerWeaponCharacter is nullptr"));
 
 		return;
 	}
 
 	Player = Cast<ACPlayerCharacter>(GetWeaponOwner());
 
-	if (!Player->MontagesComp)
+	if (!Player)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("ACGreatSword::BeginPlay() : Has no montagesComp!"));
+		UE_LOG(LogTemp, Warning, TEXT("ACGreatSword::BeginPlay : Player is nullptr"));
 
 		return;
 	}
@@ -34,7 +34,7 @@ void ACGreatSword::BeginPlay()
 
 	if (!PC)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("ACGreatSword::BeginPlay() : Has no OwnerPawn!"));
+		UE_LOG(LogTemp, Warning, TEXT("ACGreatSword::BeginPlay : PlayerController is nullptr"));
 
 		return;
 	}
@@ -45,29 +45,6 @@ void ACGreatSword::LoadData()
 	Super::LoadData();
 
 	LoadWeaponData(TEXT("Greatsword of the Royal"), EWeaponType::GreatSword);
-
-	/*
-    if (WeaponDataTable)
-    {
-		// 데이터 테이블의 모든 행을 가져옴
-        TArray<FName> RowNames = WeaponDataTable->GetRowNames();
-
-		for (const FName& RowName : RowNames)
-		{
-			// 각 Row를 순회하면서 데이터 가져오기
-			FWeaponData* WeaponData = WeaponDataTable->FindRow<FWeaponData>(RowName, TEXT(""));
-
-			if (WeaponData->WeaponType == EWeaponType::GreatSword && WeaponData->WeaponName == TEXT("Greatsword of the Royal"))
-			{
-				Damage = WeaponData->Damage;
-				Mesh = WeaponData->Mesh;
-				WeaponType = WeaponData->WeaponType;
-
-				return;
-			}
-		}
-    }
-	*/
 }
 
 void ACGreatSword::Attack()

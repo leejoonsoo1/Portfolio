@@ -12,10 +12,20 @@ void UCAnimNotifyState_Attach::NotifyBegin(USkeletalMeshComponent* MeshComp, UAn
 	Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);
 	
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
-	if (!Player) return;
+	if (!Player)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Attach::NotifyBegin : Player is nullptr"));
+
+		return;
+	}
 
 	UCAttachment* StateComp = Player->FindComponentByClass<UCAttachment>();
-	if (!StateComp) return;
+	if (!StateComp)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Attach::NotifyBegin : StateComp is nullptr"));
+
+		return;
+	}
 
 	StateComp->ComponentAttachTo(Player->GetMesh(), "R_Weapon_01");
 
@@ -23,7 +33,6 @@ void UCAnimNotifyState_Attach::NotifyBegin(USkeletalMeshComponent* MeshComp, UAn
 	{
 		Player->StateComp->SetGreatSwordMode();
 	}
-
 }
 
 void UCAnimNotifyState_Attach::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
@@ -31,10 +40,20 @@ void UCAnimNotifyState_Attach::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnim
 	Super::NotifyEnd(MeshComp, Animation);
 
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
-	if (!Player) return;
+	if (!Player)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Attach::NotifyEnd : Player is nullptr"));
+
+		return;
+	}
 
 	UCAttachment* StateComp = Player->FindComponentByClass<UCAttachment>();
-	if (!StateComp) return;
+	if (!StateComp)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Attach::NotifyEnd : StateComp is nullptr"));
+
+		return;
+	}
 
 	StateComp->ComponentAttachTo(Player->GetMesh(), "L_Weapon_01");
 }

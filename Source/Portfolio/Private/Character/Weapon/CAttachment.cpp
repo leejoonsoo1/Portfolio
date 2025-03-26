@@ -17,14 +17,14 @@ void UCAttachment::BeginPlay()
 
 	if (!OwnerCharacter)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAttachment : OwnerCharacter is null!"));
+		UE_LOG(LogTemp, Warning, TEXT("UCAttachment::BeginPlay : OwnerCharacter is null!"));
 
 		return;
 	}
 
 	if (!OwnerCharacter->GetMesh())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAttachment : OwnerCharacter has no mesh"));
+		UE_LOG(LogTemp, Warning, TEXT("UCAttachment::BeginPlay : OwnerCharacter has no mesh"));
 
 		return;
 	}
@@ -35,7 +35,7 @@ void UCAttachment::BeginPlay()
 	*/
 	if (!Mesh)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAttachment : Mesh is null!"));
+		UE_LOG(LogTemp, Warning, TEXT("UCAttachment::BeginPlay : Mesh is null!"));
 
 		return;
 	}
@@ -54,7 +54,7 @@ void UCAttachment::ComponentAttachTo(USkeletalMeshComponent* OwnerMesh, FName So
 	{
 		if (!OwnerCharacter || !OwnerCharacter->GetMesh())
 		{
-			UE_LOG(LogTemp, Error, TEXT("UCAttachment: Failed to attch - OwnerCharacter or Mesh is null!"));
+			UE_LOG(LogTemp, Error, TEXT("UCAttachment::ComponentAttachTo : Failed to attch - OwnerCharacter or Mesh is null!"));
 
 			return;
 		}
@@ -64,7 +64,7 @@ void UCAttachment::ComponentAttachTo(USkeletalMeshComponent* OwnerMesh, FName So
 
 	if (!Mesh)
 	{
-		UE_LOG(LogTemp, Error, TEXT("UCAttachment: Failed to attch - Attach Mesh is null!"));
+		UE_LOG(LogTemp, Error, TEXT("UCAttachment::ComponentAttachTo : Failed to attch - Attach Mesh is null!"));
 
 		return;
 	}
@@ -76,14 +76,14 @@ void UCAttachment::SpawnWeapon()
 {
 	if (!WeaponClass)
 	{
-		UE_LOG(LogTemp, Error, TEXT("WeaponClass is not set in Attachment Component."));
+		UE_LOG(LogTemp, Error, TEXT("UCAttachment::SpawnWeapon : WeaponClass is not set in Attachment Component."));
 		return;
 	}
 
 	UWorld* World = GetWorld();
 	if (!World)
 	{
-		UE_LOG(LogTemp, Error, TEXT("SpawnWeapon: World is null!"));
+		UE_LOG(LogTemp, Error, TEXT("UCAttachment::SpawnWeapon : SpawnWeapon: World is null!"));
 		return;
 	}
 
@@ -103,7 +103,7 @@ void UCAttachment::SpawnWeapon()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("SpawnWeapon: SpawnActorDeferred failed!"));
+		UE_LOG(LogTemp, Error, TEXT("UCAttachment::SpawnWeapon : SpawnActorDeferred failed!"));
 	}
 
 	if (CurrentWeapon)

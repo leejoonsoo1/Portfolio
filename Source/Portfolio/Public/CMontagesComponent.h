@@ -101,8 +101,8 @@ protected:
 	bool GetRow(TArray<T*> InRows, T &InRow, FName InRowName, EWeaponType InWeaponType);
 
 public:
-	void PlayHitted();
-	void PlayGimmicked();
+	void PlayHitted(FName InRowName, EWeaponType InWeaponType);
+	void PlayGroggy(FName InRowName, EWeaponType InWeaponType);
 
 private:
 	UFUNCTION()

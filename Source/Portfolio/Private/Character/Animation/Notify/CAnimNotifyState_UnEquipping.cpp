@@ -12,9 +12,12 @@ void UCAnimNotifyState_UnEquipping::NotifyBegin(USkeletalMeshComponent* MeshComp
 
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 
-	if (!Player) return;
+	if (!Player)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_UnEquipping::NotifyBegin : Player is nullptr"));
 
-	
+		return;
+	}
 }
 
 void UCAnimNotifyState_UnEquipping::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
@@ -23,7 +26,12 @@ void UCAnimNotifyState_UnEquipping::NotifyEnd(USkeletalMeshComponent* MeshComp, 
 
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 
-	if (!Player) return;
+	if (!Player)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_UnEquipping::NotifyEnd : Player is nullptr"));
+
+		return;
+	}
 
 	Player->EndUnEquipping();
 }

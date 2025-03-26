@@ -1,0 +1,2 @@
+#include "CGameMode.h"
+

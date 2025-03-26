@@ -12,7 +12,12 @@ void UCAnimNotify_Evade::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceB
 
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 	
-	if (!Player) return;
+	if (!Player)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotify_Evade::Notify"));
+
+		return;
+	}
 
  	Player->EndEvade();
 }

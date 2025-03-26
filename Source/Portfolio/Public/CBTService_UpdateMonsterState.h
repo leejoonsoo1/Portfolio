@@ -18,4 +18,8 @@ public:
 
 protected:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
+
+private:
+	UPROPERTY(EditDefaultsOnly, Category = "Distance", meta = (AllowPrivateAccess = "true"))
+	float StopApproachDistance = 1500.f;
 };

@@ -13,6 +13,7 @@ enum class EStateType : uint8
 	UnEquip UMETA(DisplayName = "UnEquip"),
 	Action	UMETA(DisplayName = "Action"),
 	Hitted	UMETA(DisplayName = "Hitted"),
+	Groggy	UMETA(DisplayName = "Groggy"),
 	Dead	UMETA(DisplayName = "Dead"),
 	Max		UMETA(Hidden)
 };

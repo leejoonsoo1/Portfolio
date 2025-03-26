@@ -16,14 +16,23 @@ void UCAnimNotifyState_Equipping::NotifyBegin(USkeletalMeshComponent* MeshComp, 
 	Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 
-	if (!Player) return;
+    if (!Player)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Equipping::NotifyBegin : Player is nullptr"));
+
+        return;
+    }
 
     APlayerController* PlayerController = UGameplayStatics::GetPlayerController(MeshComp->GetWorld(), 0);
 
-    if (PlayerController)
+    if (!PlayerController)
     {
-        PlayerController->DisableInput(PlayerController);
+        UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Equipping::NotifyBegin : PlayerController is nullptr"));
+
+        return;
     }
+    
+    PlayerController->DisableInput(PlayerController);
 }
 
 void UCAnimNotifyState_Equipping::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
@@ -32,13 +41,22 @@ void UCAnimNotifyState_Equipping::NotifyEnd(USkeletalMeshComponent* MeshComp, UA
 
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 	
-    if (!Player) return;
+    if (!Player)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Equipping::NotifyEnd : Player is nullptr"));
+
+        return;
+    }
     
     APlayerController* PlayerController = UGameplayStatics::GetPlayerController(MeshComp->GetWorld(), 0);
 
     if (PlayerController)
     {
-        PlayerController->EnableInput(PlayerController);
-	    Player->EndEquipping();
+        UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Equipping::NotifyEnd : PlayerController is nullptr"));
+
+        return;
     }
+
+    PlayerController->EnableInput(PlayerController);
+    Player->EndEquipping();
 }

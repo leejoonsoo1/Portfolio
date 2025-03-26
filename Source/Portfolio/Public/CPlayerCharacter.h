@@ -109,11 +109,15 @@ protected:
 	void Attack(const FInputActionValue& value);
 	void Charge(const FInputActionValue& value);
 	void AttackTwo(const FInputActionValue& value);
-
+	
 	// bCanCombo를 False로 만드는 함수.
 	// 접근지정자는 바뀔 수 있음.
 	void ReleaseAttack(const FInputActionValue& value);
 	void ReleaseAttackTwo(const FInputActionValue& value);
+
+public:
+	void Hitted();
+	void Groggy();
 
 protected:
 	//virtual void NotifyControllerChanged() override;

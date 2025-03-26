@@ -5,8 +5,6 @@
 #include "CMonsterStateComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FMonsterStateChanged, EMonsterStateType, PrevState, EMonsterStateType, NewState);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FMonsterEmotionStateChanged, EMonsterEmotionStateType, PrevState, EMonsterEmotionStateType, NewState);
-
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PORTFOLIO_API UCMonsterStateComponent : public UActorComponent
@@ -21,20 +19,9 @@ protected:
 
 public:
 	UFUNCTION(BlueprintPure)
-	FORCEINLINE EMonsterStateType GetMonsterState() const { return MonsterState; }
-
-	UFUNCTION(BlueprintPure)
-	FORCEINLINE EMonsterEmotionStateType GetEmotionState() const { return MonsterEmotion; }
+	FORCEINLINE EMonsterStateType GetMonsterState()			{ return MonsterState; }
 
 public:
-
-
-	// EMonsterEmotionStateType
-	void SetCalmMode();
-	void SetAlertMode();
-	void SetTiredMode();
-	void EnragedMode();
-
 	// EMonsterStateType
 	//void SetGroundMode();
 	//void SetFlyMode();
@@ -44,17 +31,28 @@ public:
 	void SetKnockdownMode();
 	void SetDeadMode();
 
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsIdleMode()		{ return MonsterState == EMonsterStateType::Idle; }
+
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsActionMode()		{ return MonsterState == EMonsterStateType::Action; }
+
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool ISStunnedMode()	{ return MonsterState == EMonsterStateType::Stunned; }
+
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool ISKnockdownMode()	{ return MonsterState == EMonsterStateType::Knockdown; }
+
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsDeadMode()		{ return MonsterState == EMonsterStateType::Dead; }
+
 private:
 	void ChangeStateType(EMonsterStateType InNewType);
-	void ChangeEmotionType(EMonsterEmotionStateType InNewType);
 
 public:
 	UPROPERTY(BlueprintAssignable)
 	FMonsterStateChanged OnStateChanged;
 
-	UPROPERTY(BlueprintAssignable)
-	FMonsterEmotionStateChanged OnEmotionStateChanged;
 private:
 	EMonsterStateType MonsterState;
-	EMonsterEmotionStateType MonsterEmotion;
 };
