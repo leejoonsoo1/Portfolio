@@ -7,8 +7,10 @@ FString UCAnimNotify_Attach::GetNotifyName_Implementation() const
 	return "Attach";
 }
 
-void UCAnimNotify_Attach::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
+void UCAnimNotify_Attach::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
+	Super::Notify(MeshComp, Animation, EventReference);
+
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 	if (!Player)
 	{

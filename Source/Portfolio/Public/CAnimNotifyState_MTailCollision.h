@@ -2,13 +2,16 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "CAnimNotifyState_MonsterFly.generated.h"
+#include "CAnimNotifyState_MTailCollision.generated.h"
 
+/**
+ * 
+ */
 UCLASS()
-class PORTFOLIO_API UCAnimNotifyState_MonsterFly : public UAnimNotifyState
+class PORTFOLIO_API UCAnimNotifyState_MTailCollision : public UAnimNotifyState
 {
 	GENERATED_BODY()
-	
+
 public:
 	virtual FString GetNotifyName_Implementation() const override;
 	virtual void NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference) override;

@@ -2,10 +2,15 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "CAnimNotifyState_MonsterFly.generated.h"
+#include "CAnimNotifyState_MFeetCollision.generated.h"
+
+/*	
+ *	2025 03 27
+ *	Monster Feet Collision ON, OFF
+ */
 
 UCLASS()
-class PORTFOLIO_API UCAnimNotifyState_MonsterFly : public UAnimNotifyState
+class PORTFOLIO_API UCAnimNotifyState_MFeetCollision : public UAnimNotifyState
 {
 	GENERATED_BODY()
 	

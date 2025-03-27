@@ -24,7 +24,7 @@ void UCAnimNotifyState_DisableMovement::NotifyBegin(USkeletalMeshComponent* Mesh
 
 void UCAnimNotifyState_DisableMovement::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
-	Super::NotifyEnd(MeshComp, Animation);
+	Super::NotifyEnd(MeshComp, Animation, EventReference);
 
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 

@@ -6,9 +6,9 @@ FString UCAnimNotify_SetMonsterIdleState::GetNotifyName_Implementation() const
 	return "SetMonsterIdleState";
 }
 
-void UCAnimNotify_SetMonsterIdleState::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
+void UCAnimNotify_SetMonsterIdleState::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
-	Super::Notify(MeshComp, Animation);
+	Super::Notify(MeshComp, Animation, EventReference);
 
 	ACMonster* Monster = Cast<ACMonster>(MeshComp->GetOwner());
 

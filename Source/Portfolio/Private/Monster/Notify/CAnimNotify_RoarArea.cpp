@@ -10,7 +10,7 @@ FString UCAnimNotify_RoarArea::GetNotifyName_Implementation() const
 
 void UCAnimNotify_RoarArea::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
-	Super::Notify(MeshComp, Animation);
+	Super::Notify(MeshComp, Animation, EventReference);
 
 	ACMonster* Monster = Cast<ACMonster>(MeshComp->GetOwner());
 

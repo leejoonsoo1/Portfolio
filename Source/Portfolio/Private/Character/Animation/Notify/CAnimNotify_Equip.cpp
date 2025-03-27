@@ -6,9 +6,9 @@ FString UCAnimNotify_Equip::GetNotifyName_Implementation() const
 	return "Equip";
 }
 
-void UCAnimNotify_Equip::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
+void UCAnimNotify_Equip::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
-	Super::Notify(MeshComp, Animation);
+	Super::Notify(MeshComp, Animation, EventReference);
 
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 

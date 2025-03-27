@@ -5,9 +5,9 @@ FString UCAnimNotify_MonsterTransitionMontage::GetNotifyName_Implementation() co
 {
 	return "MonsterTransitionMontage";
 }
-void UCAnimNotify_MonsterTransitionMontage::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
+void UCAnimNotify_MonsterTransitionMontage::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
-	Super::Notify(MeshComp, Animation);
+	Super::Notify(MeshComp, Animation, EventReference);
 
 	ACMonster* Monster = Cast<ACMonster>(MeshComp->GetOwner());
 

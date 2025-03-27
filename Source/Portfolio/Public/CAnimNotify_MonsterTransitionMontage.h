@@ -11,7 +11,7 @@ class PORTFOLIO_API UCAnimNotify_MonsterTransitionMontage : public UAnimNotify
 	
 public:
 	virtual FString GetNotifyName_Implementation() const override;
-	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation) override;
+	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference) override;
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Animation", meta = (AllowPrivateAccess = "true"))

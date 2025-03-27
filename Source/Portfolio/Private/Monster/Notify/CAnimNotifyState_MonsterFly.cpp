@@ -7,9 +7,9 @@ FString UCAnimNotifyState_MonsterFly::GetNotifyName_Implementation() const
 	return "Fly";
 }
 
-void UCAnimNotifyState_MonsterFly::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration)
+void UCAnimNotifyState_MonsterFly::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {
-	Super::NotifyBegin(MeshComp, Animation, TotalDuration);
+	Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);
 
 	ACharacter* Monster = Cast<ACharacter>(MeshComp->GetOwner());
 
@@ -32,9 +32,9 @@ void UCAnimNotifyState_MonsterFly::NotifyBegin(USkeletalMeshComponent* MeshComp,
 	MovementComp->SetMovementMode(EMovementMode::MOVE_Flying);
 }
 
-void UCAnimNotifyState_MonsterFly::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
+void UCAnimNotifyState_MonsterFly::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
-	Super::NotifyEnd(MeshComp, Animation);
+	Super::NotifyEnd(MeshComp, Animation, EventReference);
 
 	ACharacter* Monster = Cast<ACharacter>(MeshComp->GetOwner());
 

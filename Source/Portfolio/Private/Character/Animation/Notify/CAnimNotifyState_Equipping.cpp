@@ -37,7 +37,7 @@ void UCAnimNotifyState_Equipping::NotifyBegin(USkeletalMeshComponent* MeshComp, 
 
 void UCAnimNotifyState_Equipping::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
-	Super::NotifyEnd(MeshComp, Animation);
+	Super::NotifyEnd(MeshComp, Animation, EventReference);
 
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 	
