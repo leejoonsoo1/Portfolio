@@ -14,7 +14,7 @@ void UCAnimNotify_Evade::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceB
 	
 	if (!Player)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotify_Evade::Notify"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Player is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}

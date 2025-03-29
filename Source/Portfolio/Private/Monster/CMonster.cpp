@@ -21,7 +21,7 @@ void ACMonster::BeginPlay()
 
 	if (!DT)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Monster Table can not found! (/Game/DataTable/DT_Monster)"));
+		UE_LOG(LogTemp, Error, TEXT("%s : Monster Table can not found! (/Game/DataTable/DT_Monster)"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -30,7 +30,7 @@ void ACMonster::BeginPlay()
 
 	if (!StateComp)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ACMonster::BeginPlay : StateComp is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : StateComp is nullptr"), *FString(__FUNCTION__));
 
 
 		return;
@@ -40,7 +40,7 @@ void ACMonster::BeginPlay()
 
 	if (!EmotionComp)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ACMonster::BeginPlay : EmotionComp is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : EmotionComp is nullptr"), *FString(__FUNCTION__));
 	}
 
 	EmotionComp->OnEmotionStateChanged.AddDynamic(this, &ACMonster::HandleEmotionChanged);
@@ -71,13 +71,13 @@ void ACMonster::LoadMonsterData(FName InMonsterName)
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("ACMonster::LoadMonsterData : Monster Table Table is not set!"));
+		UE_LOG(LogTemp, Error, TEXT("%s : Monster Table Table is not set!"), *FString(__FUNCTION__));
 	}
 }
 
 void ACMonster::HandleStateChanged(EMonsterStateType PrevState, EMonsterStateType NewState)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Monster State Changed : %d -> %d"), (int32)PrevState, (int32)NewState);
+	UE_LOG(LogTemp, Warning, TEXT("%s : %d -> %d"), *FString(__FUNCTION__), (int32)PrevState, (int32)NewState);
 
 	switch(NewState)
 	{
@@ -139,6 +139,30 @@ float ACMonster::GetHealth()
 float ACMonster::GetDamage()
 {
 	return 0.0f;
+}
+
+void ACMonster::OnAttackCollisionHead_Implementation()
+{
+}
+
+void ACMonster::OnAttackCollisionTail_Implementation()
+{
+}
+
+void ACMonster::OnAttackCollisionFeet_Implementation()
+{
+}
+
+void ACMonster::OffAttackCollisionHead_Implementation()
+{
+}
+
+void ACMonster::OffAttackCollisionTail_Implementation()
+{
+}
+
+void ACMonster::OffAttackCollisionFeet_Implementation()
+{
 }
 
 void ACMonster::PlayAttackMontage(UAnimMontage* InAnimMontage, float InRate, FName InSectionName)

@@ -17,14 +17,14 @@ void UCAttachment::BeginPlay()
 
 	if (!OwnerCharacter)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAttachment::BeginPlay : OwnerCharacter is null!"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : OwnerCharacter is null!"), *FString(__FUNCTION__));
 
 		return;
 	}
 
 	if (!OwnerCharacter->GetMesh())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAttachment::BeginPlay : OwnerCharacter has no mesh"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : OwnerCharacter has no mesh"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -35,15 +35,15 @@ void UCAttachment::BeginPlay()
 	*/
 	if (!Mesh)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAttachment::BeginPlay : Mesh is null!"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Mesh is null!"), *FString(__FUNCTION__));
 
 		return;
 	}
 	
+	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Mesh->SetGenerateOverlapEvents(true);
 	Mesh->SetCollisionProfileName(TEXT("Weapon"));
 	Mesh->OnComponentBeginOverlap.AddDynamic(this, &UCAttachment::OnMeshOverlap);
-
 
 	SpawnWeapon();
 }
@@ -54,7 +54,7 @@ void UCAttachment::ComponentAttachTo(USkeletalMeshComponent* OwnerMesh, FName So
 	{
 		if (!OwnerCharacter || !OwnerCharacter->GetMesh())
 		{
-			UE_LOG(LogTemp, Error, TEXT("UCAttachment::ComponentAttachTo : Failed to attch - OwnerCharacter or Mesh is null!"));
+			UE_LOG(LogTemp, Error, TEXT("%s : Failed to attch - OwnerCharacter or Mesh is null!"), *FString(__FUNCTION__));
 
 			return;
 		}
@@ -64,7 +64,7 @@ void UCAttachment::ComponentAttachTo(USkeletalMeshComponent* OwnerMesh, FName So
 
 	if (!Mesh)
 	{
-		UE_LOG(LogTemp, Error, TEXT("UCAttachment::ComponentAttachTo : Failed to attch - Attach Mesh is null!"));
+		UE_LOG(LogTemp, Error, TEXT("%s : Failed to attch - Attach Mesh is null!"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -76,14 +76,14 @@ void UCAttachment::SpawnWeapon()
 {
 	if (!WeaponClass)
 	{
-		UE_LOG(LogTemp, Error, TEXT("UCAttachment::SpawnWeapon : WeaponClass is not set in Attachment Component."));
+		UE_LOG(LogTemp, Error, TEXT("%s : WeaponClass is not set in Attachment Component."), *FString(__FUNCTION__));
 		return;
 	}
 
 	UWorld* World = GetWorld();
 	if (!World)
 	{
-		UE_LOG(LogTemp, Error, TEXT("UCAttachment::SpawnWeapon : SpawnWeapon: World is null!"));
+		UE_LOG(LogTemp, Error, TEXT("%s : SpawnWeapon: World is null!"), *FString(__FUNCTION__));
 		return;
 	}
 
@@ -103,7 +103,7 @@ void UCAttachment::SpawnWeapon()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("UCAttachment::SpawnWeapon : SpawnActorDeferred failed!"));
+		UE_LOG(LogTemp, Error, TEXT("%s : SpawnActorDeferred failed!"), *FString(__FUNCTION__));
 	}
 
 	if (CurrentWeapon)
@@ -175,6 +175,6 @@ void UCAttachment::OnMeshOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 {
 	if (OtherActor)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("UCAttachment::OnMeshOverlap"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("%s : Overlap"), *FString(__FUNCTION__)));
 	}
 }

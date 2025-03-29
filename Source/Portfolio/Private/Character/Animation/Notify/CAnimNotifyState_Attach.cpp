@@ -14,7 +14,7 @@ void UCAnimNotifyState_Attach::NotifyBegin(USkeletalMeshComponent* MeshComp, UAn
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 	if (!Player)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Attach::NotifyBegin : Player is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Player is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -22,7 +22,7 @@ void UCAnimNotifyState_Attach::NotifyBegin(USkeletalMeshComponent* MeshComp, UAn
 	UCAttachment* StateComp = Player->FindComponentByClass<UCAttachment>();
 	if (!StateComp)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Attach::NotifyBegin : StateComp is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : StateComp is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -42,7 +42,7 @@ void UCAnimNotifyState_Attach::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnim
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 	if (!Player)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Attach::NotifyEnd : Player is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Player is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -50,7 +50,7 @@ void UCAnimNotifyState_Attach::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnim
 	UCAttachment* StateComp = Player->FindComponentByClass<UCAttachment>();
 	if (!StateComp)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Attach::NotifyEnd : StateComp is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : StateComp is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}

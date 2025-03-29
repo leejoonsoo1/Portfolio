@@ -14,7 +14,7 @@ void UCAnimNotify_SetMonsterIdleState::Notify(USkeletalMeshComponent* MeshComp, 
 
 	if (!Monster)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Monster is nullptr"));
+		UE_LOG(LogTemp, Error, TEXT("%s : Monster is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}

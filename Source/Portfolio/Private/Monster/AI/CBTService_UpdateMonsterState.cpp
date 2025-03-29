@@ -17,7 +17,7 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 	
 	if (AIC == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("UCBTService_UpdateMonsterState::TickNode : AIC is nullptr"));
+		UE_LOG(LogTemp, Error, TEXT("%s : AIC is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -26,7 +26,7 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 	
 	if (BehaviorComp == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("UCBTService_UpdateMonsterState::TickNode : BehaviorComp is nullptr"));
+		UE_LOG(LogTemp, Error, TEXT("%s : BehaviorComp is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -35,7 +35,7 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 
 	if (MonsterPawn == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("UCBTService_UpdateMonsterState::TickNode : MonsterPawn is nullptr"));
+		UE_LOG(LogTemp, Error, TEXT("%s : MonsterPawn is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -44,7 +44,7 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 
 	if (MonsterStateComp == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("UCBTService_UpdateMonsterState::TickNode : MonsterStateComp is nullptr"));
+		UE_LOG(LogTemp, Error, TEXT("%s : MonsterStateComp is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -83,8 +83,8 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 		return;
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("UCBTService_UpdateMonsterState::TickNode : Target Distance: %.2f"), Distance);
-	UE_LOG(LogTemp, Warning, TEXT("UCBTService_UpdateMonsterState::TickNode : SightRadius: %.2f, StopApproachDistance: %.2f"), AIC->GetSightRadius(), StopApproachDistance);
+	UE_LOG(LogTemp, Warning, TEXT("%s : Target Distance: %.2f"), *FString(__FUNCTION__), Distance);
+	UE_LOG(LogTemp, Warning, TEXT("%s : SightRadius: %.2f, StopApproachDistance: %.2f"), *FString(__FUNCTION__), AIC->GetSightRadius(), StopApproachDistance);
 
 	// Set AttackMode
 	if (Distance < StopApproachDistance)

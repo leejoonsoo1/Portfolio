@@ -20,7 +20,7 @@ EBTNodeResult::Type UCBTTaskNode_Attack::ExecuteTask(UBehaviorTreeComponent& Own
 	ACAIController_Monster* AIC = Cast<ACAIController_Monster>(OwnerComp.GetAIOwner());
 	if (AIC == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("EBTNodeResult::Type UCBTTaskNode_Attack::ExecuteTask : AIC is nullptr"));
+		UE_LOG(LogTemp, Error, TEXT("%s : AIC is nullptr"), *FString(__FUNCTION__));
 
 		return EBTNodeResult::Failed;
 	}
@@ -28,7 +28,7 @@ EBTNodeResult::Type UCBTTaskNode_Attack::ExecuteTask(UBehaviorTreeComponent& Own
 	APawn* ControlledPawn = AIC->GetPawn();
 	if (ControlledPawn == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("EBTNodeResult::Type UCBTTaskNode_Attack::ExecuteTask : ControlledPawn is nullptr"));
+		UE_LOG(LogTemp, Error, TEXT("%s : ControlledPawn is nullptr"), *FString(__FUNCTION__));
 
 		return EBTNodeResult::Failed;
 	}
@@ -36,14 +36,14 @@ EBTNodeResult::Type UCBTTaskNode_Attack::ExecuteTask(UBehaviorTreeComponent& Own
 	ACMonster* Monster = Cast<ACMonster>(ControlledPawn);
 	if (Monster == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("EBTNodeResult::Type UCBTTaskNode_Attack::ExecuteTask : Monster is nullptr"));
+		UE_LOG(LogTemp, Error, TEXT("%s : Monster is nullptr"), *FString(__FUNCTION__));
 
 		return EBTNodeResult::Failed;
 	}
 
 	if (Montage.Num() < 1)
 	{
-		UE_LOG(LogTemp, Error, TEXT("EBTNodeResult::Type UCBTTaskNode_Attack::ExecuteTask : Montage is nullptr"));
+		UE_LOG(LogTemp, Error, TEXT("%s : Montage is nullptr"), *FString(__FUNCTION__));
 
 		return EBTNodeResult::Failed;
 	}
@@ -65,7 +65,7 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 
 	if (AIC == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("UCBTTaskNode_Attack::TickTask : AIC is nullptr"));
+		UE_LOG(LogTemp, Error, TEXT("%s : AIC is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -73,7 +73,7 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 	APawn* ControlledPawn = AIC->GetPawn();
 	if (ControlledPawn == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("UCBTTaskNode_Attack::TickTask : ControlledPawn is nullptr"));
+		UE_LOG(LogTemp, Error, TEXT("%s : ControlledPawn is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -81,14 +81,14 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 	ACMonster* Monster = Cast<ACMonster>(ControlledPawn);
 	if (Monster == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("UCBTTaskNode_Attack::TickTask : Monster is nullptr"));
+		UE_LOG(LogTemp, Error, TEXT("%s : Monster is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
 
 	if (Monster->StateComp == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("UCBTTaskNode_Attack::TickTask : StateComp is nullptr"));
+		UE_LOG(LogTemp, Error, TEXT("%s : StateComp is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}

@@ -39,7 +39,7 @@ void ACMonster_Rathalos::BeginPlay()
 
 	if (!AIController)
 	{
-		UE_LOG(LogTemp, Error, TEXT("ACMonster_Rathalos::BeginPlay : ACAIController_Monster is nullptr"));
+		UE_LOG(LogTemp, Error, TEXT("%s : ACAIController_Monster is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -49,7 +49,7 @@ void ACMonster_Rathalos::LoadData()
 {
 	if (MonsterNameToLoad.IsNone())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ACMonster_Rathalos::LoadData : Please check the monster name."));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Please check the monster name."), *FString(__FUNCTION__));
 
 		return;
 	}

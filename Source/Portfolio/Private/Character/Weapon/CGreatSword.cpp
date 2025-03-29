@@ -16,7 +16,7 @@ void ACGreatSword::BeginPlay()
 
 	if (!OwnerWeaponCharacter)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ACGreatSword::BeginPlay : OwnerWeaponCharacter is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : OwnerWeaponCharacter is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -25,7 +25,7 @@ void ACGreatSword::BeginPlay()
 
 	if (!Player)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ACGreatSword::BeginPlay : Player is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Player is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -34,7 +34,7 @@ void ACGreatSword::BeginPlay()
 
 	if (!PC)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ACGreatSword::BeginPlay : PlayerController is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : PlayerController is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}

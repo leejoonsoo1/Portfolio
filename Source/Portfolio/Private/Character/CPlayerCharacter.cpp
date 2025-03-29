@@ -33,7 +33,7 @@
 ACPlayerCharacter::ACPlayerCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
@@ -113,6 +113,12 @@ void ACPlayerCharacter::BeginPlay()
 	// 입력이 다른 입력을 방해하는 경우를 방지하는데 도움.
 	AttackAction->bConsumeInput = false;
 	MoveAction->bConsumeInput	= false;
+}
+
+void ACPlayerCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	RecoverStamina(DeltaTime);
 }
 
 void ACPlayerCharacter::Move(const FInputActionValue& Value)
@@ -339,6 +345,19 @@ void ACPlayerCharacter::AttackTwo(const FInputActionValue& value)
 	}
 }
 
+bool ACPlayerCharacter::UseStamina(float Amount)
+{
+	return false;
+}
+
+void ACPlayerCharacter::RecoverStamina(float DeltaTime)
+{
+}
+
+void ACPlayerCharacter::ClearStaminaDelay()
+{
+}
+
 // 삭제 예정
 void ACPlayerCharacter::ReleaseAttackTwo(const FInputActionValue& value)
 {
@@ -351,7 +370,7 @@ void ACPlayerCharacter::Hitted()
 	if (!MontagesComp)	return;
 
 	StateComp->SetHittedMode();
-	MontagesComp->PlayHitted(TEXT("Hitted"), StateComp->GetEWeaponType());
+	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, TEXT("SetHittedMode"));
 }
 
 void ACPlayerCharacter::Groggy()
@@ -381,12 +400,10 @@ void ACPlayerCharacter::OnStateTypeChanged(EStateType InPrevType, EStateType InN
 	case EStateType::UnEquip:
 		BeginUnEquipping();
 		break;
-
 	case EStateType::Action:
 		BeginAction();
 		break;
 	case EStateType::Hitted:
-		Hitted();
 		break;
 	case EStateType::Groggy:
 		Groggy();
@@ -456,4 +473,9 @@ void ACPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 FGenericTeamId ACPlayerCharacter::GetGenericTeamId() const
 {
 	return FGenericTeamId(TeamID);
+}
+
+float ACPlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	return 0.0f;
 }

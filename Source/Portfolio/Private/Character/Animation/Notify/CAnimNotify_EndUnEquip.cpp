@@ -13,7 +13,7 @@ void UCAnimNotify_EndUnEquip::Notify(USkeletalMeshComponent* MeshComp, UAnimSequ
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 	if (!Player)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotify_EndUnEquip::Notify : Player is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Player is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}

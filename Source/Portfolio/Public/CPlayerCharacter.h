@@ -101,6 +101,10 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+public:
+	virtual void Tick(float DeltaTime) override;
+
+protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Evade(const FInputActionValue& value);
@@ -110,6 +114,10 @@ protected:
 	void Charge(const FInputActionValue& value);
 	void AttackTwo(const FInputActionValue& value);
 	
+	bool UseStamina(float Amount);
+	void RecoverStamina(float DeltaTime);
+	void ClearStaminaDelay();
+
 	// bCanCombo를 False로 만드는 함수.
 	// 접근지정자는 바뀔 수 있음.
 	void ReleaseAttack(const FInputActionValue& value);
@@ -127,10 +135,13 @@ protected:
 	virtual FGenericTeamId GetGenericTeamId() const override;
 
 public:
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
+
+public:
 	FORCEINLINE class USpringArmComponent*	GetCameraBoom()		const { return SpringArmComp; }
 	FORCEINLINE class UCameraComponent*		GetFollowCamera()	const { return CameraComp; }
 
-	bool GetCharge() const { return bCharge; }
+	FORCEINLINE bool GetCharge() const { return bCharge; }
 
 private:
 	APlayerController* PC;
@@ -155,4 +166,27 @@ private:
 	// Great Sword Class에서 받아올 예정.
 	float EqWalkSpeed;
 	bool bCharge;
+
+private:
+	UPROPERTY(EditAnywhere, Category = "Stats", meta = (ClampMin = "0"))
+	float MaxHP = 100.f;
+
+	UPROPERTY(VisibleAnywhere, Category = "Stats")
+	float CurrentHP = 100.f;
+
+	// Stamina (기력)
+	UPROPERTY(EditAnywhere, Category = "Stats|Stamina", meta = (ClampMin = "0"))
+	float MaxStamina = 100.f;
+
+	UPROPERTY(VisibleAnywhere, Category = "Stats|Stamina")
+	float CurrentStamina = 100.f;
+
+	UPROPERTY(EditAnywhere, Category = "Stats|Stamina")
+	float StaminaRecoverRate = 10.f; // 초당 회복량
+
+	UPROPERTY(EditAnywhere, Category = "Stats|Stamina")
+	float StaminaRecoverDelay = 2.f; // 행동 후 회복 대기 시간
+
+private:
+	FTimerHandle StaminaRecoverTimer;
 };

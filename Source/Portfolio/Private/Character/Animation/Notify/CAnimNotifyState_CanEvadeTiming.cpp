@@ -14,7 +14,7 @@ void UCAnimNotifyState_CanEvadeTiming::NotifyBegin(USkeletalMeshComponent* MeshC
 	
 	if (!Player)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_CanEvadeTiming::NotifyBegin : Player is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Player is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -28,7 +28,7 @@ void UCAnimNotifyState_CanEvadeTiming::NotifyTick(USkeletalMeshComponent* MeshCo
 
 	if (!Player)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_CanEvadeTiming::NotifyTick : Player is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Player is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -37,7 +37,7 @@ void UCAnimNotifyState_CanEvadeTiming::NotifyTick(USkeletalMeshComponent* MeshCo
 
 	if (!PC)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_CanEvadeTiming::NotifyTick : Player Controller is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Player Controller is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -46,7 +46,7 @@ void UCAnimNotifyState_CanEvadeTiming::NotifyTick(USkeletalMeshComponent* MeshCo
 	{
 		if (!AnimMontage_RightEvade)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_CanEvadeTiming::NotifyTick : AnimMontage_RightEvade is null"));
+			UE_LOG(LogTemp, Warning, TEXT("%s : AnimMontage_RightEvade is null"), *FString(__FUNCTION__));
 
 			return;
 		}
@@ -57,7 +57,7 @@ void UCAnimNotifyState_CanEvadeTiming::NotifyTick(USkeletalMeshComponent* MeshCo
 	{
 		if (!AnimMontage_LeftEvade)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_CanEvadeTiming::NotifyTick : AnimMontage_LeftEvade is null"));
+			UE_LOG(LogTemp, Warning, TEXT("%s : AnimMontage_LeftEvade is null"), *FString(__FUNCTION__));
 
 			return;
 		}
@@ -68,7 +68,7 @@ void UCAnimNotifyState_CanEvadeTiming::NotifyTick(USkeletalMeshComponent* MeshCo
 	{
 		if (!AnimMontage_BackEvade)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_CanEvadeTiming::NotifyTick : AnimMontage_BackEvade is null"));
+			UE_LOG(LogTemp, Warning, TEXT("%s : AnimMontage_BackEvade is null"), *FString(__FUNCTION__));
 
 			return;
 		}

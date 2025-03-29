@@ -22,7 +22,7 @@ void UCMontagesComponent::PlayEvade(FName InRowName, EWeaponType InWeaponType)
 	FBasicMontageData Row;
 	if (!GetRow(BasicRows, Row, InRowName, InWeaponType))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCMontagesComponent::PlayEvade : Failed to retrieve montage row: %s!"), *InRowName.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("%s : Failed to retrieve montage row: %s!"), *FString(__FUNCTION__), *InRowName.ToString());
 
 		return;
 	}
@@ -35,7 +35,7 @@ void UCMontagesComponent::PlayEquipping(FName InRowName, EWeaponType InWeaponTyp
 	FBasicMontageData Row;
 	if (!GetRow(BasicRows, Row, InRowName, InWeaponType))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCMontagesComponent::PlayEquipping : Failed to retrieve montage row: %s!"), *InRowName.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("%s : Failed to retrieve montage row: %s!"), *FString(__FUNCTION__), *InRowName.ToString());
 
 		return;
 	}
@@ -48,7 +48,7 @@ void UCMontagesComponent::PlayUnEquipping(FName InRowName, EWeaponType InWeaponT
 	FBasicMontageData Row;
 	if (!GetRow(BasicRows, Row, InRowName, InWeaponType))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCMontagesComponent::PlayUnEquipping : Failed to retrieve montage row: %s!"), *InRowName.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("%s : Failed to retrieve montage row: %s!"), *FString(__FUNCTION__), *InRowName.ToString());
 
 		return;
 	}
@@ -61,7 +61,7 @@ void UCMontagesComponent::PlayAttack(FName InRowName, EWeaponType InWeaponType)
 	FBasicMontageData Row;
 	if (!GetRow(BasicRows, Row, InRowName, InWeaponType))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCMontagesComponent::PlayAttack : Failed to retrieve montage row: %s!"), *InRowName.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("%s : Failed to retrieve montage row: %s!"), *FString(__FUNCTION__), *InRowName.ToString());
 
 		return;
 	}
@@ -74,7 +74,7 @@ void UCMontagesComponent::PlayHitted(FName InRowName, EWeaponType InWeaponType)
 	FBasicMontageData Row;
 	if (!GetRow(BasicRows, Row, InRowName, InWeaponType))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCMontagesComponent::PlayHitted : Failed to retrieve montage row: %s!"), *InRowName.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("%s : Failed to retrieve montage row: %s!"), *FString(__FUNCTION__), *InRowName.ToString());
 		
 		return;
 	}
@@ -87,7 +87,7 @@ void UCMontagesComponent::PlayGroggy(FName InRowName, EWeaponType InWeaponType)
 	FBasicMontageData Row;
 	if (!GetRow(BasicRows, Row, InRowName, InWeaponType))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCMontagesComponent::PlayGroggy : Failed to retrieve montage row: %s!"), *InRowName.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("%s : Failed to retrieve montage row: %s!"), *FString(__FUNCTION__), *InRowName.ToString());
 
 		return;
 	}

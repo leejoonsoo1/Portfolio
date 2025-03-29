@@ -13,7 +13,7 @@ void UCAnimNotifyState_MHeadCollision::NotifyBegin(USkeletalMeshComponent* MeshC
 	APawn* Pawn = Cast<APawn>(MeshComp->GetOwner());
 	if (!Pawn)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Collision::NotifyBegin : Pawn is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Pawn is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -21,7 +21,7 @@ void UCAnimNotifyState_MHeadCollision::NotifyBegin(USkeletalMeshComponent* MeshC
 	ACMonster* Monster = Cast<ACMonster>(Pawn);
 	if (!Monster)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Collision::NotifyBegin : Monster is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Monster is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -36,7 +36,7 @@ void UCAnimNotifyState_MHeadCollision::NotifyEnd(USkeletalMeshComponent* MeshCom
 	APawn* Pawn = Cast<APawn>(MeshComp->GetOwner());
 	if (!Pawn)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Collision::NotifyBegin : Pawn is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Pawn is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -44,7 +44,7 @@ void UCAnimNotifyState_MHeadCollision::NotifyEnd(USkeletalMeshComponent* MeshCom
 	ACMonster* Monster = Cast<ACMonster>(Pawn);
 	if (!Monster)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Collision::NotifyBegin : Monster is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Monster is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}

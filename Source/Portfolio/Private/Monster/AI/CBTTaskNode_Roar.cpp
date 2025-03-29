@@ -14,7 +14,7 @@ EBTNodeResult::Type UCBTTaskNode_Roar::ExecuteTask(UBehaviorTreeComponent& Owner
 	ACAIController_Monster* AIC = Cast<ACAIController_Monster>(OwnerComp.GetAIOwner());
 	if (AIC == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("EBTNodeResult::Type UCBTTaskNode_Roar::ExecuteTask : AIC is nullptr"));
+		UE_LOG(LogTemp, Error, TEXT("%s : AIC is nullptr"), *FString(__FUNCTION__));
 
 		return EBTNodeResult::Failed;
 	}
@@ -22,7 +22,7 @@ EBTNodeResult::Type UCBTTaskNode_Roar::ExecuteTask(UBehaviorTreeComponent& Owner
 	APawn* ControlledPawn = AIC->GetPawn();
 	if (ControlledPawn == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("EBTNodeResult::Type UCBTTaskNode_Roar::ExecuteTask : ControlledPawn is nullptr"));
+		UE_LOG(LogTemp, Error, TEXT("%s : ControlledPawn is nullptr"), *FString(__FUNCTION__));
 
 		return EBTNodeResult::Failed;
 	}
@@ -30,14 +30,14 @@ EBTNodeResult::Type UCBTTaskNode_Roar::ExecuteTask(UBehaviorTreeComponent& Owner
 	ACMonster* Monster = Cast<ACMonster>(ControlledPawn);
 	if (Monster == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("EBTNodeResult::Type UCBTTaskNode_Roar::ExecuteTask : Monster is nullptr"));
+		UE_LOG(LogTemp, Error, TEXT("%s : Monster is nullptr"), *FString(__FUNCTION__));
 
 		return EBTNodeResult::Failed;
 	}
 
 	if (Montage.IsEmpty())
 	{
-		UE_LOG(LogTemp, Error, TEXT("EBTNodeResult::Type UCBTTaskNode_Roar::ExecuteTask : Montages array is empty"));
+		UE_LOG(LogTemp, Error, TEXT("%s : Montages array is empty"), *FString(__FUNCTION__));
 
 		return EBTNodeResult::Failed;
 	}

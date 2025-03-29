@@ -15,7 +15,7 @@ void UCAnimNotifyState_MonsterFly::NotifyBegin(USkeletalMeshComponent* MeshComp,
 
 	if (!Monster)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_MonsterFly::NotifyBegin : Monster is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Monster is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -24,7 +24,7 @@ void UCAnimNotifyState_MonsterFly::NotifyBegin(USkeletalMeshComponent* MeshComp,
 
 	if (!MovementComp)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_MonsterFly::NotifyBegin : MovementComp is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : MovementComp is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -40,7 +40,7 @@ void UCAnimNotifyState_MonsterFly::NotifyEnd(USkeletalMeshComponent* MeshComp, U
 
 	if (!Monster)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_MonsterFly::NotifyEnd : Monster is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Monster is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -49,7 +49,7 @@ void UCAnimNotifyState_MonsterFly::NotifyEnd(USkeletalMeshComponent* MeshComp, U
 
 	if (!MovementComp)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_MonsterFly::NotifyEnd : MovementComp is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : MovementComp is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}

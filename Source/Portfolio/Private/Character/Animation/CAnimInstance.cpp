@@ -13,7 +13,7 @@ void UCAnimInstance::NativeBeginPlay()
 
 	if (!StateComp)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimInstance::NativeBeginPlay : StateComp is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : StateComp is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}

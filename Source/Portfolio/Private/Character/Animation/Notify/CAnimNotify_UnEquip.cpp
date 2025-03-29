@@ -14,7 +14,7 @@ void UCAnimNotify_UnEquip::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenc
 
 	if (!Player)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotify_UnEquip::Notify : Player is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Player is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}

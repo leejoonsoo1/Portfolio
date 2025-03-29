@@ -61,18 +61,18 @@ public:
 	virtual float GetDamage();
 
 public:
-	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Attack")
 	void OnAttackCollisionHead();
-	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Attack")
 	void OnAttackCollisionTail();
-	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Attack")
 	void OnAttackCollisionFeet();
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Attack")
 	void OffAttackCollisionHead();
-	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Attack")
 	void OffAttackCollisionTail();
-	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Attack")
 	void OffAttackCollisionFeet();
 
 public:

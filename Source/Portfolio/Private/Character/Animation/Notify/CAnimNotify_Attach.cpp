@@ -14,7 +14,7 @@ void UCAnimNotify_Attach::Notify(USkeletalMeshComponent* MeshComp, UAnimSequence
 	ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(MeshComp->GetOwner());
 	if (!Player)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotify_Attach::Notify : Player is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Player is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -22,7 +22,7 @@ void UCAnimNotify_Attach::Notify(USkeletalMeshComponent* MeshComp, UAnimSequence
 	UCAttachment* Attachment = Player->FindComponentByClass<UCAttachment>();
 	if (!Attachment)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotify_Attach::Notify : Attachment is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Attachment is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}

@@ -3,7 +3,7 @@
 
 FString UCAnimNotify_Idle::GetNotifyName_Implementation() const
 {
-	return "SetIdle";
+	return "PlayerSetIdle";
 }
 
 void UCAnimNotify_Idle::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
@@ -14,7 +14,7 @@ void UCAnimNotify_Idle::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBa
 
 	if (!Player)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotify_Idle::Notify : Player is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Player is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}

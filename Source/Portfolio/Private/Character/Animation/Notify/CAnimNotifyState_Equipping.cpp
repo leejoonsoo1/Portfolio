@@ -18,7 +18,7 @@ void UCAnimNotifyState_Equipping::NotifyBegin(USkeletalMeshComponent* MeshComp, 
 
     if (!Player)
     {
-        UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Equipping::NotifyBegin : Player is nullptr"));
+        UE_LOG(LogTemp, Warning, TEXT("%s : Player is nullptr"), *FString(__FUNCTION__));
 
         return;
     }
@@ -27,7 +27,7 @@ void UCAnimNotifyState_Equipping::NotifyBegin(USkeletalMeshComponent* MeshComp, 
 
     if (!PlayerController)
     {
-        UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Equipping::NotifyBegin : PlayerController is nullptr"));
+        UE_LOG(LogTemp, Warning, TEXT("%s : PlayerController is nullptr"), *FString(__FUNCTION__));
 
         return;
     }
@@ -43,7 +43,7 @@ void UCAnimNotifyState_Equipping::NotifyEnd(USkeletalMeshComponent* MeshComp, UA
 	
     if (!Player)
     {
-        UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Equipping::NotifyEnd : Player is nullptr"));
+        UE_LOG(LogTemp, Warning, TEXT("%s : Player is nullptr"), *FString(__FUNCTION__));
 
         return;
     }
@@ -52,7 +52,7 @@ void UCAnimNotifyState_Equipping::NotifyEnd(USkeletalMeshComponent* MeshComp, UA
 
     if (PlayerController)
     {
-        UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_Equipping::NotifyEnd : PlayerController is nullptr"));
+        UE_LOG(LogTemp, Warning, TEXT("%s : PlayerController is nullptr"), *FString(__FUNCTION__));
 
         return;
     }

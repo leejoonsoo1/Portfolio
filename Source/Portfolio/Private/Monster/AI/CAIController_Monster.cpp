@@ -80,11 +80,11 @@ void ACAIController_Monster::BeginPlay()
 
 	if (ControlledPawn)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ACAIController_Monster::BeginPlay() : AI Possessing Pawn!"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : AI Possessing Pawn!"), *FString(__FUNCTION__));
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ACAIController_Monster::BeginPlay() : AI Pawn is NULL!"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : AI Pawn is NULL!"), *FString(__FUNCTION__));
 	}
 }
 
@@ -92,7 +92,7 @@ void ACAIController_Monster::OnPerceptionUpdated(const TArray<AActor*>& UpdatedA
 {
 	if (!BlackboardComp)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ACAIController_Monster::OnPerceptionUpdated : Blackboard component is null!"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Blackboard component is null!"), *FString(__FUNCTION__));
 
 		return;
 	}

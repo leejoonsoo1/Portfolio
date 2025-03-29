@@ -16,7 +16,7 @@ void UCAnimNotify_RoarArea::Notify(USkeletalMeshComponent* MeshComp, UAnimSequen
 
 	if (!Monster)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Monster is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Monster is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}

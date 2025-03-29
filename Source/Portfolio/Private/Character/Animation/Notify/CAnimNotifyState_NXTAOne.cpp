@@ -14,7 +14,7 @@ void UCAnimNotifyState_NXTAOne::NotifyBegin(USkeletalMeshComponent* MeshComp, UA
 
 	if (!Player)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_NXTAOne::NotifyBegin : Player is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Player is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -29,7 +29,7 @@ void UCAnimNotifyState_NXTAOne::NotifyTick(USkeletalMeshComponent* MeshComp, UAn
 
 	if (!Player)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_NXTAOne::NotifyTick : Player is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Player is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -40,14 +40,14 @@ void UCAnimNotifyState_NXTAOne::NotifyTick(USkeletalMeshComponent* MeshComp, UAn
 	{
 		if (!PC)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_NXTAOne::NotifyTick : PlayerController is nullptr"));
+			UE_LOG(LogTemp, Warning, TEXT("%s : PlayerController is nullptr"), *FString(__FUNCTION__));
 
 			return;
 		}
 
 		if (!AnimMontage_NextAttackStance)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_NXTAOne::NotifyTick : AnimMontage_NextAttackStance is nullptr"));
+			UE_LOG(LogTemp, Warning, TEXT("%s : AnimMontage_NextAttackStance is nullptr"), *FString(__FUNCTION__));
 
 			return;
 		}
@@ -67,7 +67,7 @@ void UCAnimNotifyState_NXTAOne::NotifyTick(USkeletalMeshComponent* MeshComp, UAn
 	{
 		if (!AnimMontage_NextAttack)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_NXTAOne::NotifyTick : AnimMontage_NextAttack is nullptr"));
+			UE_LOG(LogTemp, Warning, TEXT("%s : AnimMontage_NextAttack is nullptr"), *FString(__FUNCTION__));
 
 			return;
 		}
@@ -87,14 +87,14 @@ void UCAnimNotifyState_NXTAOne::NotifyEnd(USkeletalMeshComponent* MeshComp, UAni
 
 	if (!Player)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_NXTAOne::NotifyEnd : Player is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Player is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
 
 	if (!AnimMontage_NextCharge)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_NXTAOne::NotifyEnd : AnimMontage_NextCharge is null"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : AnimMontage_NextCharge is null"), *FString(__FUNCTION__));
 
 		return;
 	}

@@ -69,7 +69,7 @@ void ACWeapon::LoadWeaponData(FName InWeaponName, EWeaponType InType)
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("WeaponData Table Table is not set!"));
+		UE_LOG(LogTemp, Error, TEXT("%s : WeaponData Table Table is not set!"), *FString(__FUNCTION__));
 	}
 }
 
@@ -82,7 +82,7 @@ void ACWeapon::BeginPlay()
 
 	if (!DT)
 	{
-		UE_LOG(LogTemp, Error, TEXT("ACWeapon::BeginPlay : Weapon Table can not found! (/Game/DataTable/Weapon)"));
+		UE_LOG(LogTemp, Error, TEXT("%s : Weapon Table can not found! (/Game/DataTable/Weapon)"), *FString(__FUNCTION__));
 
 		return;
 	}

@@ -14,7 +14,7 @@ void UCAnimNotifyState_DisableMovement::NotifyBegin(USkeletalMeshComponent* Mesh
 
 	if (!Player)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_DisableMovement::NotifyBegin : Player is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Player is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -30,7 +30,7 @@ void UCAnimNotifyState_DisableMovement::NotifyEnd(USkeletalMeshComponent* MeshCo
 
 	if (!Player)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_DisableMovement::NotifyEnd : Player is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Player is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}

@@ -19,14 +19,14 @@ void UCAnimNotifyState_NXTATwo::NotifyTick(USkeletalMeshComponent* MeshComp, UAn
 	
 	if (!Player)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_NXTATwo::NotifyTick : Player is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : Player is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
 
 	if (!AnimMontage)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_NXTATwo::NotifyTick : AnimMontage is null"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : AnimMontage is null"), *FString(__FUNCTION__));
 
 		return;
 	}
@@ -35,7 +35,7 @@ void UCAnimNotifyState_NXTATwo::NotifyTick(USkeletalMeshComponent* MeshComp, UAn
 	
 	if (!PC)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimNotifyState_NXTATwo::NotifyTick : is PlayerController is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("%s : is PlayerController is nullptr"), *FString(__FUNCTION__));
 
 		return;
 	}
