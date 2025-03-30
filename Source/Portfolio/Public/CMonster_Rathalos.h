@@ -30,10 +30,7 @@ public:
 	virtual float GetDamage() override;
 	virtual void PlayAttackMontage(UAnimMontage* InAnimMontage, float InRate = 1.f, FName InStartSectionName = NAME_None) override;
 	virtual void PlayRoarMontage(UAnimMontage* InAnimMontage, float InRate = 1.f, FName InStartSecitonName = NAME_None) override;
-
-	// virtual function으로 beginOverlap 넣을 예정.
-
-	// AI 관련
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
 
 private:
 	FName MonsterNameToLoad;

@@ -103,6 +103,7 @@ protected:
 public:
 	void PlayHitted(FName InRowName, EWeaponType InWeaponType);
 	void PlayGroggy(FName InRowName, EWeaponType InWeaponType);
+	void PlayDeadMotion(FName InRowName, EWeaponType InWeaponType);
 
 private:
 	UFUNCTION()

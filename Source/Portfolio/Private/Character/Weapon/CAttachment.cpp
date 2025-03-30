@@ -3,6 +3,8 @@
 #include "CGreatSword.h"
 #include "GameFramework/Character.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "CMonster.h"
+#include "Engine/DamageEvents.h"
 
 UCAttachment::UCAttachment()
 {
@@ -40,10 +42,12 @@ void UCAttachment::BeginPlay()
 		return;
 	}
 	
-	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Mesh->SetGenerateOverlapEvents(true);
 	Mesh->SetCollisionProfileName(TEXT("Weapon"));
+	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Mesh->OnComponentBeginOverlap.AddDynamic(this, &UCAttachment::OnMeshOverlap);
+
+	Damage = 1000.f;
 
 	SpawnWeapon();
 }
@@ -118,6 +122,11 @@ void UCAttachment::SpawnWeapon()
 	}
 }
 
+void UCAttachment::SetDamage(float InDamage)
+{
+	Damage = InDamage;
+}
+
 void UCAttachment::Attack()
 {
 	CurrentWeapon->Attack();
@@ -171,10 +180,29 @@ void UCAttachment::SwitchWeaponType(EWeaponType NewType)
 	}
 }
 
+void UCAttachment::ClearDamagedActors()
+{
+	DamagedActors.Empty();
+}
+
 void UCAttachment::OnMeshOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor)
+	if (OtherActor != GetOwner())
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("%s : Overlap"), *FString(__FUNCTION__)));
+		if (OtherActor)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("%s : Overlap"), *FString(__FUNCTION__)));
+		}
+
+		if (DamagedActors.Contains(OtherActor))
+			return;
+
+		DamagedActors.Add(OtherActor);
+
+		ACMonster* Monster = Cast<ACMonster>(OtherActor);
+		FDamageEvent DamageEvent;
+		APawn* Pawn = Cast<APawn>(GetOwner());
+
+		Monster->ApplyDamage(Damage, DamageEvent, Pawn->GetController(), GetOwner());
 	}
 }

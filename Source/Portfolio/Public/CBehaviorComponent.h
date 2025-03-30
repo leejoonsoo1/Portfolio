@@ -53,6 +53,9 @@ public:
 	UFUNCTION(Blueprintpure)
 	bool IsTakeoffMode();
 
+	UFUNCTION(Blueprintpure)
+	bool IsDeadMode();
+
 public:
 	void SetWaitMode();
 	void SetApproachMode();
@@ -65,6 +68,7 @@ public:
 	void SetRoarMode();
 	void SetLandMode();
 	void SetTakeoffMode();
+	void SetDeadMode();
 
 	AActor* GetTargetValue();
 	FVector GetLocationValue();

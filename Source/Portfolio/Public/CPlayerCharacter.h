@@ -126,6 +126,7 @@ protected:
 public:
 	void Hitted();
 	void Groggy();
+	void BeDead();
 
 protected:
 	//virtual void NotifyControllerChanged() override;
@@ -135,7 +136,10 @@ protected:
 	virtual FGenericTeamId GetGenericTeamId() const override;
 
 public:
-	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
+	UFUNCTION(BlueprintCallable)
+	void ApplyDamage(float InDamage, FDamageEvent const& InDamageEvent, AController* InEventInstigator, AActor* InDamageCauser);
+
+	virtual float TakeDamage(float InDamageAmount, struct FDamageEvent const& InDamageEvent, class AController* InEventInstigator, class AActor* InDamageCauser) override;
 
 public:
 	FORCEINLINE class USpringArmComponent*	GetCameraBoom()		const { return SpringArmComp; }
@@ -169,23 +173,23 @@ private:
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Stats", meta = (ClampMin = "0"))
-	float MaxHP = 100.f;
+	float MaxHP;
 
 	UPROPERTY(VisibleAnywhere, Category = "Stats")
-	float CurrentHP = 100.f;
+	float CurrentHP;
 
 	// Stamina (기력)
 	UPROPERTY(EditAnywhere, Category = "Stats|Stamina", meta = (ClampMin = "0"))
-	float MaxStamina = 100.f;
+	float MaxStamina;
 
 	UPROPERTY(VisibleAnywhere, Category = "Stats|Stamina")
-	float CurrentStamina = 100.f;
+	float CurrentStamina;
 
 	UPROPERTY(EditAnywhere, Category = "Stats|Stamina")
-	float StaminaRecoverRate = 10.f; // 초당 회복량
+	float StaminaRecoverRate; // 초당 회복량
 
 	UPROPERTY(EditAnywhere, Category = "Stats|Stamina")
-	float StaminaRecoverDelay = 2.f; // 행동 후 회복 대기 시간
+	float StaminaRecoverDelay; // 행동 후 회복 대기 시간
 
 private:
 	FTimerHandle StaminaRecoverTimer;

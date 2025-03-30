@@ -28,8 +28,11 @@ public:
 	void ComponentAttachTo(USkeletalMeshComponent* OwnerMesh = nullptr, FName SocketName = "Holster");
 
 	void SpawnWeapon();
+	void SetDamage(float InDamage);
 	void Attack();
 	void SwitchWeaponType(EWeaponType NewType);
+	
+	void ClearDamagedActors();
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -51,6 +54,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TSubclassOf<ACWeapon> WeaponClass;
+	TSet<AActor*> DamagedActors;
 
 private:
 	float Damage;

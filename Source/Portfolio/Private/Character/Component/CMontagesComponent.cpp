@@ -95,6 +95,19 @@ void UCMontagesComponent::PlayGroggy(FName InRowName, EWeaponType InWeaponType)
 	CustomPlayAnimMontage(Row.AnimMontage, Row.PlayRate, Row.StartSection);
 }
 
+void UCMontagesComponent::PlayDeadMotion(FName InRowName, EWeaponType InWeaponType)
+{
+	FBasicMontageData Row;
+	if (!GetRow(BasicRows, Row, InRowName, InWeaponType))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s : Failed to retrieve montage row: %s!"), *FString(__FUNCTION__), *InRowName.ToString());
+
+		return;
+	}
+
+	CustomPlayAnimMontage(Row.AnimMontage, Row.PlayRate, Row.StartSection);
+}
+
 template <typename T>
 bool UCMontagesComponent::GetRow(TArray<T*> InRows, T& InRow, FName InRowName, EWeaponType InWeaponType)
 {

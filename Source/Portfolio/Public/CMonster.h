@@ -5,6 +5,7 @@
 #include "CMonsterEmotionComponent.h"
 #include "Components/ActorComponent.h"
 #include "GameFramework/Character.h"
+#include "Engine/DamageEvents.h"
 #include "CMonster.generated.h"
 
 /*
@@ -88,6 +89,10 @@ public:
 	UFUNCTION()
 	void HandleEmotionChanged(EMonsterEmotionStateType PrevState, EMonsterEmotionStateType NewState);
 
+	UFUNCTION(BlueprintCallable)
+	void ApplyDamage(float InDamage, FDamageEvent const& InDamageEvent, AController* InEventInstigator, AActor* InDamageCauser);
+	virtual float TakeDamage(float InDamageAmount, struct FDamageEvent const& InDamageEvent, class AController* InEventInstigator, class AActor* InDamageCauser) override;
+
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Component")
 	UCMonsterStateComponent* StateComp;
@@ -109,7 +114,8 @@ protected:
 protected:
 	FName MonsterName;
 	FString MonsterDescription;
-	float MonsterHealth;
+	float MonsterMaxHealth;
+	float MonsterHealth;	
 	float MonsterDamage;
 	float WalkSpeed;
 	float FyingSpeed;

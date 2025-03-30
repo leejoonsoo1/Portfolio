@@ -50,5 +50,6 @@ void UCAnimNotifyState_WeaponCollision::NotifyEnd(USkeletalMeshComponent* MeshCo
 		return;
 	}
 
+	Player->AttachmentComp->ClearDamagedActors();
 	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }

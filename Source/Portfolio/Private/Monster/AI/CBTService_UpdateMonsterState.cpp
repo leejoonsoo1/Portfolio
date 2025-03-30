@@ -3,6 +3,8 @@
 #include "CStateComponent.h"
 #include "CAIController_Monster.h"
 #include "CBehaviorComponent.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "CMonster.h"
 
 UCBTService_UpdateMonsterState::UCBTService_UpdateMonsterState()
 {
@@ -32,6 +34,21 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 	}
 
 	APawn* MonsterPawn = AIC->GetPawn();
+	ACMonster* Monster = Cast<ACMonster>(MonsterPawn);
+
+	if (!Monster)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s : Monster is nullptr"), *FString(__FUNCTION__));
+
+		return;
+	}
+
+	if (Monster->StateComp->IsDeadMode())
+	{
+		BehaviorComp->SetWaitMode();
+
+
+	}
 
 	if (MonsterPawn == nullptr)
 	{

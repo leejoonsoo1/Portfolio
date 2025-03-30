@@ -1,6 +1,7 @@
 #include "CMonster_Rathalos.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Engine/DamageEvents.h"
 
 ACMonster_Rathalos::ACMonster_Rathalos()
 {
@@ -36,6 +37,8 @@ void ACMonster_Rathalos::BeginPlay()
 	LoadData();
 
 	ACAIController_Monster* AIController = Cast<ACAIController_Monster>(GetController());
+	
+	UE_LOG(LogTemp, Error, TEXT("%s is Called"), *FString(__FUNCTION__));
 
 	if (!AIController)
 	{
@@ -47,12 +50,16 @@ void ACMonster_Rathalos::BeginPlay()
 
 void ACMonster_Rathalos::LoadData()
 {
+	Super::LoadData();
+
 	if (MonsterNameToLoad.IsNone())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s : Please check the monster name."), *FString(__FUNCTION__));
 
 		return;
 	}
+
+	UE_LOG(LogTemp, Error, TEXT("%s is Called"), *FString(__FUNCTION__));
 
 	LoadMonsterData(MonsterNameToLoad);
 }
@@ -88,4 +95,11 @@ void ACMonster_Rathalos::PlayRoarMontage(UAnimMontage* InAnimMontage, float InRa
 	Super::PlayRoarMontage(InAnimMontage, InRate, InStartSecitonName);
 
 	PlayAnimMontage(InAnimMontage);
+}
+
+float ACMonster_Rathalos::TakeDamage(float InDamageAmount, FDamageEvent const& InDamageEvent, AController* InEventInstigator, AActor* InDamageCauser)
+{
+	Super::TakeDamage(InDamageAmount, InDamageEvent, InEventInstigator, InDamageCauser);
+
+	return 0.f;
 }

@@ -15,7 +15,7 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Sphere", meta = (AllowPrivateAccess = "true"))
-	float TraceRadius = 1000.f;
+	float TraceRadius = 1500.f;
 	
 	UPROPERTY(EditAnywhere, Category = "Sphere", meta = (AllowPrivateAccess = "true"))
 	float TraceDistance = 0.f;

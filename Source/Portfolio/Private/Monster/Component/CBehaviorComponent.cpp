@@ -74,6 +74,11 @@ bool UCBehaviorComponent::IsTakeoffMode()
 	return GetType() == EBehaviorType::Takeoff;
 }
 
+bool UCBehaviorComponent::IsDeadMode()
+{
+	return GetType() == EBehaviorType::Dead;
+}
+
 void UCBehaviorComponent::SetWaitMode()
 {
 	ChangeType(EBehaviorType::Wait);
@@ -127,6 +132,11 @@ void UCBehaviorComponent::SetLandMode()
 void UCBehaviorComponent::SetTakeoffMode()
 {
 	ChangeType(EBehaviorType::Takeoff);
+}
+
+void UCBehaviorComponent::SetDeadMode()
+{
+	ChangeType(EBehaviorType::Dead);
 }
 
 AActor* UCBehaviorComponent::GetTargetValue()

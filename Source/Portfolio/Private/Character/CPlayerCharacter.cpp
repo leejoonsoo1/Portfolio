@@ -13,7 +13,7 @@
 #include "InputActionValue.h"
 #include "Engine/Engine.h"
 #include "CAttachment.h"
-
+#include "Engine/DamageEvents.h"
 /*
 *  2025. 03. 02 AM 04:03
 *  이동 중 UnEquip 함수 호출 시 원인 불명의 버그 발생.
@@ -75,9 +75,16 @@ ACPlayerCharacter::ACPlayerCharacter()
 	AttachmentComp	= CreateDefaultSubobject<UCAttachment>("AttachComp");
 
 	// Status
-	OriginWalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
-	SprintSpeed		= GetCharacterMovement()->MaxWalkSpeed + 350.f;
-	RunningSpeed	= GetCharacterMovement()->MaxWalkSpeed;
+	OriginWalkSpeed		= GetCharacterMovement()->MaxWalkSpeed;
+	SprintSpeed			= GetCharacterMovement()->MaxWalkSpeed + 350.f;
+	RunningSpeed		= GetCharacterMovement()->MaxWalkSpeed;
+	
+	MaxHP				= 100.f;
+	CurrentHP			= 100.f;
+	MaxStamina			= 100.f;
+	CurrentStamina		= 100.f;
+	StaminaRecoverRate	= 10.f; // 초당 회복량
+	StaminaRecoverDelay = 2.f; // 행동 후 회복 대기 시간
 
 	// Great Sword DataTable에서 받아올 예정.
 	EqWalkSpeed = OriginWalkSpeed - 200.f;
@@ -382,6 +389,15 @@ void ACPlayerCharacter::Groggy()
 	MontagesComp->PlayGroggy(TEXT("Groggy"), StateComp->GetEWeaponType());
 }
 
+void ACPlayerCharacter::BeDead()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Player is Dead"));
+
+	GetCharacterMovement()->DisableMovement();
+
+	MontagesComp->PlayDeadMotion(TEXT("Die"), StateComp->GetEWeaponType());
+}
+
 void ACPlayerCharacter::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
 {
 	switch (InNewType)
@@ -396,7 +412,6 @@ void ACPlayerCharacter::OnStateTypeChanged(EStateType InPrevType, EStateType InN
 	case EStateType::Equip:
 		BeginEquipping();
 		break;
-
 	case EStateType::UnEquip:
 		BeginUnEquipping();
 		break;
@@ -407,6 +422,9 @@ void ACPlayerCharacter::OnStateTypeChanged(EStateType InPrevType, EStateType InN
 		break;
 	case EStateType::Groggy:
 		Groggy();
+		break;
+	case EStateType::Dead:
+		BeDead();
 		break;
 	default:
 		break;
@@ -475,7 +493,27 @@ FGenericTeamId ACPlayerCharacter::GetGenericTeamId() const
 	return FGenericTeamId(TeamID);
 }
 
-float ACPlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+void ACPlayerCharacter::ApplyDamage(float InDamage, FDamageEvent const& InDamageEvent, AController* InEventInstigator, AActor* InDamageCauser)
 {
-	return 0.0f;
+	TakeDamage(InDamage, InDamageEvent, InEventInstigator, InDamageCauser);
+}
+
+float ACPlayerCharacter::TakeDamage(float InDamageAmount, FDamageEvent const& InDamageEvent, AController* InEventInstigator, AActor* InDamageCauser)
+{
+	CurrentHP -= InDamageAmount;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Current HP : %.1f"), CurrentHP));
+
+	if (CurrentHP <= 0.f)
+	{
+		if (!StateComp)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s : StateComp is nullptr"), *FString(__FUNCTION__));
+
+			return 0.f;
+		}
+
+		StateComp->SetDeadMode();
+	}
+
+	return 0.f;
 }
