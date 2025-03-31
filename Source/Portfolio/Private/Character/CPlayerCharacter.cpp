@@ -495,6 +495,8 @@ FGenericTeamId ACPlayerCharacter::GetGenericTeamId() const
 
 void ACPlayerCharacter::ApplyDamage(float InDamage, FDamageEvent const& InDamageEvent, AController* InEventInstigator, AActor* InDamageCauser)
 {
+	if (StateComp->IsInvincibleMode()) return;
+
 	TakeDamage(InDamage, InDamageEvent, InEventInstigator, InDamageCauser);
 }
 

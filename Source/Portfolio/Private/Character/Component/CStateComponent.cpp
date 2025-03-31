@@ -111,6 +111,16 @@ void UCStateComponent::SetSwitchAxeMode()
 	ChangeWeaponType(EWeaponType::SwitchAxe);
 }
 
+void UCStateComponent::SetVincibleMode()
+{
+	ChangeInvincibilityType(EInvincibilityType::Vincible);
+}
+
+void UCStateComponent::SetInvincibleMode()
+{
+	ChangeInvincibilityType(EInvincibilityType::Invincible);
+}
+
 void UCStateComponent::SetArmedWeaponType(EWeaponType InNewArmedWeaponType)
 {
 	ArmedWeaponType = InNewArmedWeaponType;
@@ -122,6 +132,14 @@ void UCStateComponent::ChangeStateType(EStateType InNewType)
 	StateType = InNewType;
 
 	OnStateTypeChanged.Broadcast(PrevType, StateType);
+}
+
+void UCStateComponent::ChangeInvincibilityType(EInvincibilityType InNewType)
+{
+	EInvincibilityType PrevType = InvincibilityType;
+	InvincibilityType = InNewType;
+
+	OnInvincibilityTypeChanged.Broadcast(PrevType, InvincibilityType);
 }
 
 void UCStateComponent::ChangeWeaponType(EWeaponType InNewType)

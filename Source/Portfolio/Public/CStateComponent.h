@@ -6,6 +6,7 @@
 #include "CStateComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FStateTypeChanged, EStateType, InPrevType, EStateType, InNewType);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInvincibilityTypeChanged, EInvincibilityType, InPrevType, EInvincibilityType, InNewType);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FWeaponTypeChanged, EWeaponType, InPrevType, EWeaponType, InNewType);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -94,7 +95,11 @@ public:
 	FORCEINLINE EWeaponType GetEWeaponType()	const { return WeaponType; }
 
 public:
-	// Monster's AI Behavior Type
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsVincibleMode()	const { return InvincibilityType == EInvincibilityType::Vincible; }
+
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsInvincibleMode()	const { return InvincibilityType == EInvincibilityType::Invincible; }
 
 public:
 	// ¾È ¾¸.
@@ -111,7 +116,7 @@ public:
 	void SetHittedMode();
 	void SetGroggyMode();
 	void SetDeadMode();
-	
+
 public:
 	// WeaponType
 	void SetUnarmedMode();
@@ -128,23 +133,32 @@ public:
 	void SetSwitchAxeMode();
 
 public:
+	// InvincibilityType
+	void SetVincibleMode();
+	void SetInvincibleMode();
+
+public:
 	// ArmedWeaponType
 	void SetArmedWeaponType(EWeaponType InNewArmedWeaponType);
 
 private:
 	void ChangeStateType(EStateType InNewType);
+	void ChangeInvincibilityType(EInvincibilityType InNewType);
 	void ChangeWeaponType(EWeaponType InNewType);
 
 public:
 	UPROPERTY(BlueprintAssignable)
 	FStateTypeChanged OnStateTypeChanged;
-	
+
+	UPROPERTY(BlueprintAssignable)
+	FInvincibilityTypeChanged OnInvincibilityTypeChanged;
+
 	UPROPERTY(BlueprintAssignable)
 	FWeaponTypeChanged OnWeaponTypeChanged;
 
 private:
-	EStateType StateType;
-	EWeaponType WeaponType;
-	EWeaponType ArmedWeaponType;
-
+	EStateType			StateType;
+	EInvincibilityType	InvincibilityType;
+	EWeaponType			WeaponType;
+	EWeaponType			ArmedWeaponType;
 };

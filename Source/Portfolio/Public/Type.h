@@ -19,6 +19,13 @@ enum class EStateType : uint8
 };
 
 UENUM(BlueprintType)
+enum class EInvincibilityType : uint8
+{
+	Vincible	UMETA(Display = "Vincible"),
+	Invincible	UMETA(Display = "Immortal")
+};
+
+UENUM(BlueprintType)
 enum class EWeaponType : uint8
 {
 	Unarmed			UMETA(DisplayName = "Unarmed"), 

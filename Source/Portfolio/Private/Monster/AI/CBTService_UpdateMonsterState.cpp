@@ -46,8 +46,6 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 	if (Monster->StateComp->IsDeadMode())
 	{
 		BehaviorComp->SetWaitMode();
-
-
 	}
 
 	if (MonsterPawn == nullptr)
@@ -95,9 +93,12 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 	// Set ApproachMode
 	if (Distance <= AIC->GetSightRadius() && Distance >= StopApproachDistance)
 	{
-		BehaviorComp->SetApproachMode();
+		if (!BehaviorComp->IsAttackMode())
+		{
+			BehaviorComp->SetApproachMode();
 
-		return;
+			return;
+		}
 	}
 
 	UE_LOG(LogTemp, Warning, TEXT("%s : Target Distance: %.2f"), *FString(__FUNCTION__), Distance);
