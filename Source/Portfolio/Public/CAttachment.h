@@ -3,11 +3,13 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Type.h"
+#include "Kismet/GameplayStatics.h"
 #include "CAttachment.generated.h"
 
 class USkeletalMeshComponent;
 class ACharacter;
 class ACWeapon;
+class USoundBase;
 
 //UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 UCLASS(DefaultToInstanced, BlueprintType, config = Engine)
@@ -55,6 +57,16 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TSubclassOf<ACWeapon> WeaponClass;
 	TSet<AActor*> DamagedActors;
+
+private:
+	UPROPERTY(EditAnywhere, Category = "Sound", meta = (AllowPrivateAccess = "true"))
+	USoundBase* HitSound;
+
+	UPROPERTY(EditAnywhere, Category = "Sound", meta = (AllowPrivateAccess = "true"))
+	float VolumeMultiplier;
+
+	UPROPERTY(EditAnywhere, Category = "Sound", meta = (AllowPrivateAccess = "true"))
+	float PitchMultiplier;
 
 private:
 	float Damage;

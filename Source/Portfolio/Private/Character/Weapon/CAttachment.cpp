@@ -8,7 +8,10 @@
 
 UCAttachment::UCAttachment()
 {
-	
+	Damage = 1000.f;
+
+	VolumeMultiplier = 1.f;
+	PitchMultiplier = 1.f;
 }
 
 void UCAttachment::BeginPlay()
@@ -46,8 +49,6 @@ void UCAttachment::BeginPlay()
 	Mesh->SetCollisionProfileName(TEXT("Weapon"));
 	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Mesh->OnComponentBeginOverlap.AddDynamic(this, &UCAttachment::OnMeshOverlap);
-
-	Damage = 1000.f;
 
 	SpawnWeapon();
 }
@@ -198,6 +199,12 @@ void UCAttachment::OnMeshOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 			return;
 
 		DamagedActors.Add(OtherActor);
+
+		if (HitSound)
+		{
+			FVector SoundLocation = Mesh->GetComponentLocation();
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitSound, SoundLocation, VolumeMultiplier, PitchMultiplier);
+		}
 
 		ACMonster* Monster = Cast<ACMonster>(OtherActor);
 		FDamageEvent DamageEvent;
