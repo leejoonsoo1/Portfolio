@@ -9,7 +9,7 @@
 UCBTService_UpdateMonsterState::UCBTService_UpdateMonsterState()
 {
 	NodeName = "RootService_Monster";
-	Interval = 0.1f;
+	Interval = 0.5f;
 	RandomDeviation = 0.0f;
 	bCallTickOnSearchStart = true;
 }
@@ -104,11 +104,12 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 		}
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("%s : Target Distance: %.2f"), *FString(__FUNCTION__), Distance);
-	UE_LOG(LogTemp, Warning, TEXT("%s : SightRadius: %.2f, StopApproachDistance: %.2f"), *FString(__FUNCTION__), AIC->GetSightRadius(), StopApproachDistance);
+	UE_LOG(LogTemp, Warning, TEXT("%s : Monster State is : %d"), *FString(__FUNCTION__), (uint8)MonsterStateComp->GetMonsterState());
+	//UE_LOG(LogTemp, Warning, TEXT("%s : Target Distance: %.2f"), *FString(__FUNCTION__), Distance);
+	//UE_LOG(LogTemp, Warning, TEXT("%s : SightRadius: %.2f, StopApproachDistance: %.2f"), *FString(__FUNCTION__), AIC->GetSightRadius(), StopApproachDistance);
 
 	// Set AttackMode
-	if (Distance < StopApproachDistance)
+	if (Distance < StopApproachDistance && !MonsterStateComp->IsActionMode())
 	{
 		MonsterStateComp->SetActionMode();
 		BehaviorComp->SetAttackMode();

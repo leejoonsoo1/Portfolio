@@ -1,4 +1,4 @@
-#include "CBehaviorComponent.h"
+	#include "CBehaviorComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 UCBehaviorComponent::UCBehaviorComponent()
@@ -10,7 +10,10 @@ UCBehaviorComponent::UCBehaviorComponent()
 
 void UCBehaviorComponent::SetBlackboardComponent(UBlackboardComponent* InBlackboardComp)
 {
-	BlackboardComp = InBlackboardComp;
+	if (!BlackboardComp)
+	{
+		BlackboardComp = InBlackboardComp;
+	}
 }
 
 EBehaviorType UCBehaviorComponent::GetType()

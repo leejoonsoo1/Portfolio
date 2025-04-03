@@ -67,6 +67,8 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s : AIC is nullptr"), *FString(__FUNCTION__));
 
+		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+
 		return;
 	}
 
@@ -74,6 +76,8 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 	if (ControlledPawn == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s : ControlledPawn is nullptr"), *FString(__FUNCTION__));
+
+		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 
 		return;
 	}
@@ -83,6 +87,8 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s : Monster is nullptr"), *FString(__FUNCTION__));
 
+		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+
 		return;
 	}
 
@@ -90,11 +96,27 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s : StateComp is nullptr"), *FString(__FUNCTION__));
 
+		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+
+		return;
+	}
+
+	UAnimInstance* AnimInstance = Monster->GetMesh()->GetAnimInstance();
+	if (AnimInstance == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s : AnimInstance is nullptr"), *FString(__FUNCTION__));
+
+		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+
 		return;
 	}
 
 	if (Monster->StateComp->IsIdleMode())
 	{
+		UE_LOG(LogTemp, Error, TEXT("%s : Monster State is IdleMode"), *FString(__FUNCTION__));
+
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+
+		return;
 	}
 }

@@ -18,7 +18,7 @@ ACAIController_Monster::ACAIController_Monster()
 	Sight->SightRadius = 2500.f;
 	Sight->LoseSightRadius = 3000.f;
 	Sight->PeripheralVisionAngleDegrees = 360.f;
-	Sight->SetMaxAge(0.5f);
+	Sight->SetMaxAge(0.3f);
 
 	Sight->DetectionByAffiliation.bDetectEnemies	= true;
 	Sight->DetectionByAffiliation.bDetectNeutrals	= false;
@@ -114,7 +114,7 @@ void ACAIController_Monster::OnPerceptionUpdated(const TArray<AActor*>& UpdatedA
 
 		if (CurrentTime - LastRoarTime >= RoarInterval)
 		{
-			BlackboardComp->SetValueAsEnum("BehaviorKey", (uint8)EBehaviorType::Roar);
+			//BlackboardComp->SetValueAsEnum("BehaviorKey", (uint8)EBehaviorType::Roar);
 		}
 
 		APawn* ControlledPawn = GetPawn();
