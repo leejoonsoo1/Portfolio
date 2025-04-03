@@ -1,9 +1,11 @@
 #include "CMonster.h"
+#include "CBehaviorComponent.h"
 
 ACMonster::ACMonster()
 {
-	StateComp	= CreateDefaultSubobject<UCMonsterStateComponent>(TEXT("MonsterStateComp"));
-	EmotionComp = CreateDefaultSubobject<UCMonsterEmotionComponent>(TEXT("MonsterEmotionComp"));
+	StateComp		= CreateDefaultSubobject<UCMonsterStateComponent>(TEXT("MonsterStateComp"));
+	EmotionComp		= CreateDefaultSubobject<UCMonsterEmotionComponent>(TEXT("MonsterEmotionComp"));
+	BehaviorComp	= CreateDefaultSubobject<UCBehaviorComponent>(TEXT("BehaviorComp"));
 
 	MonsterName			= NAME_None;
 	MonsterDescription	= TEXT("");
@@ -46,32 +48,23 @@ void ACMonster::BeginPlay()
 	EmotionComp->OnEmotionStateChanged.AddDynamic(this, &ACMonster::HandleEmotionChanged);
 }
 
+// This function is overridden in a child class.
 void ACMonster::LoadData()
 {
 }
 
 void ACMonster::LoadMonsterData(FName InMonsterName)
 {
-	UE_LOG(LogTemp, Error, TEXT("%s is Called : %s"), *FString(__FUNCTION__), *InMonsterName.ToString());
-
 	if (MonsterDataTable)
 	{
-		UE_LOG(LogTemp, Error, TEXT("%s exist DataTable"), *FString(__FUNCTION__));
-
 		TArray<FName> RowNames = MonsterDataTable->GetRowNames();
-
-		UE_LOG(LogTemp, Error, TEXT("%s ddaasdf : %s"), *FString(__FUNCTION__), *RowNames[0].ToString());
 
 		for (const FName& RowName : RowNames)
 		{
 			FMonsterData* MonsterData = MonsterDataTable->FindRow<FMonsterData>(RowName, TEXT(""));
 
-			UE_LOG(LogTemp, Error, TEXT("%s For Inside : %s"), *FString(__FUNCTION__), *MonsterData->Name.ToString());
-
 			if (MonsterData->Name == InMonsterName)
 			{
-				UE_LOG(LogTemp, Error, TEXT("%s Find RowName"), *FString(__FUNCTION__));
-
 				MonsterName			= MonsterData->Name;
 				MonsterDescription	= MonsterData->Description;
 				MonsterMaxHealth	= MonsterData->Health;
@@ -192,26 +185,32 @@ float ACMonster::GetDamage()
 	return 0.0f;
 }
 
+// This function is overridden in Blueprint.
 void ACMonster::OnAttackCollisionHead_Implementation()
 {
 }
 
+// This function is overridden in Blueprint.
 void ACMonster::OnAttackCollisionTail_Implementation()
 {
 }
 
+// This function is overridden in Blueprint.
 void ACMonster::OnAttackCollisionFeet_Implementation()
 {
 }
 
+// This function is overridden in Blueprint.
 void ACMonster::OffAttackCollisionHead_Implementation()
 {
 }
 
+// This function is overridden in Blueprint.
 void ACMonster::OffAttackCollisionTail_Implementation()
 {
 }
 
+// This function is overridden in Blueprint.
 void ACMonster::OffAttackCollisionFeet_Implementation()
 {
 }
@@ -220,7 +219,6 @@ void ACMonster::PlayAttackMontage(UAnimMontage* InAnimMontage, float InRate, FNa
 {
 	StateComp->SetActionMode();
 
-	OnAttackCollisionHead();
 	PlayAnimMontage(InAnimMontage, InRate, InSectionName);
 }
 

@@ -9,6 +9,9 @@
 UCBTService_UpdateMonsterState::UCBTService_UpdateMonsterState()
 {
 	NodeName = "RootService_Monster";
+	Interval = 0.1f;
+	RandomDeviation = 0.0f;
+	bCallTickOnSearchStart = true;
 }
 
 void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)

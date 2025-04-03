@@ -14,6 +14,8 @@
 #include "Engine/Engine.h"
 #include "CAttachment.h"
 #include "Engine/DamageEvents.h"
+#include "TimerManager.h"
+
 /*
 *  2025. 03. 02 AM 04:03
 *  이동 중 UnEquip 함수 호출 시 원인 불명의 버그 발생.
@@ -75,16 +77,18 @@ ACPlayerCharacter::ACPlayerCharacter()
 	AttachmentComp	= CreateDefaultSubobject<UCAttachment>("AttachComp");
 
 	// Status
-	OriginWalkSpeed		= GetCharacterMovement()->MaxWalkSpeed;
-	SprintSpeed			= GetCharacterMovement()->MaxWalkSpeed + 350.f;
-	RunningSpeed		= GetCharacterMovement()->MaxWalkSpeed;
+	OriginWalkSpeed	= GetCharacterMovement()->MaxWalkSpeed;
+	SprintSpeed		= GetCharacterMovement()->MaxWalkSpeed + 350.f;
+	RunningSpeed	= GetCharacterMovement()->MaxWalkSpeed;
 	
-	MaxHP				= 100.f;
-	CurrentHP			= 100.f;
-	MaxStamina			= 100.f;
-	CurrentStamina		= 100.f;
-	StaminaRecoverRate	= 10.f; // 초당 회복량
-	StaminaRecoverDelay = 2.f; // 행동 후 회복 대기 시간
+	MaxHP					= 100.f;
+	CurrentHP				= 100.f;
+	MaxStamina				= 100.f;
+	CurrentStamina			= 100.f;
+	StaminaRecoverRate		= 10.f;		// 초당 회복량
+	StaminaRecoverDelay		= 2.f;		// 행동 후 회복 대기 시간
+	StaminaSprintDrainRate	= 1.f;
+	StaminaEvadeDrainRate	= 10.f;
 
 	// Great Sword DataTable에서 받아올 예정.
 	EqWalkSpeed = OriginWalkSpeed - 200.f;
@@ -125,7 +129,8 @@ void ACPlayerCharacter::BeginPlay()
 void ACPlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	RecoverStamina(DeltaTime);
+
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Stamina : %.1f / %.1f"), CurrentStamina, MaxStamina));
 }
 
 void ACPlayerCharacter::Move(const FInputActionValue& Value)
@@ -185,6 +190,15 @@ void ACPlayerCharacter::Evade(const FInputActionValue& value)
 	if (StateComp->IsEquipMode())	return;
 	if (StateComp->IsUnEquipMode()) return;
 	if (StateComp->IsEvadeMode())	return;
+
+	if (!UseStamina(StaminaEvadeDrainRate))
+	{
+		return;
+	}
+	
+	// 회피할 때 스프린트 중이었다면 스프린트 종료 처리
+	GetWorld()->GetTimerManager().ClearTimer(SprintStaminaTimer);
+	ClearStaminaDelay();  // 스태미나 회복 타이머 대기 시작
 
 	if (StateComp->IsIdleMode())
 	{
@@ -300,6 +314,8 @@ void ACPlayerCharacter::Sprint(const FInputActionValue& value)
 	if (StateComp->IsIdleMode() && StateComp->IsUnarmedMode() && !StateComp->IsUnEquipMode())
 	{
 		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+
+		GetWorld()->GetTimerManager().SetTimer(SprintStaminaTimer, this, &ACPlayerCharacter::HandleSprintStaminaDrain, 0.1f, true, 0.0f);
 	}
 }
 
@@ -308,6 +324,10 @@ void ACPlayerCharacter::Running(const FInputActionValue& value)
 	if (StateComp->IsIdleMode() && StateComp->IsUnarmedMode() && !StateComp->IsUnEquipMode())
 	{
 		GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
+
+		GetWorld()->GetTimerManager().ClearTimer(SprintStaminaTimer);
+
+		ClearStaminaDelay();
 	}
 }
 
@@ -316,6 +336,10 @@ void ACPlayerCharacter::Attack(const FInputActionValue& value)
 	if (StateComp->IsEvadeMode())	return;
 	if (StateComp->IsEquipMode())	return;
 	if (StateComp->IsUnEquipMode()) return;
+
+	// 공격할 때 스프린트 중이었다면 스프린트 종료 처리
+	GetWorld()->GetTimerManager().ClearTimer(SprintStaminaTimer);
+	ClearStaminaDelay();  // 스태미나 회복 타이머 대기 시작
 
 	if (!StateComp->IsUnarmedMode() && !StateComp->IsActionMode())
 	{
@@ -343,6 +367,10 @@ void ACPlayerCharacter::ReleaseAttack(const FInputActionValue& value)
 
 void ACPlayerCharacter::AttackTwo(const FInputActionValue& value)
 {
+	// 공격할 때 스프린트 중이었다면 스프린트 종료 처리
+	GetWorld()->GetTimerManager().ClearTimer(SprintStaminaTimer);
+	ClearStaminaDelay();  // 스태미나 회복 타이머 대기 시작
+
 	if (!StateComp->IsActionMode() && !StateComp->IsUnarmedMode())
 	{
 		if (MontagesComp) 
@@ -352,17 +380,58 @@ void ACPlayerCharacter::AttackTwo(const FInputActionValue& value)
 	}
 }
 
+void ACPlayerCharacter::HandleSprintStaminaDrain()
+{
+	// SprintDrainRate
+
+	if (!UseStamina(StaminaSprintDrainRate))
+	{
+		//bIsSprinting = false;
+		GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
+
+		GetWorld()->GetTimerManager().ClearTimer(SprintStaminaTimer);
+	}
+}
+
 bool ACPlayerCharacter::UseStamina(float Amount)
 {
-	return false;
+	if (CurrentStamina < Amount)
+		return false;
+
+	CurrentStamina -= Amount;
+
+	return true;
+}
+
+void ACPlayerCharacter::TickRecoverStamina()
+{
+	RecoverStamina(GetWorld()->GetDeltaSeconds());
 }
 
 void ACPlayerCharacter::RecoverStamina(float DeltaTime)
 {
+	// 현재 스태미나가 최대치보다 작을 경우에만 회복
+	if (CurrentStamina < MaxStamina)
+	{
+		// DeltaTime에 기반한 초당 회복량 적용
+		CurrentStamina += StaminaRecoverRate * DeltaTime;
+
+		// 최대치를 초과하지 않도록 제한
+		CurrentStamina = FMath::Min(CurrentStamina, MaxStamina);
+	}
+	else
+	{
+		// 회복이 완료되면 타이머 제거
+		GetWorld()->GetTimerManager().ClearTimer(StaminaRecoverTimer);
+
+		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green, TEXT("Stamina Fully Recovered - Timer Cleared"));
+	}
 }
 
 void ACPlayerCharacter::ClearStaminaDelay()
 {
+	// 일정 시간 후에 스태미나 회복을 시작하도록 타이머 설정
+	GetWorld()->GetTimerManager().SetTimer(StaminaRecoverTimer, this, &ACPlayerCharacter::TickRecoverStamina, 0.01f, true, StaminaRecoverDelay);
 }
 
 // 삭제 예정

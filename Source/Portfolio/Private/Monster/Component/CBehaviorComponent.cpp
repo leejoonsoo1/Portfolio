@@ -15,12 +15,30 @@ void UCBehaviorComponent::SetBlackboardComponent(UBlackboardComponent* InBlackbo
 
 EBehaviorType UCBehaviorComponent::GetType()
 {
+	if (!BlackboardComp)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s : BlackbaordComp is nullptr"), *FString(__FUNCTION__));
+
+		return EBehaviorType::Max;
+	}
+
 	return (EBehaviorType)(BlackboardComp->GetValueAsEnum(BehaviorKeyName));
 }
 
 void UCBehaviorComponent::ChangeType(EBehaviorType InNewType)
 {
 	EBehaviorType Prev = GetType();
+	
+	if (!BlackboardComp)
+	{
+		if (!BlackboardComp)
+		{
+			UE_LOG(LogTemp, Error, TEXT("%s : BlackbaordComp is nullptr"), *FString(__FUNCTION__));
+
+			return;
+		}
+	}
+
 	BlackboardComp->SetValueAsEnum(BehaviorKeyName, (uint8)InNewType);
 }
 
@@ -141,10 +159,24 @@ void UCBehaviorComponent::SetDeadMode()
 
 AActor* UCBehaviorComponent::GetTargetValue()
 {
+	if (!BlackboardComp)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s : BlackbaordComp is nullptr"), *FString(__FUNCTION__));
+
+		return nullptr;
+	}
+
 	return Cast<AActor>(BlackboardComp->GetValueAsObject(OtherActorKeyName));
 }
 
 FVector UCBehaviorComponent::GetLocationValue()
 {
+	if (!BlackboardComp)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s : BlackbaordComp is nullptr"), *FString(__FUNCTION__));
+
+		return FVector(0, 0, 0);
+	}
+
 	return BlackboardComp->GetValueAsVector(LocationKeyName);
 }

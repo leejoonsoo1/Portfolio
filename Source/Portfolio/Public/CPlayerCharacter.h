@@ -114,7 +114,9 @@ protected:
 	void Charge(const FInputActionValue& value);
 	void AttackTwo(const FInputActionValue& value);
 	
+	void HandleSprintStaminaDrain();
 	bool UseStamina(float Amount);
+	void TickRecoverStamina();
 	void RecoverStamina(float DeltaTime);
 	void ClearStaminaDelay();
 
@@ -191,6 +193,13 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Stats|Stamina")
 	float StaminaRecoverDelay; // 행동 후 회복 대기 시간
 
+	UPROPERTY(EditAnywhere, Category = "Status|Stamina", meta = (AllowPrivateAccess = "true"))
+	float StaminaSprintDrainRate;
+
+	UPROPERTY(EditAnywhere, Category = "Status|Stamina", meta = (AllowPrivateAccess = "true"))
+	float StaminaEvadeDrainRate;
+
 private:
+	FTimerHandle SprintStaminaTimer;
 	FTimerHandle StaminaRecoverTimer;
 };
