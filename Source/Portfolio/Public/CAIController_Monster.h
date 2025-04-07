@@ -20,6 +20,8 @@ public:
 	float GetSightRadius();
 	FORCEINLINE float GetBehaviorRange() { return BehaviorRange; }
 
+	FORCEINLINE UBlackboardComponent* GetBlackboardComp() const { return BlackboardComp; }
+
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;
@@ -37,10 +39,11 @@ private:
 	UFUNCTION()
 	void RemovePlayerKey();
 
-protected:
+public:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 	UCBehaviorComponent* BehaviorComp;
 
+protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 	UAIPerceptionComponent* PerceptionComp;
 
@@ -59,13 +62,15 @@ protected:
 	uint8 TeamID;
 
 private:
-	ACMonster* PossessedMonster;
-	UAISenseConfig_Sight* Sight;
-
 	UPROPERTY(EditDefaultsOnly, Category = "AI", meta = (AllowPrivateAccess = "true"))
 	UBlackboardComponent* BlackboardComp;
+
+	ACMonster* PossessedMonster;
+	UAISenseConfig_Sight* Sight;
 
 private:
 	float LastRoarTime = 0.f;
 	const float RoarInterval = 120.f;
+	AActor* SensedActor;
+	float LastSensedTime;
 };

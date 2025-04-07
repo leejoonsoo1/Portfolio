@@ -14,7 +14,12 @@ class UCStateComponent;
 class UCMontagesComponent;
 class UCAttachment;
 class UEnhancedInputComponent;
+class UCUserWidget_Status;
+class ACHUD;
 struct FInputActionValue;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHPChanged, float, Percent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStaminaChanged, float, Percent);
 
 UCLASS()
 class PORTFOLIO_API ACPlayerCharacter : public ACharacter, public IGenericTeamAgentInterface
@@ -130,6 +135,9 @@ public:
 	void Groggy();
 	void BeDead();
 
+	void SetCurrentHP(float NewHP);
+	void SetCurrentStamina(float NewStamina);
+
 protected:
 	//virtual void NotifyControllerChanged() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -148,6 +156,12 @@ public:
 	FORCEINLINE class UCameraComponent*		GetFollowCamera()	const { return CameraComp; }
 
 	FORCEINLINE bool GetCharge() const { return bCharge; }
+
+	FORCEINLINE float GetCurrentHP()		const { return CurrentHP; }
+	FORCEINLINE float GetMaxHP()			const { return MaxHP; }
+
+	FORCEINLINE float GetCurrentStamina()	const { return CurrentStamina; }
+	FORCEINLINE float GetMaxStamina()		const { return MaxStamina; }
 
 private:
 	APlayerController* PC;
@@ -202,4 +216,11 @@ private:
 private:
 	FTimerHandle SprintStaminaTimer;
 	FTimerHandle StaminaRecoverTimer;
+
+public:
+	UPROPERTY(BlueprintAssignable)
+	FOnHPChanged OnHPChanged;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnStaminaChanged OnStaminaChanged;
 };

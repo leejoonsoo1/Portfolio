@@ -1,11 +1,11 @@
 #include "CMonster.h"
-#include "CBehaviorComponent.h"
+//#include "CBehaviorComponent.h"
 
 ACMonster::ACMonster()
 {
 	StateComp		= CreateDefaultSubobject<UCMonsterStateComponent>(TEXT("MonsterStateComp"));
 	EmotionComp		= CreateDefaultSubobject<UCMonsterEmotionComponent>(TEXT("MonsterEmotionComp"));
-	BehaviorComp	= CreateDefaultSubobject<UCBehaviorComponent>(TEXT("BehaviorComp"));
+	//BehaviorComp	= CreateDefaultSubobject<UCBehaviorComponent>(TEXT("BehaviorComp"));
 
 	MonsterName			= NAME_None;
 	MonsterDescription	= TEXT("");
@@ -96,7 +96,7 @@ void ACMonster::LoadMonsterData(FName InMonsterName)
 
 void ACMonster::HandleStateChanged(EMonsterStateType PrevState, EMonsterStateType NewState)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s : %d -> %d"), *FString(__FUNCTION__), (int32)PrevState, (int32)NewState);
+	//UE_LOG(LogTemp, Warning, TEXT("%s : %d -> %d"), *FString(__FUNCTION__), (int32)PrevState, (int32)NewState);
 
 	switch(NewState)
 	{
@@ -126,7 +126,7 @@ void ACMonster::HandleStateChanged(EMonsterStateType PrevState, EMonsterStateTyp
 
 void ACMonster::HandleEmotionChanged(EMonsterEmotionStateType PrevState, EMonsterEmotionStateType NewState)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Monster Emotion Changed : %d -> %d"), (int32)PrevState, (int32)NewState);
+	//UE_LOG(LogTemp, Warning, TEXT("Monster Emotion Changed : %d -> %d"), (int32)PrevState, (int32)NewState);
 
 	switch (NewState)
 	{

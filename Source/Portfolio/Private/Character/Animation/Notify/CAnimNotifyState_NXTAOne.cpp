@@ -1,5 +1,6 @@
 #include "CAnimNotifyState_NXTAOne.h"
 #include "CPlayerCharacter.h"
+#include <windows.h>
 
 FString UCAnimNotifyState_NXTAOne::GetNotifyName_Implementation() const
 {

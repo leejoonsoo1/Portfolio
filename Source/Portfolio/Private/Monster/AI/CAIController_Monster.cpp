@@ -18,7 +18,7 @@ ACAIController_Monster::ACAIController_Monster()
 	Sight->SightRadius = 2500.f;
 	Sight->LoseSightRadius = 3000.f;
 	Sight->PeripheralVisionAngleDegrees = 360.f;
-	Sight->SetMaxAge(0.3f);
+	Sight->SetMaxAge(0.2f);
 
 	Sight->DetectionByAffiliation.bDetectEnemies	= true;
 	Sight->DetectionByAffiliation.bDetectNeutrals	= false;
@@ -46,25 +46,19 @@ void ACAIController_Monster::OnPossess(APawn* InPawn)
 
 	PossessedMonster = Cast<ACMonster>(InPawn);
 
-	UBlackboardComponent* BlackboardCompRaw;
-
-	if (!Blackboard)
-	{
-		BlackboardCompRaw = Blackboard.Get();
-	}
-	else
-	{
-		BlackboardCompRaw = BlackboardComp;
-	}
-
 	if (PossessedMonster && ensure(PossessedMonster->GetBehaviorTree()))
 	{
+		// 먼저 블랙보드 초기화
+		UBlackboardComponent* BlackboardCompRaw = nullptr;
 		UseBlackboard(PossessedMonster->GetBehaviorTree()->GetBlackboardAsset(), BlackboardCompRaw);
+
+		// RunBehaviorTree 이후 블랙보드가 유효하므로 그때 BehaviorComp에 전달
+		BehaviorComp->SetBlackboardComponent(BlackboardCompRaw);
+
 		RunBehaviorTree(PossessedMonster->GetBehaviorTree());
 	}
 
 	SetGenericTeamId(FGenericTeamId(TeamID));
-	BehaviorComp->SetBlackboardComponent(Blackboard);
 }
 
 void ACAIController_Monster::OnUnPossess()
@@ -98,6 +92,7 @@ void ACAIController_Monster::OnPerceptionUpdated(const TArray<AActor*>& UpdatedA
 	}
 
 	AActor* TargetActor = nullptr;
+	FActorPerceptionBlueprintInfo Info;
 
 	for (AActor* Actor : UpdatedActors)
 	{
@@ -111,68 +106,34 @@ void ACAIController_Monster::OnPerceptionUpdated(const TArray<AActor*>& UpdatedA
 	if (TargetActor)
 	{
 		float CurrentTime = GetWorld()->GetTimeSeconds();
+		SensedActor = TargetActor;
 
 		if (CurrentTime - LastRoarTime >= RoarInterval)
 		{
 			//BlackboardComp->SetValueAsEnum("BehaviorKey", (uint8)EBehaviorType::Roar);
 		}
 
-		APawn* ControlledPawn = GetPawn();
-		if (!ControlledPawn || !TargetActor) return;
-
-		// 타겟까지의 벡터 (방향 벡터)
-		FVector ToTargetVector = TargetActor->GetActorLocation() - ControlledPawn->GetActorLocation();
-
-		// 거리 계산 (벡터 길이)
-		float Distance = ToTargetVector.Size();
-
-		// 방향 벡터 (단위 벡터)
-		FVector ToTarget	= ToTargetVector.GetSafeNormal();
-		FRotator LookAtRot	= ToTarget.Rotation();
-
-		// 몬스터의 방향과 타겟 방향의 Yaw 차이.
-		float YawDiff = FMath::FindDeltaAngleDegrees(ControlledPawn->GetActorRotation().Yaw, LookAtRot.Yaw);
-
-		// 디버그 출력
-		//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("YawDiff: %.2f"), YawDiff));
-
-		// 방향 판별
-		ETargetDirectionType Direction;
-
-		if (FMath::Abs(YawDiff) <= 45.f)
-		{
-			Direction = ETargetDirectionType::Front;
-		}
-		else if (YawDiff > 45.f && YawDiff <= 135.f)
-		{
-			Direction = ETargetDirectionType::Right;
-		}
-		else if (YawDiff < -45.f && YawDiff >= -135.f)
-		{
-			Direction = ETargetDirectionType::Left;
-		}
-		else
-		{
-			Direction = ETargetDirectionType::Back;
-		}
-
-		if (Distance > BehaviorRange)
-		{
-			BlackboardComp->SetValueAsEnum("Approach", (uint8)EBehaviorType::Approach);
-		}
-		else if (Distance <= BehaviorRange)
-		{
-			BlackboardComp->SetValueAsEnum("Approach", (uint8)EBehaviorType::Attack);
-		}
-
-		// 블랙 보드에 값 저장.
 		BlackboardComp->SetValueAsObject("OtherActorKey", TargetActor);
-		BlackboardComp->SetValueAsEnum("TargetDirectionKey", (uint8)Direction);
-		BlackboardComp->SetValueAsFloat("TargetDistanceKey", Distance);
 	}
 	else
 	{
-		BlackboardComp->ClearValue("OtherActorKey");
+		// 마지막으로 감지된 시간 계산
+		if (GetPerceptionComponent()->GetActorsPerception(SensedActor, Info))
+		{
+			if (!Info.LastSensedStimuli.IsEmpty())
+			{
+				const float TimeSinceLastSeen = Info.LastSensedStimuli[0].GetAge();
+
+				if (TimeSinceLastSeen >= 0.3f)
+				{
+					BlackboardComp->ClearValue("OtherActorKey");
+					BlackboardComp->ClearValue("TargetDirectionKey");
+					BlackboardComp->ClearValue("TargetDistanceKey");
+
+					SensedActor = nullptr;
+				}
+			}
+		}
 	}
 }
 

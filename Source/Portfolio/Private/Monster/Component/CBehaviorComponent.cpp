@@ -1,4 +1,4 @@
-	#include "CBehaviorComponent.h"
+#include "CBehaviorComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 UCBehaviorComponent::UCBehaviorComponent()
@@ -10,10 +10,9 @@ UCBehaviorComponent::UCBehaviorComponent()
 
 void UCBehaviorComponent::SetBlackboardComponent(UBlackboardComponent* InBlackboardComp)
 {
-	if (!BlackboardComp)
-	{
-		BlackboardComp = InBlackboardComp;
-	}
+	BlackboardComp = InBlackboardComp;
+
+	UE_LOG(LogTemp, Warning, TEXT("%s : BlackboardComp set"), *FString(__FUNCTION__));	
 }
 
 EBehaviorType UCBehaviorComponent::GetType()
@@ -32,15 +31,23 @@ void UCBehaviorComponent::ChangeType(EBehaviorType InNewType)
 {
 	EBehaviorType Prev = GetType();
 	
+	UE_LOG(LogTemp, Warning, TEXT("%s : Change State!"), *FString(__FUNCTION__));
+
 	if (!BlackboardComp)
 	{
-		if (!BlackboardComp)
-		{
-			UE_LOG(LogTemp, Error, TEXT("%s : BlackbaordComp is nullptr"), *FString(__FUNCTION__));
+		UE_LOG(LogTemp, Error, TEXT("%s : BlackbaordComp is nullptr"), *FString(__FUNCTION__));
 
-			return;
-		}
+		return;
 	}
+
+	if (Prev == InNewType)
+	{
+		// 상태 동일 → 변경 생략
+		return;
+	}
+
+
+	UE_LOG(LogTemp, Warning, TEXT("%s : %d -> %d"), *FString(__FUNCTION__), (int32)Prev, (int32)InNewType);
 
 	BlackboardComp->SetValueAsEnum(BehaviorKeyName, (uint8)InNewType);
 }
@@ -102,6 +109,8 @@ bool UCBehaviorComponent::IsDeadMode()
 
 void UCBehaviorComponent::SetWaitMode()
 {
+	UE_LOG(LogTemp, Warning, TEXT("%s : Behavior Component States is Wait Mode"), *FString(__FUNCTION__));
+
 	ChangeType(EBehaviorType::Wait);
 }
 

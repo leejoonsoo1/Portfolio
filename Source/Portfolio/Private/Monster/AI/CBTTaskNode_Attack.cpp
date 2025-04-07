@@ -113,7 +113,9 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 
 	if (Monster->StateComp->IsIdleMode())
 	{
-		UE_LOG(LogTemp, Error, TEXT("%s : Monster State is IdleMode"), *FString(__FUNCTION__));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Monster State is IdleMode"));
+
+		AIC->BehaviorComp->SetWaitMode();
 
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 

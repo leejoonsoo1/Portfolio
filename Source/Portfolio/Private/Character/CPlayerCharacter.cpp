@@ -2,19 +2,22 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/PlayerController.h"
+#include "TimerManager.h"
+#include "Engine/DamageEvents.h"
+#include "Engine/Engine.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "InputActionValue.h"
 #include "CStateComponent.h"
 #include "CMontagesComponent.h"
-#include "InputActionValue.h"
-#include "Engine/Engine.h"
 #include "CAttachment.h"
-#include "Engine/DamageEvents.h"
-#include "TimerManager.h"
+#include "CHUD.h"
+#include "CUserWidget_Status.h"
 
 /*
 *  2025. 03. 02 AM 04:03
@@ -82,9 +85,9 @@ ACPlayerCharacter::ACPlayerCharacter()
 	RunningSpeed	= GetCharacterMovement()->MaxWalkSpeed;
 	
 	MaxHP					= 100.f;
-	CurrentHP				= 100.f;
+	CurrentHP				= MaxHP;
 	MaxStamina				= 100.f;
-	CurrentStamina			= 100.f;
+	CurrentStamina			= MaxStamina;
 	StaminaRecoverRate		= 10.f;		// 초당 회복량
 	StaminaRecoverDelay		= 2.f;		// 행동 후 회복 대기 시간
 	StaminaSprintDrainRate	= 1.f;
@@ -124,6 +127,9 @@ void ACPlayerCharacter::BeginPlay()
 	// 입력이 다른 입력을 방해하는 경우를 방지하는데 도움.
 	AttackAction->bConsumeInput = false;
 	MoveAction->bConsumeInput	= false;
+
+	SetCurrentHP(MaxHP);
+	SetCurrentStamina(MaxStamina);
 }
 
 void ACPlayerCharacter::Tick(float DeltaTime)
@@ -399,6 +405,7 @@ bool ACPlayerCharacter::UseStamina(float Amount)
 		return false;
 
 	CurrentStamina -= Amount;
+	SetCurrentStamina(CurrentStamina);
 
 	return true;
 }
@@ -418,6 +425,7 @@ void ACPlayerCharacter::RecoverStamina(float DeltaTime)
 
 		// 최대치를 초과하지 않도록 제한
 		CurrentStamina = FMath::Min(CurrentStamina, MaxStamina);
+		SetCurrentStamina(CurrentStamina);
 	}
 	else
 	{
@@ -465,6 +473,18 @@ void ACPlayerCharacter::BeDead()
 	GetCharacterMovement()->DisableMovement();
 
 	MontagesComp->PlayDeadMotion(TEXT("Die"), StateComp->GetEWeaponType());
+}
+
+void ACPlayerCharacter::SetCurrentHP(float NewHP)
+{
+	CurrentHP = FMath::Clamp(NewHP, 0.f, MaxHP);
+	OnHPChanged.Broadcast(CurrentHP / MaxHP);
+}
+
+void ACPlayerCharacter::SetCurrentStamina(float NewStamina)
+{
+	CurrentStamina = FMath::Clamp(NewStamina, 0.f, MaxStamina);
+	OnStaminaChanged.Broadcast(CurrentStamina / MaxStamina);
 }
 
 void ACPlayerCharacter::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
@@ -585,6 +605,8 @@ float ACPlayerCharacter::TakeDamage(float InDamageAmount, FDamageEvent const& In
 
 		StateComp->SetDeadMode();
 	}
+
+	SetCurrentHP(CurrentHP);
 
 	return 0.f;
 }

@@ -101,8 +101,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Component")
 	UCMonsterEmotionComponent* EmotionComp;
 
-	UPROPERTY(EditAnywhere, Category = "AI")
-	UCBehaviorComponent* BehaviorComp;
+	//UPROPERTY(EditAnywhere, Category = "AI")
+	//UCBehaviorComponent* BehaviorComp;
 
 private:	
 	UPROPERTY(EditDefaultsOnly, Category = "AI", meta = (AllowPrivateAccess = "true"))
