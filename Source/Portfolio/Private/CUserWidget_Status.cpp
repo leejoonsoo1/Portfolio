@@ -40,11 +40,11 @@ void UCUserWidget_Status::NativeTick(const FGeometry& MyGeometry, float InDeltaT
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
-	if (!HP) return;
-	if (!Stamina) return;
+	//if (!HP) return;
+	//if (!Stamina) return;
 
-	CurrentStamina = FMath::FInterpTo(CurrentStamina, TargetStamina, InDeltaTime, 8.f);
-	Stamina->SetPercent(CurrentStamina);
+	//CurrentStamina = FMath::FInterpTo(CurrentStamina, TargetStamina, InDeltaTime, 8.f);
+	//Stamina->SetPercent(CurrentStamina);
 }
 
 void UCUserWidget_Status::UpdateHP(float Percent)

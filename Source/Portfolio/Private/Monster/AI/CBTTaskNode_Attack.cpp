@@ -101,15 +101,15 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 		return;
 	}
 
-	UAnimInstance* AnimInstance = Monster->GetMesh()->GetAnimInstance();
-	if (AnimInstance == nullptr)
-	{
-		UE_LOG(LogTemp, Error, TEXT("%s : AnimInstance is nullptr"), *FString(__FUNCTION__));
+	//UAnimInstance* AnimInstance = Monster->GetMesh()->GetAnimInstance();
+	//if (AnimInstance == nullptr)
+	//{
+	//	UE_LOG(LogTemp, Error, TEXT("%s : AnimInstance is nullptr"), *FString(__FUNCTION__));
 
-		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+	//	FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 
-		return;
-	}
+	//	return;
+	//}
 
 	if (Monster->StateComp->IsIdleMode())
 	{

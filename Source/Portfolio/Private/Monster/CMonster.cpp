@@ -152,7 +152,8 @@ void ACMonster::ApplyDamage(float InDamage, FDamageEvent const& InDamageEvent, A
 
 float ACMonster::TakeDamage(float InDamageAmount, FDamageEvent const& InDamageEvent, AController* InEventInstigator, AActor* InDamageCauser)
 {
-	MonsterHealth -= InDamageAmount;
+	MonsterHealth = FMath::Clamp(MonsterHealth - InDamageAmount, 0.f, MonsterHealth);
+
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Monster Current HP : %.1f"), MonsterHealth));
 
 	if (MonsterHealth <= 0.f)

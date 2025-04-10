@@ -93,7 +93,6 @@ ACPlayerCharacter::ACPlayerCharacter()
 	StaminaSprintDrainRate	= 1.f;
 	StaminaEvadeDrainRate	= 10.f;
 
-	// Great Sword DataTable에서 받아올 예정.
 	EqWalkSpeed = OriginWalkSpeed - 200.f;
 
 	// TeamID
@@ -322,6 +321,8 @@ void ACPlayerCharacter::Sprint(const FInputActionValue& value)
 		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
 
 		GetWorld()->GetTimerManager().SetTimer(SprintStaminaTimer, this, &ACPlayerCharacter::HandleSprintStaminaDrain, 0.1f, true, 0.0f);
+
+		GetWorld()->GetTimerManager().ClearTimer(StaminaRecoverTimer);
 	}
 }
 
@@ -332,6 +333,7 @@ void ACPlayerCharacter::Running(const FInputActionValue& value)
 		GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
 
 		GetWorld()->GetTimerManager().ClearTimer(SprintStaminaTimer);
+		GetWorld()->GetTimerManager().SetTimer(StaminaRecoverTimer, this, &ACPlayerCharacter::TickRecoverStamina, 0.01f, true, 0.0f);
 
 		ClearStaminaDelay();
 	}
@@ -345,7 +347,7 @@ void ACPlayerCharacter::Attack(const FInputActionValue& value)
 
 	// 공격할 때 스프린트 중이었다면 스프린트 종료 처리
 	GetWorld()->GetTimerManager().ClearTimer(SprintStaminaTimer);
-	ClearStaminaDelay();  // 스태미나 회복 타이머 대기 시작
+	//ClearStaminaDelay();  // 스태미나 회복 타이머 대기 시작
 
 	if (!StateComp->IsUnarmedMode() && !StateComp->IsActionMode())
 	{
@@ -390,12 +392,15 @@ void ACPlayerCharacter::HandleSprintStaminaDrain()
 {
 	// SprintDrainRate
 
-	if (!UseStamina(StaminaSprintDrainRate))
+	if (GetVelocity().Size() >= OriginWalkSpeed || StateComp->IsEvadeMode())
 	{
-		//bIsSprinting = false;
-		GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
+		if (!UseStamina(StaminaSprintDrainRate))
+		{
+			//bIsSprinting = false;
+			GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
 
-		GetWorld()->GetTimerManager().ClearTimer(SprintStaminaTimer);
+			GetWorld()->GetTimerManager().ClearTimer(SprintStaminaTimer);
+		}
 	}
 }
 
@@ -404,8 +409,10 @@ bool ACPlayerCharacter::UseStamina(float Amount)
 	if (CurrentStamina < Amount)
 		return false;
 
-	CurrentStamina -= Amount;
-	SetCurrentStamina(CurrentStamina);
+	SetCurrentStamina(CurrentStamina - Amount);
+
+	GetWorld()->GetTimerManager().ClearTimer(StaminaRecoverTimer);
+	ClearStaminaDelay();
 
 	return true;
 }

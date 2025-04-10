@@ -9,7 +9,7 @@
 UCAttachment::UCAttachment()
 {
 	Damage = 1000.f;
-
+	DamageRatio = 1.f;
 	VolumeMultiplier = 1.f;
 	PitchMultiplier = 1.f;
 }
@@ -186,6 +186,11 @@ void UCAttachment::ClearDamagedActors()
 	DamagedActors.Empty();
 }
 
+void UCAttachment::SetDamageRatio(float InDamageRatio)
+{
+	DamageRatio = InDamageRatio;
+}
+
 void UCAttachment::OnMeshOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor != GetOwner())
@@ -210,6 +215,6 @@ void UCAttachment::OnMeshOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 		FDamageEvent DamageEvent;
 		APawn* Pawn = Cast<APawn>(GetOwner());
 
-		Monster->ApplyDamage(Damage, DamageEvent, Pawn->GetController(), GetOwner());
+		Monster->ApplyDamage((Damage * DamageRatio), DamageEvent, Pawn->GetController(), GetOwner());
 	}
 }

@@ -36,6 +36,9 @@ public:
 	
 	void ClearDamagedActors();
 
+	void SetDamageRatio(float InDagameRatio);
+	FORCEINLINE float GetDamageRatio() const { return DamageRatio; }
+
 public:
 	UFUNCTION(BlueprintCallable)
 	void OnMeshOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -70,5 +73,6 @@ private:
 
 private:
 	float Damage;
+	float DamageRatio;
 	EWeaponType WeaponType;
 };
