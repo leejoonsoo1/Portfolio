@@ -82,7 +82,6 @@ enum class EBehaviorType : uint8
 	Roar		UMETA(DisplayName = "Roar"),
 	Land		UMETA(DisplayName = "Land"),
 	Takeoff		UMETA(DisplayName = "Takeoff"),
-	Dead		UMETA(DisplayName = "Dead"),
 	Max			UMETA(Hidden)
 };
 

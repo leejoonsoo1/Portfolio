@@ -64,6 +64,13 @@ void ACMonster_Rathalos::LoadData()
 	LoadMonsterData(MonsterNameToLoad);
 }
 
+void ACMonster_Rathalos::Dead()
+{
+	Super::Dead();
+
+	PlayAnimMontage(DeadMontage);
+}
+
 FName ACMonster_Rathalos::GetName()
 {
 	Super::GetName();

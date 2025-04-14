@@ -62,7 +62,6 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
 
 	ACAIController_Monster* AIC = Cast<ACAIController_Monster>(OwnerComp.GetAIOwner());
-
 	if (AIC == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s : AIC is nullptr"), *FString(__FUNCTION__));
@@ -113,8 +112,6 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 
 	if (Monster->StateComp->IsIdleMode())
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Monster State is IdleMode"));
-
 		AIC->BehaviorComp->SetWaitMode();
 
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);

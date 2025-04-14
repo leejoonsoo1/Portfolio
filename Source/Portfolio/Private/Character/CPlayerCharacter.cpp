@@ -333,9 +333,8 @@ void ACPlayerCharacter::Running(const FInputActionValue& value)
 		GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
 
 		GetWorld()->GetTimerManager().ClearTimer(SprintStaminaTimer);
-		GetWorld()->GetTimerManager().SetTimer(StaminaRecoverTimer, this, &ACPlayerCharacter::TickRecoverStamina, 0.01f, true, 0.0f);
 
-		ClearStaminaDelay();
+		GetWorld()->GetTimerManager().SetTimer(StaminaRecoverTimer, this, &ACPlayerCharacter::TickRecoverStamina, 0.01f, true, 0.0f);
 	}
 }
 
@@ -344,10 +343,10 @@ void ACPlayerCharacter::Attack(const FInputActionValue& value)
 	if (StateComp->IsEvadeMode())	return;
 	if (StateComp->IsEquipMode())	return;
 	if (StateComp->IsUnEquipMode()) return;
+	if (StateComp->IsHittedMode())	return;
 
 	// 공격할 때 스프린트 중이었다면 스프린트 종료 처리
 	GetWorld()->GetTimerManager().ClearTimer(SprintStaminaTimer);
-	//ClearStaminaDelay();  // 스태미나 회복 타이머 대기 시작
 
 	if (!StateComp->IsUnarmedMode() && !StateComp->IsActionMode())
 	{
@@ -377,7 +376,6 @@ void ACPlayerCharacter::AttackTwo(const FInputActionValue& value)
 {
 	// 공격할 때 스프린트 중이었다면 스프린트 종료 처리
 	GetWorld()->GetTimerManager().ClearTimer(SprintStaminaTimer);
-	ClearStaminaDelay();  // 스태미나 회복 타이머 대기 시작
 
 	if (!StateComp->IsActionMode() && !StateComp->IsUnarmedMode())
 	{

@@ -54,6 +54,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void LoadData();
+	virtual void Dead();
 
 public:
 	virtual void PlayAttackMontage(UAnimMontage* InAnimMontage, float InRate, FName InSectionName);
@@ -61,7 +62,7 @@ public:
 	virtual FName GetName();
 	virtual float GetHealth();
 	virtual float GetDamage();
-
+	
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Attack")
 	void OnAttackCollisionHead();
@@ -112,8 +113,11 @@ private:
 	UBehaviorTree* BehaviorTreeAsset;
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category = "AI")
+	UPROPERTY(EditDefaultsOnly, Category = "Animation")
 	UAnimMontage* RoarMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Animation")
+	UAnimMontage* DeadMontage;
 
 protected:
 	FName MonsterName;

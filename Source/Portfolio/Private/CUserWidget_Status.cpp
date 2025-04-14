@@ -40,22 +40,13 @@ void UCUserWidget_Status::NativeTick(const FGeometry& MyGeometry, float InDeltaT
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
-	//if (!HP) return;
-	//if (!Stamina) return;
-
-	//CurrentStamina = FMath::FInterpTo(CurrentStamina, TargetStamina, InDeltaTime, 8.f);
-	//Stamina->SetPercent(CurrentStamina);
 }
 
 void UCUserWidget_Status::UpdateHP(float Percent)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s called : % f"), *FString(__FUNCTION__), Percent);
-
 	if (HP)
 	{
 		HP->SetPercent(FMath::Clamp(Percent, 0.f, 1.f));
-
-		UE_LOG(LogTemp, Warning, TEXT("SetPercent: %f"), Percent);
 	}
 	else
 	{
@@ -65,15 +56,11 @@ void UCUserWidget_Status::UpdateHP(float Percent)
 
 void UCUserWidget_Status::UpdateStamina(float Percent)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s called : % f"), *FString(__FUNCTION__), Percent);
-
 	if (Stamina)
 	{
 		TargetStamina = FMath::FloorToFloat(Percent * 1000.f) / 1000.f;
 
 		Stamina->SetPercent(FMath::Clamp(Percent, 0.f, 1.f));
-
-		UE_LOG(LogTemp, Warning, TEXT("SetPercent : %f"), Percent);
 	}
 	else
 	{

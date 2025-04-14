@@ -18,7 +18,7 @@ ACAIController_Monster::ACAIController_Monster()
 	Sight->SightRadius = 2500.f;
 	Sight->LoseSightRadius = 3000.f;
 	Sight->PeripheralVisionAngleDegrees = 360.f;
-	Sight->SetMaxAge(0.2f);
+	Sight->SetMaxAge(0.1f);
 
 	Sight->DetectionByAffiliation.bDetectEnemies	= true;
 	Sight->DetectionByAffiliation.bDetectNeutrals	= false;
@@ -84,6 +84,9 @@ void ACAIController_Monster::BeginPlay()
 
 void ACAIController_Monster::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 {
+	TArray<AActor*> PerceivedActors;
+	PerceptionComp->GetCurrentlyPerceivedActors(nullptr, PerceivedActors);
+
 	if (!BlackboardComp)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s : Blackboard component is null!"), *FString(__FUNCTION__));
@@ -92,9 +95,8 @@ void ACAIController_Monster::OnPerceptionUpdated(const TArray<AActor*>& UpdatedA
 	}
 
 	AActor* TargetActor = nullptr;
-	FActorPerceptionBlueprintInfo Info;
 
-	for (AActor* Actor : UpdatedActors)
+	for (AActor* Actor : PerceivedActors)
 	{
 		if (Actor && Actor->ActorHasTag("Player"))
 		{
@@ -105,35 +107,16 @@ void ACAIController_Monster::OnPerceptionUpdated(const TArray<AActor*>& UpdatedA
 
 	if (TargetActor)
 	{
-		float CurrentTime = GetWorld()->GetTimeSeconds();
-		SensedActor = TargetActor;
-
-		if (CurrentTime - LastRoarTime >= RoarInterval)
+		if (BlackboardComp)
 		{
-			//BlackboardComp->SetValueAsEnum("BehaviorKey", (uint8)EBehaviorType::Roar);
+			BlackboardComp->SetValueAsObject("OtherActorKey", TargetActor);
 		}
-
-		BlackboardComp->SetValueAsObject("OtherActorKey", TargetActor);
 	}
-	else
+	else if (!TargetActor)
 	{
-		// 마지막으로 감지된 시간 계산
-		if (GetPerceptionComponent()->GetActorsPerception(SensedActor, Info))
-		{
-			if (!Info.LastSensedStimuli.IsEmpty())
-			{
-				const float TimeSinceLastSeen = Info.LastSensedStimuli[0].GetAge();
-
-				if (TimeSinceLastSeen >= 0.3f)
-				{
-					BlackboardComp->ClearValue("OtherActorKey");
-					BlackboardComp->ClearValue("TargetDirectionKey");
-					BlackboardComp->ClearValue("TargetDistanceKey");
-
-					SensedActor = nullptr;
-				}
-			}
-		}
+		BlackboardComp->ClearValue("OtherActorKey");
+		BlackboardComp->ClearValue("TargetDirectionKey");
+		BlackboardComp->ClearValue("TargetDistanceKey");
 	}
 }
 

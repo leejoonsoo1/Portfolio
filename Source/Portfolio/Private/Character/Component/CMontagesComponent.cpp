@@ -129,5 +129,12 @@ void UCMontagesComponent::CustomPlayAnimMontage(UAnimMontage* AnimMontage, float
 	ACharacter* OwnerCharacter = Cast<ACharacter>(GetOwner());
 	if (!OwnerCharacter) return;
 
+	UAnimInstance* AnimInstance = OwnerCharacter->GetMesh()->GetAnimInstance();
+
+	if (AnimInstance && AnimInstance->IsAnyMontagePlaying())
+	{
+		AnimInstance->StopAllMontages(0.25f);
+	}
+
 	OwnerCharacter->PlayAnimMontage(AnimMontage, InPlayRate, StartSectionName);
 }

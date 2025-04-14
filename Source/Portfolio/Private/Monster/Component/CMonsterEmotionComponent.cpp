@@ -26,7 +26,7 @@ void UCMonsterEmotionComponent::SetTiredMode()
 	ChangeEmotionType(EMonsterEmotionStateType::Tired);
 }
 
-void UCMonsterEmotionComponent::EnragedMode()
+void UCMonsterEmotionComponent::SetEnragedMode()
 {
 	ChangeEmotionType(EMonsterEmotionStateType::Enraged);
 }

@@ -48,7 +48,7 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 
 	if (Monster->StateComp->IsDeadMode())
 	{
-		BehaviorComp->SetWaitMode();
+		return;
 	}
 
 	if (MonsterPawn == nullptr)
@@ -67,17 +67,43 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 		return;
 	}
 
-	if (MonsterStateComp->GetMonsterState() == EMonsterStateType::Dead)
-	{
-		BehaviorComp->SetWaitMode();
-		AIC->GetBrainComponent()->StopLogic("Dead");
-	}
-
 	AActor* TargetActor = BehaviorComp->GetTargetValue();
 
 	if (!TargetActor)
 	{
 		BehaviorComp->SetPatrolMode();
+
+		return;
+	}
+
+	if (!bHasSensedPlayer && TargetActor)
+	{
+		FirstSensedTime = GetWorld()->GetTimeSeconds();
+		LastRoarTime = FirstSensedTime;
+		bHasSensedPlayer = true;
+	}
+
+	float CurrentTime				= GetWorld()->GetTimeSeconds();
+	float ElapsedSinceFirstSense	= CurrentTime - FirstSensedTime;
+	float ElapsedSinceLastRoar		= CurrentTime - LastRoarTime;
+
+	if (ElapsedSinceFirstSense <= 5.f)
+	{
+		BehaviorComp->SetWaitMode();
+
+		FVector ToTarget = TargetActor->GetActorLocation() - Monster->GetActorLocation();
+		FRotator LookAtRotation = ToTarget.Rotation();
+
+		FRotator NewRotation = FMath::RInterpTo(Monster->GetActorRotation(), LookAtRotation, DeltaSeconds, 5.f);
+		Monster->SetActorRotation(NewRotation);
+
+		return;
+	}
+	else if ((ElapsedSinceFirstSense >= 5.f || ElapsedSinceLastRoar >= 180.f) && (BehaviorComp->IsWaitMode() && !BehaviorComp->IsRoarMode()))
+	{
+		BehaviorComp->SetRoarMode();
+
+		LastRoarTime = CurrentTime;
 
 		return;
 	}
@@ -119,7 +145,6 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 	}
 	
 	UCStateComponent* OtherStateComp = Cast<UCStateComponent>(TargetActor->GetComponentByClass(UCStateComponent::StaticClass()));
-
 	UBlackboardComponent* BlackBoardComp = AIC->GetBlackboardComp();
 
 	if (!BlackBoardComp)
@@ -139,7 +164,7 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 	}
 
 	// Set AttackMode
-	if (Distance < StopApproachDistance && !BehaviorComp->IsAttackMode())
+	if (Distance < StopApproachDistance && (!BehaviorComp->IsAttackMode() && BehaviorComp->IsWaitMode()))
 	{
 		MonsterStateComp->SetActionMode();
 		BehaviorComp->SetAttackMode();
@@ -148,14 +173,10 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 	}
 
 	// Set ApproachMode
-	if (Distance <= AIC->GetSightRadius() && Distance >= StopApproachDistance && !BehaviorComp->IsAttackMode())
+	if ((Distance <= AIC->GetSightRadius() && Distance >= StopApproachDistance) && (!BehaviorComp->IsAttackMode() && !BehaviorComp->IsAttackMode()))
 	{
 		BehaviorComp->SetApproachMode();
 
 		return;
 	}
-
-	//UE_LOG(LogTemp, Warning, TEXT("%s : Monster State is : %d"), *FString(__FUNCTION__), (uint8)MonsterStateComp->GetMonsterState());
-	//UE_LOG(LogTemp, Warning, TEXT("%s : Target Distance: %.2f"), *FString(__FUNCTION__), Distance);
-	//UE_LOG(LogTemp, Warning, TEXT("%s : SightRadius: %.2f, StopApproachDistance: %.2f"), *FString(__FUNCTION__), AIC->GetSightRadius(), StopApproachDistance);
 }

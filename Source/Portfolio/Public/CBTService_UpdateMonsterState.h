@@ -22,4 +22,9 @@ protected:
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Distance", meta = (AllowPrivateAccess = "true"))
 	float StopApproachDistance = 1500.f;
+
+private:
+	float FirstSensedTime	= -1.f;
+	float LastRoarTime		= -999.f;
+	bool bHasSensedPlayer	= false;
 };

@@ -50,4 +50,53 @@ EBTNodeResult::Type UCBTTaskNode_Roar::ExecuteTask(UBehaviorTreeComponent& Owner
 
 void UCBTTaskNode_Roar::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
+	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
+
+	ACAIController_Monster* AIC = Cast<ACAIController_Monster>(OwnerComp.GetAIOwner());
+	if (AIC == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s : AIC is nullptr"), *FString(__FUNCTION__));
+		
+		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+
+		return;
+	}
+
+	APawn* ControlledPawn = AIC->GetPawn();
+	if (ControlledPawn == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s : ControlledPawn is nullptr"), *FString(__FUNCTION__));
+
+		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+
+		return;
+	}
+
+	ACMonster* Monster = Cast<ACMonster>(ControlledPawn);
+	if (Monster == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s : StateComp is nullptr"), *FString(__FUNCTION__));
+
+		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+
+		return;
+	}
+
+	if (Monster->EmotionComp == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s : EmotionComp is nullptr"), *FString(__FUNCTION__));
+
+		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+
+		return;
+	}
+
+	if (Monster->EmotionComp->IsEnragedMode())
+	{
+		AIC->BehaviorComp->SetWaitMode();
+
+		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+
+		return;
+	}
 }

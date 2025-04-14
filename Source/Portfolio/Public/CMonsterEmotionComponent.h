@@ -29,7 +29,7 @@ public:
 	void SetCalmMode();
 	void SetAlertMode();
 	void SetTiredMode();
-	void EnragedMode();
+	void SetEnragedMode();
 
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE bool IsCalmMode() { return MonsterEmotion == EMonsterEmotionStateType::Calm; }

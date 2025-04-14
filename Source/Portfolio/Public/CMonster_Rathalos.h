@@ -22,6 +22,7 @@ protected:
 	ACMonster_Rathalos();
 	virtual void BeginPlay() override;
 	virtual void LoadData() override;
+	virtual void Dead() override;
 
 public:
 	// 몬스터 공통 함수.

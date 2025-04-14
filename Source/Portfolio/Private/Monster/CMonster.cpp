@@ -1,5 +1,6 @@
 #include "CMonster.h"
-//#include "CBehaviorComponent.h"
+#include "CAIController_Monster.h"
+#include "BrainComponent.h"
 
 ACMonster::ACMonster()
 {
@@ -51,6 +52,20 @@ void ACMonster::BeginPlay()
 // This function is overridden in a child class.
 void ACMonster::LoadData()
 {
+}
+
+void ACMonster::Dead()
+{
+	ACAIController_Monster* AIC = Cast<ACAIController_Monster>(GetController());
+
+	if (!AIC)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s : AIC is nullptr"), *FString(__FUNCTION__));
+
+		return;
+	}
+
+	AIC->BrainComponent->StopLogic("Monster Died");
 }
 
 void ACMonster::LoadMonsterData(FName InMonsterName)
@@ -120,6 +135,7 @@ void ACMonster::HandleStateChanged(EMonsterStateType PrevState, EMonsterStateTyp
 			break;
 		case EMonsterStateType::Dead:
 			UE_LOG(LogTemp, Warning, TEXT("%s : Monster Mode: Dead."), *FString(__FUNCTION__));
+			Dead();
 			break;
 	}
 }
@@ -165,7 +181,10 @@ float ACMonster::TakeDamage(float InDamageAmount, FDamageEvent const& InDamageEv
 			return 0.f;
 		}
 
-		StateComp->SetDeadMode();
+		if (!StateComp->IsDeadMode())
+		{
+			StateComp->SetDeadMode();
+		}
 	}
 
 	return 0.f;
