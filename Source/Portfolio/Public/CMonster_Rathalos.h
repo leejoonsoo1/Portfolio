@@ -22,6 +22,8 @@ protected:
 	ACMonster_Rathalos();
 	virtual void BeginPlay() override;
 	virtual void LoadData() override;
+
+	virtual void MonsterEnraged() override;
 	virtual void Dead() override;
 
 public:

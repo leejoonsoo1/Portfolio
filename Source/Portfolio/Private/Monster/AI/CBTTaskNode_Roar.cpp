@@ -2,6 +2,7 @@
 #include "CAIController_Monster.h"
 #include "CMonster.h"
 #include "CBehaviorComponent.h"
+#include "GameFramework\CharacterMovementComponent.h"
 
 UCBTTaskNode_Roar::UCBTTaskNode_Roar()
 {
@@ -93,8 +94,10 @@ void UCBTTaskNode_Roar::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 
 	if (Monster->EmotionComp->IsEnragedMode())
 	{
-		AIC->BehaviorComp->SetWaitMode();
+		Monster->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+		Monster->GetCharacterMovement()->bOrientRotationToMovement = true;
 
+		AIC->BehaviorComp->SetWaitMode();
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 
 		return;

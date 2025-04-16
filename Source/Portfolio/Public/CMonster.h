@@ -54,6 +54,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void LoadData();
+	
+	virtual void MonsterEnraged();
 	virtual void Dead();
 
 public:

@@ -54,6 +54,10 @@ void ACMonster::LoadData()
 {
 }
 
+void ACMonster::MonsterEnraged()
+{
+}
+
 void ACMonster::Dead()
 {
 	ACAIController_Monster* AIC = Cast<ACAIController_Monster>(GetController());
@@ -157,6 +161,7 @@ void ACMonster::HandleEmotionChanged(EMonsterEmotionStateType PrevState, EMonste
 		break;
 	case EMonsterEmotionStateType::Enraged:
 		UE_LOG(LogTemp, Warning, TEXT("Monster Mode: Enraged."));
+		MonsterEnraged();
 		break;
 	}
 }

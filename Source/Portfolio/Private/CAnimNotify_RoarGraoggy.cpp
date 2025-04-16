@@ -8,7 +8,7 @@ FString UCAnimNotify_RoarGraoggy::GetNotifyName_Implementation() const
 	return "Roar_Groggy";
 }
 
-void UCAnimNotify_RoarGraoggy::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
+void UCAnimNotify_RoarGraoggy::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
 	Super::Notify(MeshComp, Animation);
 
@@ -59,7 +59,6 @@ void UCAnimNotify_RoarGraoggy::Notify(USkeletalMeshComponent* MeshComp, UAnimSeq
 			if (Player)
 			{
 				Player->StateComp->SetGroggyMode();
-				Player->MontagesComp->PlayGroggy("Groggy", EWeaponType::Unarmed);
 			}
 		}
 	}

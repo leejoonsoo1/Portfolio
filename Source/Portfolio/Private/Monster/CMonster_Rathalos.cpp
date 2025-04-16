@@ -64,6 +64,11 @@ void ACMonster_Rathalos::LoadData()
 	LoadMonsterData(MonsterNameToLoad);
 }
 
+void ACMonster_Rathalos::MonsterEnraged()
+{
+	Super::MonsterEnraged();
+}
+
 void ACMonster_Rathalos::Dead()
 {
 	Super::Dead();

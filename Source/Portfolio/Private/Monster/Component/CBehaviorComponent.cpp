@@ -31,7 +31,7 @@ void UCBehaviorComponent::ChangeType(EBehaviorType InNewType)
 {
 	EBehaviorType Prev = GetType();
 	
-	UE_LOG(LogTemp, Warning, TEXT("%s : Change State!"), *FString(__FUNCTION__));
+	//UE_LOG(LogTemp, Warning, TEXT("%s : Change State!"), *FString(__FUNCTION__));
 
 	if (!BlackboardComp)
 	{
@@ -47,7 +47,7 @@ void UCBehaviorComponent::ChangeType(EBehaviorType InNewType)
 	}
 
 
-	UE_LOG(LogTemp, Warning, TEXT("%s : %d -> %d"), *FString(__FUNCTION__), (int32)Prev, (int32)InNewType);
+	//UE_LOG(LogTemp, Warning, TEXT("%s : %d -> %d"), *FString(__FUNCTION__), (int32)Prev, (int32)InNewType);
 
 	BlackboardComp->SetValueAsEnum(BehaviorKeyName, (uint8)InNewType);
 }

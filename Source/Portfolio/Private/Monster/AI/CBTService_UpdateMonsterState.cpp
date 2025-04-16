@@ -5,11 +5,12 @@
 #include "CBehaviorComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "CMonster.h"
+#include "GameFramework\CharacterMovementComponent.h"
 
 UCBTService_UpdateMonsterState::UCBTService_UpdateMonsterState()
 {
 	NodeName = "RootService_Monster";
-	Interval = 0.5f;
+	Interval = 0.1f;
 	RandomDeviation = 0.0f;
 	bCallTickOnSearchStart = true;
 }
@@ -87,26 +88,21 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 	float ElapsedSinceFirstSense	= CurrentTime - FirstSensedTime;
 	float ElapsedSinceLastRoar		= CurrentTime - LastRoarTime;
 
-	if (ElapsedSinceFirstSense <= 5.f)
+	if (ElapsedSinceFirstSense <= 3.f)
 	{
 		BehaviorComp->SetWaitMode();
-
-		FVector ToTarget = TargetActor->GetActorLocation() - Monster->GetActorLocation();
-		FRotator LookAtRotation = ToTarget.Rotation();
-
-		FRotator NewRotation = FMath::RInterpTo(Monster->GetActorRotation(), LookAtRotation, DeltaSeconds, 5.f);
-		Monster->SetActorRotation(NewRotation);
+		UpdateFacingOnly(Monster, TargetActor, DeltaSeconds);
 
 		return;
 	}
-	else if ((ElapsedSinceFirstSense >= 5.f || ElapsedSinceLastRoar >= 180.f) && (BehaviorComp->IsWaitMode() && !BehaviorComp->IsRoarMode()))
+	else if (((ElapsedSinceFirstSense > 3.f && !bRoaredOnce) || ElapsedSinceLastRoar >= 180.f) && (BehaviorComp->IsWaitMode() && !BehaviorComp->IsRoarMode()))
 	{
-		BehaviorComp->SetRoarMode();
-
-		LastRoarTime = CurrentTime;
+		EnterRoarMode(CurrentTime, BehaviorComp);
 
 		return;
 	}
+
+	Monster->GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	APawn* ControlledPawn = AIC->GetPawn();
 	if (!ControlledPawn || !TargetActor) return;
@@ -164,7 +160,7 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 	}
 
 	// Set AttackMode
-	if (Distance < StopApproachDistance && (!BehaviorComp->IsAttackMode() && BehaviorComp->IsWaitMode()))
+	if (Distance < StopApproachDistance && (!BehaviorComp->IsAttackMode() && !BehaviorComp->IsRoarMode()))
 	{
 		MonsterStateComp->SetActionMode();
 		BehaviorComp->SetAttackMode();
@@ -173,10 +169,46 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 	}
 
 	// Set ApproachMode
-	if ((Distance <= AIC->GetSightRadius() && Distance >= StopApproachDistance) && (!BehaviorComp->IsAttackMode() && !BehaviorComp->IsAttackMode()))
+	if (Distance <= AIC->GetSightRadius() && (!BehaviorComp->IsAttackMode() && !BehaviorComp->IsRoarMode()))
 	{
-		BehaviorComp->SetApproachMode();
+		if (Distance > StopApproachDistance)
+		{
+			BehaviorComp->SetApproachMode();
+			
+			return;
+		}
+		else if (Distance <= StopApproachDistance)
+		{
+			UpdateFacingOnly(Monster, TargetActor, DeltaSeconds);
 
-		return;
+			return;
+		}
 	}
+}
+
+void UCBTService_UpdateMonsterState::UpdateFacingOnly(ACMonster* InMonster, AActor* InTargetActor, float DeltaSeconds)
+{
+	if (!InMonster || !InTargetActor) return;
+
+	InMonster->GetCharacterMovement()->DisableMovement();
+	InMonster->GetCharacterMovement()->bOrientRotationToMovement = false;
+
+	FVector ToTarget			= InTargetActor->GetActorLocation() - InMonster->GetActorLocation();
+	FRotator LookAtRotation		= ToTarget.GetSafeNormal().Rotation();
+	FRotator CurrentRot			= InMonster->GetActorRotation();
+	float NewYaw				= FMath::FInterpTo(CurrentRot.Yaw, LookAtRotation.Yaw, DeltaSeconds, 5.f);
+
+	FRotator NewRot(0.f, NewYaw, 0.f);
+
+	InMonster->SetActorRotation(NewRot);
+}
+
+void UCBTService_UpdateMonsterState::EnterRoarMode(float CurrentTime, UCBehaviorComponent* BehaviorComp)
+{
+	if (!BehaviorComp) return;
+
+	LastRoarTime = CurrentTime;
+	bRoaredOnce = true;
+
+	BehaviorComp->SetRoarMode();
 }

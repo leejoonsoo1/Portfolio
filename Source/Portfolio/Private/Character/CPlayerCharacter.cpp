@@ -213,6 +213,8 @@ void ACPlayerCharacter::Evade(const FInputActionValue& value)
 
 void ACPlayerCharacter::BeginEvade()
 {
+	GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
+
 	if (MontagesComp && StateComp->IsUnarmedMode())
 	{
 		MontagesComp->PlayEvade();
@@ -457,6 +459,7 @@ void ACPlayerCharacter::Hitted()
 {
 	if (!StateComp)		return;
 	if (!MontagesComp)	return;
+	if (!StateComp->IsHittedMode()) return;
 
 	StateComp->SetHittedMode();
 	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, TEXT("SetHittedMode"));
@@ -466,9 +469,9 @@ void ACPlayerCharacter::Groggy()
 {
 	if (!StateComp)		return;
 	if (!MontagesComp)	return;
+	if (!StateComp->IsGroggyMode()) return;
 
-	StateComp->SetGroggyMode();
-	MontagesComp->PlayGroggy(TEXT("Groggy"), StateComp->GetEWeaponType());
+	MontagesComp->PlayGroggy(TEXT("Groggy"), EWeaponType::Unarmed);
 }
 
 void ACPlayerCharacter::BeDead()
@@ -477,7 +480,7 @@ void ACPlayerCharacter::BeDead()
 
 	GetCharacterMovement()->DisableMovement();
 
-	MontagesComp->PlayDeadMotion(TEXT("Die"), StateComp->GetEWeaponType());
+	MontagesComp->PlayDeadMotion(TEXT("Die"), EWeaponType::Unarmed);
 }
 
 void ACPlayerCharacter::SetCurrentHP(float NewHP)
