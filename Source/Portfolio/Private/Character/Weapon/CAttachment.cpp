@@ -5,9 +5,16 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "CMonster.h"
 #include "Engine/DamageEvents.h"
+#include "CActor_DamageFont.h"
 
 UCAttachment::UCAttachment()
 {
+	static ConstructorHelpers::FClassFinder<ACActor_DamageFont> FontClass(TEXT("/Game/UI/BPCActor_DamageFont"));
+	if (FontClass.Succeeded())
+	{
+		DamageFontClass = FontClass.Class;
+	}
+
 	Damage = 1000.f;
 	DamageRatio = 1.f;
 	VolumeMultiplier = 1.f;
@@ -18,8 +25,7 @@ void UCAttachment::BeginPlay()
 {
 	Super::BeginPlay();
 
-	OwnerCharacter = Cast<ACharacter>(GetOwner());
-
+	OwnerCharacter	= Cast<ACharacter>(GetOwner());
 	if (!OwnerCharacter)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s : OwnerCharacter is null!"), *FString(__FUNCTION__));
@@ -49,7 +55,7 @@ void UCAttachment::BeginPlay()
 	Mesh->SetCollisionProfileName(TEXT("Weapon"));
 	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Mesh->OnComponentBeginOverlap.AddDynamic(this, &UCAttachment::OnMeshOverlap);
-
+	
 	SpawnWeapon();
 }
 
@@ -215,6 +221,37 @@ void UCAttachment::OnMeshOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 		FDamageEvent DamageEvent;
 		APawn* Pawn = Cast<APawn>(GetOwner());
 
-		Monster->ApplyDamage((Damage * DamageRatio), DamageEvent, Pawn->GetController(), GetOwner());
+		APlayerController* PC = GetWorld()->GetFirstPlayerController();
+		if (!PC)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s : PC is nullptr"), *FString(__FUNCTION__));
+
+			return;
+		}
+
+		if (Monster)
+		{
+			float FinalDamage = Damage * DamageRatio;
+			Monster->ApplyDamage(FinalDamage, DamageEvent, Pawn->GetController(), GetOwner());
+			
+			FVector SpawnLocation	= Mesh->GetComponentLocation() + FVector(0.f, 0.f, 100.f);
+			FVector SpawnScale		= FVector(1.f, 1.f, 1.f);
+
+			FVector PlayerLocation	= PC->GetPawn()->GetActorLocation();
+			FVector Direction		= (PlayerLocation - SpawnLocation).GetSafeNormal();
+			FRotator SpawnRotation	= Direction.Rotation();
+			SpawnRotation.Pitch		= 0.f;
+
+			FTransform SpawnTransform(SpawnRotation, SpawnLocation, SpawnScale);
+
+			FActorSpawnParameters SpawnParams;
+			SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+			ACActor_DamageFont* DamageFont = GetWorld()->SpawnActor<ACActor_DamageFont>(DamageFontClass, SpawnTransform, SpawnParams);
+			if (DamageFont)
+			{
+				DamageFont->SetDamageText((int32)FinalDamage);
+			}
+		}
 	}
 }

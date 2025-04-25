@@ -346,6 +346,7 @@ void ACPlayerCharacter::Attack(const FInputActionValue& value)
 	if (StateComp->IsEquipMode())	return;
 	if (StateComp->IsUnEquipMode()) return;
 	if (StateComp->IsHittedMode())	return;
+	if (StateComp->IsGroggyMode())	return;
 
 	// 공격할 때 스프린트 중이었다면 스프린트 종료 처리
 	GetWorld()->GetTimerManager().ClearTimer(SprintStaminaTimer);
@@ -376,6 +377,12 @@ void ACPlayerCharacter::ReleaseAttack(const FInputActionValue& value)
 
 void ACPlayerCharacter::AttackTwo(const FInputActionValue& value)
 {
+	if (StateComp->IsEvadeMode())	return;
+	if (StateComp->IsEquipMode())	return;
+	if (StateComp->IsUnEquipMode()) return;
+	if (StateComp->IsHittedMode())	return;
+	if (StateComp->IsGroggyMode())	return;
+
 	// 공격할 때 스프린트 중이었다면 스프린트 종료 처리
 	GetWorld()->GetTimerManager().ClearTimer(SprintStaminaTimer);
 
@@ -457,8 +464,8 @@ void ACPlayerCharacter::ReleaseAttackTwo(const FInputActionValue& value)
 
 void ACPlayerCharacter::Hitted()
 {
-	if (!StateComp)		return;
-	if (!MontagesComp)	return;
+	if (!StateComp)					return;
+	if (!MontagesComp)				return;
 	if (!StateComp->IsHittedMode()) return;
 
 	StateComp->SetHittedMode();
@@ -467,8 +474,8 @@ void ACPlayerCharacter::Hitted()
 
 void ACPlayerCharacter::Groggy()
 {
-	if (!StateComp)		return;
-	if (!MontagesComp)	return;
+	if (!StateComp)					return;
+	if (!MontagesComp)				return;
 	if (!StateComp->IsGroggyMode()) return;
 
 	MontagesComp->PlayGroggy(TEXT("Groggy"), EWeaponType::Unarmed);

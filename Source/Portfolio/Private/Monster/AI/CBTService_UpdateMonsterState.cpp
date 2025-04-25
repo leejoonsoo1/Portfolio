@@ -69,19 +69,18 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 	}
 
 	AActor* TargetActor = BehaviorComp->GetTargetValue();
-
 	if (!TargetActor)
 	{
 		BehaviorComp->SetPatrolMode();
-
+		
 		return;
 	}
 
 	if (!bHasSensedPlayer && TargetActor)
 	{
-		FirstSensedTime = GetWorld()->GetTimeSeconds();
-		LastRoarTime = FirstSensedTime;
-		bHasSensedPlayer = true;
+		FirstSensedTime		= GetWorld()->GetTimeSeconds();
+		LastRoarTime		= FirstSensedTime;
+		bHasSensedPlayer	= true;
 	}
 
 	float CurrentTime				= GetWorld()->GetTimeSeconds();
@@ -102,6 +101,7 @@ void UCBTService_UpdateMonsterState::TickNode(UBehaviorTreeComponent& OwnerComp,
 		return;
 	}
 
+	Monster->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 	Monster->GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	APawn* ControlledPawn = AIC->GetPawn();
@@ -193,14 +193,23 @@ void UCBTService_UpdateMonsterState::UpdateFacingOnly(ACMonster* InMonster, AAct
 	InMonster->GetCharacterMovement()->DisableMovement();
 	InMonster->GetCharacterMovement()->bOrientRotationToMovement = false;
 
-	FVector ToTarget			= InTargetActor->GetActorLocation() - InMonster->GetActorLocation();
-	FRotator LookAtRotation		= ToTarget.GetSafeNormal().Rotation();
-	FRotator CurrentRot			= InMonster->GetActorRotation();
-	float NewYaw				= FMath::FInterpTo(CurrentRot.Yaw, LookAtRotation.Yaw, DeltaSeconds, 5.f);
+	FVector ToTarget = InTargetActor->GetActorLocation() - InMonster->GetActorLocation();
+	FRotator LookAtRotation = ToTarget.GetSafeNormal().Rotation();
+	FRotator CurrentRot = InMonster->GetActorRotation();
+
+	float NewYaw = FMath::FInterpTo(CurrentRot.Yaw, LookAtRotation.Yaw, DeltaSeconds, 1.f);
 
 	FRotator NewRot(0.f, NewYaw, 0.f);
-
 	InMonster->SetActorRotation(NewRot);
+
+	if (TurnMontage)
+	{
+		UAnimInstance* AnimInstance = InMonster->GetMesh()->GetAnimInstance();
+		if (AnimInstance && !AnimInstance->Montage_IsPlaying(TurnMontage))
+		{
+			AnimInstance->Montage_Play(TurnMontage);
+		}
+	}
 }
 
 void UCBTService_UpdateMonsterState::EnterRoarMode(float CurrentTime, UCBehaviorComponent* BehaviorComp)

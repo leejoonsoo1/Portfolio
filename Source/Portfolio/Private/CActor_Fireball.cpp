@@ -4,24 +4,25 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "CPlayerCharacter.h"
 #include "Engine/DamageEvents.h"
+#include "CMontagesComponent.h"
 
 ACActor_Fireball::ACActor_Fireball()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComp"));
-	CollisionComp->InitSphereRadius(20.f);
-	CollisionComp->SetCollisionProfileName("BlockAllDynamic");
+	CollisionComp->InitSphereRadius(200.f);
+	CollisionComp->SetCollisionProfileName("Monster");
 	CollisionComp->SetNotifyRigidBodyCollision(true);
+	CollisionComp->SetVisibility(false);
 	RootComponent = CollisionComp;
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
-	ProjectileMovement->InitialSpeed				= 1500.f;
-	ProjectileMovement->MaxSpeed					= 1500.f;
+	ProjectileMovement->InitialSpeed				= 4500.f;
+	ProjectileMovement->MaxSpeed					= 4500.f;
 	ProjectileMovement->bRotationFollowsVelocity	= true;
 	ProjectileMovement->bShouldBounce				= false;
 	ProjectileMovement->ProjectileGravityScale		= 0.f;
-
 }
 
 void ACActor_Fireball::BeginPlay()
@@ -38,8 +39,27 @@ void ACActor_Fireball::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 	{
 		ACPlayerCharacter* Player = Cast<ACPlayerCharacter>(OtherActor);
 
-		FDamageEvent DamageEvent;
-		Player->ApplyDamage(FireballDamage, DamageEvent, GetInstigatorController(), this);
+		if (Player)
+		{
+			FDamageEvent DamageEvent;
+
+			FName HittedAnimName;
+			FVector FireballForward = GetActorForwardVector();
+			FVector HitDirection = (OtherActor->GetActorLocation() - Hit.ImpactPoint).GetSafeNormal();
+			float Dot = FVector::DotProduct(FireballForward, HitDirection);
+
+			if (Dot > 0)
+			{
+				HittedAnimName = "Hitted_Backward"; 
+			}
+			else
+			{
+				HittedAnimName = "Hitted_Forward";
+			}
+			
+			Player->MontagesComp->PlayHitted(HittedAnimName, EWeaponType::Unarmed);
+			Player->ApplyDamage(FireballDamage, DamageEvent, GetInstigatorController(), this);
+		}
 
 		Destroy();
 	}

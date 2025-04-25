@@ -10,6 +10,7 @@ class USkeletalMeshComponent;
 class ACharacter;
 class ACWeapon;
 class USoundBase;
+class ACActor_DamageFont;
 
 //UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 UCLASS(DefaultToInstanced, BlueprintType, config = Engine)
@@ -75,4 +76,5 @@ private:
 	float Damage;
 	float DamageRatio;
 	EWeaponType WeaponType;
+	TSubclassOf<ACActor_DamageFont> DamageFontClass;
 };

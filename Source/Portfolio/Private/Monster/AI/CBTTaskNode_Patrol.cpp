@@ -51,14 +51,24 @@ EBTNodeResult::Type UCBTTaskNode_Patrol::ExecuteTask(UBehaviorTreeComponent& Own
     FNavLocation RandomPoint;
     float MaxRadius = 2000.f;
 
+    UE_LOG(LogTemp, Error, TEXT("%s : %d"), *FString(__FUNCTION__), __LINE__);
+    
     if (NavSys->GetRandomReachablePointInRadius(ControlledPawn->GetActorLocation(), MaxRadius, RandomPoint))
     {
+        UE_LOG(LogTemp, Error, TEXT("%s : %d"), *FString(__FUNCTION__), __LINE__);
+
         PatrolTargetLocation = RandomPoint.Location;
         AIC->MoveToLocation(PatrolTargetLocation);
         bIsMoving = true;
 
         return EBTNodeResult::InProgress;
     }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("%s : %d"), *FString(__FUNCTION__), __LINE__);
+    }
+
+    UE_LOG(LogTemp, Error, TEXT("%s : %d"), *FString(__FUNCTION__), __LINE__);
 
     return EBTNodeResult::Failed;
 }

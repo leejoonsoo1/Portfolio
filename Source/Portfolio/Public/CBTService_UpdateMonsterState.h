@@ -27,8 +27,11 @@ private:
 	void EnterRoarMode(float CurrentTime, UCBehaviorComponent* BehaviorComp);
 
 private:
-	UPROPERTY(EditDefaultsOnly, Category = "Distance", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, Category = "Distance", meta = (AllowPrivateAccess = "true"))
 	float StopApproachDistance = 1500.f;
+
+	UPROPERTY(EditAnywhere, Category = "Distance", meta = (AllowPrivateAccess = "true"))
+	UAnimMontage* TurnMontage;
 
 private:
 	float FirstSensedTime	= -1.f;

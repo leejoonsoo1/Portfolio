@@ -43,6 +43,8 @@ EBTNodeResult::Type UCBTTaskNode_Roar::ExecuteTask(UBehaviorTreeComponent& Owner
 		return EBTNodeResult::Failed;
 	}
 
+	Monster->GetCharacterMovement()->DisableMovement();
+
 	int32 RandomIndex = FMath::RandRange(0, Montage.Num() - 1);
 	float Result = Monster->PlayAnimMontage(Montage[RandomIndex], Rate, Section);
 

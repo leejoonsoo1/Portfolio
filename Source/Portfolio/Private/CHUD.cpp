@@ -6,11 +6,14 @@
 
 ACHUD::ACHUD()
 {
-	static ConstructorHelpers::FClassFinder<UUserWidget> WidgetFinder(TEXT("/Game/UI/BP_UI"));
-
+	static ConstructorHelpers::FClassFinder<UUserWidget> WidgetFinder(TEXT("/Game/UI/WB_UI"));
 	if (WidgetFinder.Succeeded())
 	{
 		StatusWidgetClass = WidgetFinder.Class;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s : Failed to find Wiget Class! Check the Path."), *FString(__FUNCTION__));
 	}
 }
 
@@ -21,6 +24,13 @@ void ACHUD::BeginPlay()
 	if (StatusWidgetClass)
 	{
 		Widget = CreateWidget<UCUserWidget_Status>(GetWorld(), StatusWidgetClass);
+
+		if (!Widget)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s : Widget is nullptr"), *FString(__FUNCTION__));
+
+			return;
+		}
 
 		if (Widget)
 		{

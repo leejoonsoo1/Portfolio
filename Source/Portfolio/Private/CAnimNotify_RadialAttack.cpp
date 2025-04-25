@@ -87,7 +87,7 @@ void UCAnimNotify_RadialAttack::Notify(USkeletalMeshComponent* MeshComp, UAnimSe
 				}
 
 				Player->StateComp->SetHittedMode();
-				Player->MontagesComp->PlayHitted(HittedAnimName, Player->StateComp->GetEWeaponType());
+				Player->MontagesComp->PlayHitted(HittedAnimName, EWeaponType::Unarmed);
 				Player->TakeDamage(Damage, RadialEvent, Monster->GetController(), Monster);
 
 				FVector KnockbackVelocity = ToTarget * 2000.f + FVector(0.f, 0.f, 300.f);
