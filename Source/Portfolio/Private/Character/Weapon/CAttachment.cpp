@@ -15,7 +15,7 @@ UCAttachment::UCAttachment()
 		DamageFontClass = FontClass.Class;
 	}
 
-	Damage = 1000.f;
+	Damage = 2000.f;
 	DamageRatio = 1.f;
 	VolumeMultiplier = 1.f;
 	PitchMultiplier = 1.f;
@@ -237,8 +237,8 @@ void UCAttachment::OnMeshOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 			FVector SpawnLocation	= Mesh->GetComponentLocation() + FVector(0.f, 0.f, 100.f);
 			FVector SpawnScale		= FVector(1.f, 1.f, 1.f);
 
-			FVector PlayerLocation	= PC->GetPawn()->GetActorLocation();
-			FVector Direction		= (PlayerLocation - SpawnLocation).GetSafeNormal();
+			FVector CameraLocation	= PC->PlayerCameraManager->GetCameraLocation();
+			FVector Direction		= (CameraLocation - SpawnLocation).GetSafeNormal();
 			FRotator SpawnRotation	= Direction.Rotation();
 			SpawnRotation.Pitch		= 0.f;
 
