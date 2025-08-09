@@ -3,24 +3,25 @@
 <img width="954" height="822" alt="몬스터" src="https://github.com/user-attachments/assets/49c51d48-ffbd-426b-8f87-2ada0c4b13c0" />
 <img width="891" height="928" alt="캐릭터" src="https://github.com/user-attachments/assets/594b72b4-65fd-4c82-8d53-0df0f54c1781" />
 
-### 목차
+## 목차
 <hr></hr>
 
 # 프로젝트명: 몬스터 헌터 모작 Unreal Engine 5
-
-
+1. 프로젝트 개요
+2. AI 시스템
+3. 
 
 \*\*언리얼 엔진 5(Unreal Engine 5)\*\*를 기반으로 제작한 개인 프로젝트 입니다. 몬스터 AI, 스태미나 전투 구조, 상태 기반 전환 시스템 등을 중심으로 게임 구조에 맞춘 설계를 경험하며 개바ㄹ 역량을 키운 프로젝트입니다.
+***
 
+##  프로젝트 개요
+<hr></hr>
 
-
-프로젝트 개요
-
-* 플랫폼 : PC (Windows)
-* 개발 기간 : 2025. 02 ~ 2025. 04
-* 개발 인원 : 개인 1인 개발
-
-
+|항목|내용|
+|---|---|
+|플랫폼|PC (Windows)|
+|개발 기간| 2025.01 ~ 2025.04 (에셋 추출 및 개발)|
+|개발 인원| 1인 개발|
 
 주요 목표
 
