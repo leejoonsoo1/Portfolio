@@ -6,10 +6,11 @@
 ***
 
 ## 목차
-1. 프로젝트 개요
-2. 데이터 관리
-3. 구조
-4. 캐릭터 콤보
+1. [프로젝트 개요](#프로젝트 개요)
+2. [데이터 관리](#데이터 관리)
+3. [구조](#구조)
+4. [캐릭터 콤보](#캐릭터 콤보)
+5. [AI 시스템](#AI 시스템)
 
    
 # 프로젝트명: 몬스터 헌터 모작 Unreal Engine 5
@@ -123,16 +124,25 @@ ACWeapon-ACGreatSword (상속관계)
 ## 4. 캐릭터 공격
 🔹첫 번째 모션은 데이터 테이블로 관리하고, 연계 동작은 조건 충족 시 AnimNotifyState로 다음 동작을 실행
 <img width="1531" height="904" alt="image" src="https://github.com/user-attachments/assets/656b8756-dcc0-493b-bb27-d3b4c79db391" />
-  * 후속 애니메이션 동작을 직관적으로 파악하기 용이
-  * 
-  
-* UCMonsterEmotionComponent
-🔸 무기 시스템
-* 상위 ACWeapon에서 공통 인터페이스 제공.
+* 후속 애니메이션 동작을 직관적으로 파악하기 용이
+
+<img width="452" height="231" alt="image" src="https://github.com/user-attachments/assets/784933a9-1b43-41c9-bfe8-4a8e441acb91" />
+ * AnimNotifyState에서 차징 여부를 판단하고, 노티파이 종료 시점까지 차징이 유지되면 콤보 가능한 공격 애니메이션을 출력
+ * 차징을 유지하지 않고, 공격을 한다면, 콤보가 불가능한 공격 애니메이션을 출력
 
 
+<hr></hr>
 
-🔸 스태미나 \& 체력 시스템
+## 5. AI 시스템
 
-* Timer로 회복 딜레이 제어
-* 모든 소비 행동(행동, 달리기 등)과 연동.
+<img width="1334" height="680" alt="image" src="https://github.com/user-attachments/assets/3c218868-a5d4-4acb-bc17-bddd302da23a" />
+
+🔹ACAIController_Monster에 PerceptionUpdated 함수를 통해 캐릭터의 정보를 Black Board에 전달
+
+<img width="904" height="717" alt="image" src="https://github.com/user-attachments/assets/df4fc9fb-3712-462f-9fd9-4a6957436b68" />
+<img width="781" height="411" alt="image" src="https://github.com/user-attachments/assets/fa3409ac-65db-4286-9d8f-18eb2059b32a" />
+
+🔹전달된 정보를 바탕으로 UCBTService_UpdateMonsterState에서 캐릭터와의 거리, 방향 등을 판단해 몬스터의 상태를 판단하여 Black Board에 상태 값을 저장한다.
+
+
+<hr></hr>
