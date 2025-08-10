@@ -111,18 +111,21 @@ ACMonster - ACMonster_Rathlos
 
 ### 🔸 무기
 ACWeapon-ACGreatSword (상속관계)
-   * ACWeapon을 상속받아 무기 별 확장성을 고려하여 설계
-   * ACWeapon에서 데이터와 Owner를 설정
-   * ACWeapon에서 공통 인터페이스 제공
-   * ACGreatSword 무기별 공격 모션이 다르기 떄문에 캐릭터의 공격 애니메이션을 ACGreatSword에 구현
+     * ACWeapon을 상속받아 무기 별 확장성을 고려하여 설계
+     * ACWeapon에서 데이터와 Owner를 설정
+     * ACWeapon에서 공통 인터페이스 제공
+     * ACGreatSword 무기별 공격 모션이 다르기 떄문에 캐릭터의 공격 애니메이션을 ACGreatSword에 구현
 
 
 <hr></hr>
 
 
-## 4. 캐릭터 공격 시스템
-🔹캐릭터 무기에 따른 
-
+## 4. 캐릭터 공격
+🔹첫 번째 모션은 데이터 테이블로 관리하고, 연계 동작은 조건 충족 시 AnimNotifyState로 다음 동작을 실행
+<img width="1531" height="904" alt="image" src="https://github.com/user-attachments/assets/656b8756-dcc0-493b-bb27-d3b4c79db391" />
+  * 후속 애니메이션 동작을 직관적으로 파악하기 용이
+  * 
+  
 * UCMonsterEmotionComponent
 🔸 무기 시스템
 * 상위 ACWeapon에서 공통 인터페이스 제공.
