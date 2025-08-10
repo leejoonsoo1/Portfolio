@@ -111,7 +111,6 @@ ACMonster - ACMonster_Rathlos
 
 ### 🔸 무기
 ACWeapon-ACGreatSword (상속관계)
-🔹 설계 의도
    * ACWeapon을 상속받아 무기 별 확장성을 고려하여 설계
    * ACWeapon에서 데이터와 Owner를 설정
    * ACWeapon에서 공통 인터페이스 제공
