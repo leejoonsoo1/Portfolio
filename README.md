@@ -61,7 +61,7 @@
 
 ## 3. 구조
 ### 🔸 캐릭터
-<br></br>
+<hr></hr>
 #### 설계 의도: 컴포넌트 간 결합도를 최소화하기 위해 직접 참조를 지양하고, Owner를 단일 통제 지점으로 두는 구조를 채택
 <br></br>
 <pre>
@@ -112,10 +112,11 @@ ACMonster - ACMonster_Rathlos
 
 ### 🔸 무기
 ACWeapon-ACGreatSword (상속관계)
-     * ACWeapon을 상속받아 무기 별 확장성을 고려하여 설계
-     * ACWeapon에서 데이터와 Owner를 설정
-     * ACWeapon에서 공통 인터페이스 제공
-     * ACGreatSword 무기별 공격 모션이 다르기 떄문에 캐릭터의 공격 애니메이션을 ACGreatSword에 구현
+
+* ACWeapon을 상속받아 무기 별 확장성을 고려하여 설계
+* ACWeapon에서 데이터와 Owner를 설정
+* ACWeapon에서 공통 인터페이스 제공
+* * ACGreatSword 무기별 공격 모션이 다르기 떄문에 캐릭터의 공격 애니메이션을 ACGreatSword에 구현
 
 
 <hr></hr>
@@ -124,9 +125,11 @@ ACWeapon-ACGreatSword (상속관계)
 ## 4. 캐릭터 공격
 🔹첫 번째 모션은 데이터 테이블로 관리하고, 연계 동작은 조건 충족 시 AnimNotifyState로 다음 동작을 실행
 <img width="1531" height="904" alt="image" src="https://github.com/user-attachments/assets/656b8756-dcc0-493b-bb27-d3b4c79db391" />
+
 * 후속 애니메이션 동작을 직관적으로 파악하기 용이
 
 <img width="452" height="231" alt="image" src="https://github.com/user-attachments/assets/784933a9-1b43-41c9-bfe8-4a8e441acb91" />
+
  * AnimNotifyState에서 차징 여부를 판단하고, 노티파이 종료 시점까지 차징이 유지되면 콤보 가능한 공격 애니메이션을 출력
  * 차징을 유지하지 않고, 공격을 한다면, 콤보가 불가능한 공격 애니메이션을 출력
 
