@@ -63,13 +63,13 @@
 <br></br>
 #### 설계 의도: 컴포넌트 간 결합도를 최소화하기 위해 직접 참조를 지양하고, Owner를 단일 통제 지점으로 두는 구조를 채택
 <br></br>
-<code>
+<pre>
 ACPlayerCharacter
 |
 ├── UCAttachment
 ├── UCStateComponent
 └── UCMontagesComponent
-</code>
+</pre>
 
 * Owner–Component 구조
 * UCAttachment
@@ -89,12 +89,12 @@ ACPlayerCharacter
 
 
 ### 🔸 몬스터
-<code>
+<pre>
 ACMonster - ACMonster_Rathlos
                      │ 
                      ├── UCMonsterEmotionComponent
                      └── UCMonsterStateComponent
-</code>
+</pre>
 
 * ACMonster-ACMonster_Rathalos (상속관계)
     * CMonster - TakeDamge, PlayAttackMontage 등 기본적으로 몬스터 부모가 갖는 함수를 정의
