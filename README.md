@@ -46,15 +46,15 @@
 
 
 ## 2. 데이터 관리
-🔹캐릭터의 필수 애니메이션 데이터를 테이블로 저장
+
 <img width="1718" height="909" alt="image" src="https://github.com/user-attachments/assets/4a34b374-aa81-442d-b18c-ee7bfbe74043" />
+🔹캐릭터의 필수 애니메이션 데이터를 테이블로 저장
 
-🔹무기의 필수 데이터를 테이블로 저장
 <img width="1706" height="804" alt="image" src="https://github.com/user-attachments/assets/40a05a98-5076-4f17-929d-38308f1eb4a8" />
+🔹무기의 필수 데이터를 테이블로 저장
 
-🔹 몬스터의 필수 데이터를 테이블로 저장
 <img width="1710" height="877" alt="image" src="https://github.com/user-attachments/assets/fdeb5412-56be-4d48-9d00-c3e56a9c68b8" />
-
+🔹 몬스터의 필수 데이터를 테이블로 저장
 
 <hr></hr>
 
